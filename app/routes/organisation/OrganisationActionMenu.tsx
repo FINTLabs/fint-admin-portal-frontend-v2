@@ -7,6 +7,8 @@ import {
     TrashIcon,
 } from '@navikt/aksel-icons';
 import { IOrganisation } from '~/types/organisation';
+import { ConfirmationModal } from '~/routes/component/ConfirmationModal';
+import { useState } from 'react';
 
 interface OrganisationActionMenu {
     organisation: IOrganisation;
@@ -23,41 +25,64 @@ export default function OrganisationActionMenu({
     onSelectLegal,
     onDelete,
 }: OrganisationActionMenu) {
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+    const handleDeleteClick = () => {
+        setIsModalOpen(true);
+    };
+
+    const handleConfirm = () => {
+        onDelete(organisation);
+        setIsModalOpen(false);
+    };
+
+    const handleCancel = () => {
+        setIsModalOpen(false);
+    };
+
     return (
-        <ActionMenu>
-            <ActionMenu.Trigger>
-                <Button
-                    variant="tertiary-neutral"
-                    icon={<MenuElipsisVerticalIcon title="Saksmeny" />}
-                    size="small"
-                />
-            </ActionMenu.Trigger>
-            <ActionMenu.Content>
-                <ActionMenu.Group label={`${organisation.name}`}>
-                    <ActionMenu.Item
-                        onSelect={() => onEdit(organisation)}
-                        icon={<NotePencilIcon />}>
-                        Redigere organisasjon
-                    </ActionMenu.Item>
-                    <ActionMenu.Item
-                        onSelect={() => onUnsetLegal(organisation)}
-                        icon={<PersonMinusIcon />}>
-                        Fjerne juridisk kontakt
-                    </ActionMenu.Item>
-                    <ActionMenu.Item
-                        onSelect={() => onSelectLegal(organisation)}
-                        icon={<PersonGavelIcon />}>
-                        Sette juridisk kontakt
-                    </ActionMenu.Item>
-                    <ActionMenu.Divider />
-                    <ActionMenu.Item
-                        variant="danger"
-                        onSelect={() => onDelete(organisation)}
-                        icon={<TrashIcon />}>
-                        Slett Organisasjon
-                    </ActionMenu.Item>
-                </ActionMenu.Group>
-            </ActionMenu.Content>
-        </ActionMenu>
+        <>
+            <ConfirmationModal
+                isOpen={isModalOpen}
+                onConfirm={handleConfirm}
+                onCancel={handleCancel}
+                bodyText={`${organisation.displayName}`}
+            />
+            <ActionMenu>
+                <ActionMenu.Trigger>
+                    <Button
+                        variant="tertiary-neutral"
+                        icon={<MenuElipsisVerticalIcon title="Saksmeny" />}
+                        size="small"
+                    />
+                </ActionMenu.Trigger>
+                <ActionMenu.Content>
+                    <ActionMenu.Group label={`${organisation.name}`}>
+                        <ActionMenu.Item
+                            onSelect={() => onEdit(organisation)}
+                            icon={<NotePencilIcon />}>
+                            Redigere organisasjon
+                        </ActionMenu.Item>
+                        <ActionMenu.Item
+                            onSelect={() => onUnsetLegal(organisation)}
+                            icon={<PersonMinusIcon />}>
+                            Fjerne juridisk kontakt
+                        </ActionMenu.Item>
+                        <ActionMenu.Item
+                            onSelect={() => onSelectLegal(organisation)}
+                            icon={<PersonGavelIcon />}>
+                            Sette juridisk kontakt
+                        </ActionMenu.Item>
+                        <ActionMenu.Divider />
+                        <ActionMenu.Item
+                            variant="danger"
+                            onSelect={handleDeleteClick}
+                            icon={<TrashIcon />}>
+                            Slett Organisasjon
+                        </ActionMenu.Item>
+                    </ActionMenu.Group>
+                </ActionMenu.Content>
+            </ActionMenu>
+        </>
     );
 }

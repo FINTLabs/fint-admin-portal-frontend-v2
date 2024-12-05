@@ -1,7 +1,7 @@
 import { Table } from '@navikt/ds-react';
 import { IContact } from '~/types/contact';
 import { IOrganisation } from '~/types/organisation';
-import ContactModal from '~/routes/organisation/ContactModal';
+import OrganisationContactModal from '~/routes/organisation/OrganisationContactModal';
 import { useState } from 'react';
 import OrganisationExpandableRow from '~/routes/organisation/OrganisationExpandableRow';
 import OrganisationActionMenu from '~/routes/organisation/OrganisationActionMenu';
@@ -38,7 +38,7 @@ export default function OrganisationTable({
 
     return (
         <>
-            <ContactModal
+            <OrganisationContactModal
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
                 contacts={contacts || []}

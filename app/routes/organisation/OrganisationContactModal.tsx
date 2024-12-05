@@ -10,7 +10,12 @@ interface ContactModalProps {
     onAddContact: (formData: FormData) => void;
 }
 
-const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose, contacts, onAddContact }) => {
+const OrganisationContactModal: React.FC<ContactModalProps> = ({
+    isOpen,
+    onClose,
+    contacts,
+    onAddContact,
+}) => {
     const [filter, setFilter] = useState<string>('');
     // const [selectedContactNin, setSelectedContactNin] = useState<string>('');
     // const fetcher = useFetcher();
@@ -113,4 +118,4 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose, contacts, 
     );
 };
 
-export default ContactModal;
+export default OrganisationContactModal;

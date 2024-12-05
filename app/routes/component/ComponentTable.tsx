@@ -1,5 +1,5 @@
 import { Table, Tag } from '@navikt/ds-react';
-import ExpandableContent from './ExpandableContent';
+import ComponentExpandableRow from './ComponentExpandableRow';
 import { IComponent } from '~/types/components';
 import ComponentActionMenu from '~/routes/component/ComponentActionMenu';
 
@@ -26,7 +26,7 @@ export default function ComponentTable({ components, onEdit, onDelete }: Contact
                 {components.map((component) => (
                     <Table.ExpandableRow
                         key={component.dn}
-                        content={<ExpandableContent component={component} />}>
+                        content={<ComponentExpandableRow component={component} />}>
                         <Table.DataCell>{component.name}</Table.DataCell>
                         <Table.DataCell>{component.description}</Table.DataCell>
                         <Table.DataCell>

@@ -125,7 +125,7 @@ class OrganisationApi {
                 message: apiResluts.success
                     ? 'Organisasjonen er fjernet'
                     : `Kunne ikke fjernet organisasjonen: ${apiResluts.message}`,
-                variant: apiResluts.success ? 'success' : 'error',
+                variant: apiResluts.success ? 'warning' : 'error',
             }),
             { status: apiResluts.status, headers: { 'Content-Type': 'application/json' } }
         );

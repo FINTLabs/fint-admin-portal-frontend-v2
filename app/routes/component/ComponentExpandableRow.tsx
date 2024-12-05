@@ -5,7 +5,7 @@ interface ExpandableContentProps {
     component: IComponent;
 }
 
-export default function ExpandableContent({ component }: ExpandableContentProps) {
+export default function ComponentExpandableRow({ component }: ExpandableContentProps) {
     return (
         <>
             <Heading size={'xsmall'}>Endepunkter</Heading>
