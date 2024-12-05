@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
-import { IFetcherResponseMessage } from '~/types/FetcherResponseData';
+import { useState, useEffect, useCallback } from 'react';
+import { ApiResponse } from '~/api/ApiManager';
+import { IAlertType } from '~/types/alert';
 
-function useAlerts(fetcherData: IFetcherResponseMessage, fetcherState: string) {
+function useAlerts<T>(fetcherData: ApiResponse<T>, fetcherState: string) {
     const [alerts, setAlerts] = useState<IAlertType[]>([]);
 
     useEffect(() => {
@@ -11,9 +12,9 @@ function useAlerts(fetcherData: IFetcherResponseMessage, fetcherState: string) {
                 message: fetcherData.message || 'Handlingen fullført.',
             });
         }
-    }, [fetcherState]);
+    }, [fetcherState, fetcherData]);
 
-    const addAlert = (alert: Omit<IAlertType, 'id'>) => {
+    const addAlert = useCallback((alert: Omit<IAlertType, 'id'>) => {
         setAlerts((prev) => [
             ...prev,
             {
@@ -21,11 +22,11 @@ function useAlerts(fetcherData: IFetcherResponseMessage, fetcherState: string) {
                 ...alert,
             },
         ]);
-    };
+    }, []);
 
-    const removeAlert = (id: number) => {
+    const removeAlert = useCallback((id: number) => {
         setAlerts((prev) => prev.filter((alert) => alert.id !== id));
-    };
+    }, []);
 
     return {
         alerts,

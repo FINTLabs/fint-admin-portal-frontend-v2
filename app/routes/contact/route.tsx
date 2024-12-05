@@ -12,8 +12,8 @@ import logger from '~/components/logger';
 import ContactForm from '~/routes/contact/ContactForm';
 import ContactsTable from '~/routes/contact/ContactsTable';
 import AlertManager from '~/components/AlertManager';
-import { IFetcherResponseMessage } from '~/types/FetcherResponseData';
 import useAlerts from '~/components/useAlerts';
+import { ApiResponse } from '~/api/ApiManager';
 
 export const loader: LoaderFunction = async () => {
     let contacts: IContact[] = [];
@@ -26,8 +26,8 @@ export const loader: LoaderFunction = async () => {
     if (!contactsResult.success) {
         alerts.push({
             id: Date.now(),
-            variant: 'error',
-            message: `Kunne ikke hente kontakter: ${contactsResult.message}`,
+            variant: contactsResult.variant,
+            message: contactsResult.message,
         });
     } else {
         contacts = contactsResult.data || [];
@@ -36,8 +36,8 @@ export const loader: LoaderFunction = async () => {
     if (!organisationsResult.success) {
         alerts.push({
             id: Date.now() + 1,
-            variant: 'error',
-            message: `Kunne ikke hente organisasjoner: ${organisationsResult.message}`,
+            variant: organisationsResult.variant,
+            message: organisationsResult.message,
         });
     } else {
         organisations = organisationsResult.data || [];
@@ -51,7 +51,6 @@ export const loader: LoaderFunction = async () => {
         headers: { 'Content-Type': 'application/json' },
     });
 };
-
 export default function ContactsPage() {
     const {
         contacts,
@@ -63,7 +62,7 @@ export default function ContactsPage() {
         alerts: IAlertType[];
     }>();
     const fetcher = useFetcher();
-    const actionData = fetcher.data as IFetcherResponseMessage;
+    const actionData = fetcher.data as ApiResponse<IContact>;
 
     const { alerts, removeAlert } = useAlerts(actionData, fetcher.state);
     const allAlerts = [...initialAlerts, ...alerts];

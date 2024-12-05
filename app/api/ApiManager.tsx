@@ -10,6 +10,13 @@ interface ApiCallOptions {
     functionName?: string;
 }
 
+export interface ApiResponse<T> {
+    success: boolean;
+    message: string;
+    variant: 'success' | 'error' | 'warning';
+    data?: T;
+}
+
 export async function apiManager<T>({
     method,
     url,
@@ -74,4 +81,18 @@ export async function apiManager<T>({
             };
         }
     }
+}
+
+export function handleApiResponse<T>(
+    apiResults: { success: boolean; data?: T; message?: string; status?: number },
+    errorMessage: string,
+    successMessage: string = '',
+    successVariant: 'success' | 'warning' = 'success'
+): ApiResponse<T> {
+    return {
+        success: apiResults.success,
+        message: apiResults.success ? successMessage : `${errorMessage}: ${apiResults.message}`,
+        variant: apiResults.success ? successVariant : 'error',
+        data: apiResults.success ? apiResults.data : undefined,
+    };
 }

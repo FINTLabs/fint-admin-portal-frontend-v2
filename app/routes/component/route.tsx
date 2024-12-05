@@ -10,8 +10,9 @@ import ComponentForm from '~/routes/component/ComponentForm';
 import logger from '~/components/logger';
 import { IComponent } from '~/types/components';
 import useAlerts from '~/components/useAlerts';
-import { IFetcherResponseMessage } from '~/types/FetcherResponseData';
 import AlertManager from '~/components/AlertManager';
+import { ApiResponse } from '~/api/ApiManager';
+import { IAlertType } from '~/types/alert';
 
 export const loader: LoaderFunction = async () => {
     let components: IComponent[] = [];
@@ -22,8 +23,8 @@ export const loader: LoaderFunction = async () => {
     if (!componentsResult.success) {
         alerts.push({
             id: Date.now(),
-            variant: 'error',
-            message: `Kunne ikke hente komponenter: ${componentsResult.message}`,
+            variant: componentsResult.variant,
+            message: componentsResult.message,
         });
     } else {
         components = componentsResult.data || [];
@@ -44,7 +45,7 @@ export default function ComponentsPage() {
         alerts: IAlertType[];
     }>();
     const fetcher = useFetcher();
-    const actionData = fetcher.data as IFetcherResponseMessage;
+    const actionData = fetcher.data as ApiResponse<IComponent>;
 
     const [searchQuery, setSearchQuery] = useState('');
     const filteredComponents = components.filter(

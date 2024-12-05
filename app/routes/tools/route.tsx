@@ -5,17 +5,14 @@ import JSONPretty from 'react-json-pretty';
 import 'react-json-pretty/themes/acai.css';
 import { ActionFunction } from '@remix-run/node';
 import MaintenanceApi from '~/api/MaintenanceApi';
-import { IFetcherResponseMessage } from '~/types/FetcherResponseData';
 
-export type IFetcherResponseWithReport = IFetcherResponseMessage & IReportData;
-
-export interface IReportData {
-    data: never; // Replace `any` with the actual type if possible
+interface FetcherData {
     reportType: string;
+    data: never;
 }
 
 export default function ToolsPage() {
-    const fetcher = useFetcher<IFetcherResponseWithReport>();
+    const fetcher = useFetcher<FetcherData>();
 
     const isLoading = fetcher.state === 'submitting' || fetcher.state === 'loading';
 

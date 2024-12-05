@@ -1,36 +1,37 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { Alert, BodyShort, VStack } from '@navikt/ds-react';
+import { IAlertStackProps, IAlertType } from '~/types/alert';
 
 const AlertManager: React.FC<IAlertStackProps> = ({ alerts, removeAlert }) => {
     const [displayAlerts, setDisplayAlerts] = useState<IAlertType[]>([]);
 
-    const handleRemoveAlert = (id: number) => {
-        setDisplayAlerts((prev) => prev.filter((alert) => alert.id !== id));
-        removeAlert(id);
-    };
     useEffect(() => {
         if (alerts.length) {
             const latestAlert = alerts[alerts.length - 1];
 
-            // Check if the alert is already displayed
             setDisplayAlerts((prev) => {
-                if (prev.find((alert) => alert.id === latestAlert.id)) {
-                    return prev; // If alert already exists, do nothing
+                if (prev.some((alert) => alert.id === latestAlert.id)) {
+                    return prev;
                 }
-
                 const updatedAlerts = [...prev, latestAlert];
-                if (updatedAlerts.length > 3) {
-                    updatedAlerts.shift(); // Remove the oldest alert if more than 3
-                }
-                return updatedAlerts;
+                return updatedAlerts.length > 3 ? updatedAlerts.slice(1) : updatedAlerts;
             });
 
-            // Auto-remove the alert after 10 seconds
-            setTimeout(() => {
-                setDisplayAlerts((prev) => prev.filter((alert) => alert.id !== latestAlert.id));
+            const timer = setTimeout(() => {
+                handleRemoveAlert(latestAlert.id);
             }, 10000);
+
+            return () => clearTimeout(timer);
         }
     }, [alerts]);
+
+    const handleRemoveAlert = useCallback(
+        (id: number) => {
+            setDisplayAlerts((prev) => prev.filter((alert) => alert.id !== id));
+            removeAlert(id);
+        },
+        [removeAlert]
+    );
 
     return (
         <VStack

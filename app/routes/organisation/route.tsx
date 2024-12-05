@@ -12,8 +12,8 @@ import OrganisationTable from '~/routes/organisation/OrganisationTable';
 import OrganisationForm from '~/routes/organisation/OrganisationForm';
 import logger from '~/components/logger';
 import useAlerts from '~/components/useAlerts';
-import { IFetcherResponseMessage } from '~/types/FetcherResponseData';
 import AlertManager from '~/components/AlertManager';
+import { ApiResponse } from '~/api/ApiManager';
 
 export const loader: LoaderFunction = async () => {
     let contacts: IContact[] = [];
@@ -26,9 +26,8 @@ export const loader: LoaderFunction = async () => {
     if (!contactsResult.success) {
         alerts.push({
             id: Date.now(),
-            variant: 'error',
-            message: `Kunne ikke hente kontakter: ${contactsResult.message}`,
-            header: 'Error',
+            variant: contactsResult.variant,
+            message: contactsResult.message,
         });
     } else {
         contacts = contactsResult.data || [];
@@ -37,9 +36,8 @@ export const loader: LoaderFunction = async () => {
     if (!organizationsResult.success) {
         alerts.push({
             id: Date.now() + 1,
-            variant: 'error',
-            message: `Kunne ikke hente organisasjoner: ${organizationsResult.message}`,
-            header: 'Error',
+            variant: organizationsResult.variant,
+            message: organizationsResult.message,
         });
     } else {
         organizations = organizationsResult.data || [];
@@ -70,7 +68,7 @@ export default function OrganizationsPage() {
     const [addingNew, setAddingNew] = useState<boolean>(false);
 
     const fetcher = useFetcher();
-    const actionData = fetcher.data as IFetcherResponseMessage;
+    const actionData = fetcher.data as ApiResponse<IOrganisation>;
 
     const { alerts, removeAlert } = useAlerts(actionData, fetcher.state);
     const allAlerts = [...initialAlerts, ...alerts];
