@@ -1,0 +1,121 @@
+[data-theme='novari'] {
+    /* Novari logo color: #F76650 */
+    /* Button configurations */
+    /*--ac-button-primary-active-bg: var(--a-gray-50);*/
+    /*--ac-button-tertiary-active-bg: var(--a-lightblue-900);*/
+    /*--ac-button-tertiary-active-hover-bg: var(--a-lightblue-900);*/
+    --a-bg-subtle: #f8ebdb;
+    /*--a-bg-default: #FDF9F5;*/
+    /*--ac-button-primary-bg: #7F78E8;*/
+    /*--ac-button-primary-hover-bg: #ab5692;*/
+    --a-surface-alt-3-strong: #6b133d;
+    --a-surface-action: #7f78e8;
+    --a-text-action: #7f78e8;
+    --a-icon-action: #7f78e8;
+    --a-surface-action-selected: #7f78e8;
+    --a-surface-action-hover: #5a51e1;
+    --a-font-family: 'Brockmann', sans-serif;
+    --a-icon-action-selected: #5a51e1;
+    --ac-loader-stroke-bg: #7f78e8;
+
+    /* NOVARI Footer and header */
+    .novari-footer {
+        background: var(--a-surface-alt-3-strong);
+    }
+    .novari-header {
+        background: var(--a-bg-subtle);
+    }
+    /* Styles for the active panel */
+    .my-custom-panel {
+        background-color: #f3f4f6; /* Light gray background */
+        padding: 36px 16px 36px 26px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        transition: background-color 0.3s ease; /* Smooth background transition */
+        cursor: pointer; /* Indicate interactivity */
+    }
+
+    /* Styles for the disabled panel */
+    .my-custom-panel-disabled {
+        background-color: #e0e0e0; /* Gray background to indicate disabled state */
+        padding: 36px 16px 36px 26px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        transition: background-color 0.3s ease; /* Smooth background transition */
+        opacity: 0.6; /* Slightly transparent to emphasize the disabled state */
+        cursor: not-allowed; /* Show that interaction is not possible */
+    }
+
+    /* Styles for the title within the panel */
+    .panel-title {
+        display: flex;
+        align-items: center;
+        font-size: 20px;
+        font-weight: 600;
+        margin: 0;
+    }
+
+    /* Styles for the disabled title */
+    .panel-title-disabled {
+        color: #b0b0b0; /* Lighter gray to indicate disabled text */
+    }
+
+    /* Icon styles */
+    .panel-icon {
+        margin-right: 20px;
+        font-size: 34px;
+        color: #d2452c; /* NAV blue */
+        transition: transform 0.3s ease; /* Smooth scaling transition */
+        border: #d2452c 1px solid;
+        border-radius: 50%; /* Make the border circular */
+        width: 40px; /* Set width and height to the same value */
+        height: 40px; /* Adjust as needed to fit the icon */
+        display: flex; /* Center the icon within the circle */
+        align-items: center; /* Center vertically */
+        justify-content: center; /* Center horizontally */
+        padding: 10px;
+    }
+
+    /* Styles for the disabled icon */
+    .panel-icon-disabled {
+        color: #b0b0b0; /* Lighter color for the icon */
+        border: #b0b0b0 1px solid; /* Lighter border for the disabled icon */
+    }
+
+    /* Description styles */
+    .panel-description {
+        margin-top: 4px;
+        font-size: 16px;
+        color: #3e3832;
+    }
+
+    /* Styles for disabled description */
+    .panel-description-disabled {
+        color: #a0a0a0; /* Dimmed color for disabled description text */
+    }
+
+    /* Hover effect */
+    .my-custom-panel:hover {
+        background-color: #f8ebdb; /* Darker gray background on hover */
+    }
+
+    .my-custom-panel:hover .panel-icon {
+        transform: scale(1.7); /* Enlarge the icon on hover */
+    }
+
+    /* Disable hover effect on the title and icon when the panel is disabled */
+    .my-custom-panel-disabled:hover {
+        background-color: #e0e0e0; /* Maintain the disabled background color */
+    }
+
+    .my-custom-panel-disabled:hover .panel-icon-disabled {
+        transform: none; /* Prevent icon scaling on hover */
+    }
+
+    .my-custom-panel-disabled:hover .panel-title-disabled {
+        text-decoration: none; /* Prevent any hover effect on the title */
+        cursor: default; /* Indicate that the title is not clickable */
+    }
+}
