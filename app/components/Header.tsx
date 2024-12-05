@@ -8,6 +8,7 @@ import {
 import { ActionMenu, Button, HGrid } from '@navikt/ds-react';
 import { Logo } from '~/components/Logo';
 import { Link, useLoaderData } from '@remix-run/react';
+import { LogoutButton } from '~/components/LogoutButton';
 
 interface MeData {
     fullName?: string;
@@ -33,7 +34,6 @@ const Header = () => {
                     alignItems: 'center',
                     gap: '1rem',
                 }}>
-                <span>{meData.fullName}</span>
                 <ActionMenu>
                     <ActionMenu.Trigger>
                         <Button
@@ -70,6 +70,8 @@ const Header = () => {
                         </ActionMenu.Group>
                     </ActionMenu.Content>
                 </ActionMenu>
+                <span>{meData.fullName}</span>
+                <LogoutButton />
             </div>
         </HGrid>
     );
