@@ -9,8 +9,16 @@ import { ActionMenu, Button, HGrid } from '@navikt/ds-react';
 import { Logo } from '~/components/Logo';
 import { Link, useLoaderData } from '@remix-run/react';
 
+interface MeData {
+    fullName?: string;
+}
+
+interface LoaderData {
+    meData: MeData;
+}
+
 const Header = () => {
-    const { meData } = useLoaderData<string>();
+    const { meData } = useLoaderData<LoaderData>();
 
     return (
         <HGrid gap="3" columns={{ md: '1fr 3fr', xs: '1fr' }} style={{ padding: '1rem' }}>

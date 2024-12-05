@@ -5,45 +5,18 @@ import JSONPretty from 'react-json-pretty';
 import 'react-json-pretty/themes/acai.css';
 import { ActionFunction } from '@remix-run/node';
 import MaintenanceApi from '~/api/MaintenanceApi';
+import { IFetcherResponseMessage } from '~/types/FetcherResponseData';
 
-interface FetcherResponse {
-    reportType?: string;
-    data?: never; // Adjust this according to the actual data structure
+export type IFetcherResponseWithReport = IFetcherResponseMessage & IReportData;
+
+export interface IReportData {
+    data: never; // Replace `any` with the actual type if possible
+    reportType: string;
 }
 
-export const action: ActionFunction = async ({ request }: { request: Request }) => {
-    const formData = await request.formData();
-    const reportType = formData.get('reportType');
-
-    let data;
-    switch (reportType) {
-        case 'Organizations':
-            data = await MaintenanceApi.getOrganisationConsistency();
-            break;
-        case 'Adapter':
-            data = await MaintenanceApi.getAdapterConsistency();
-            break;
-        case 'Client':
-            data = await MaintenanceApi.getClientConsistency();
-            break;
-        case 'Legal':
-            data = await MaintenanceApi.getLegalConsistency();
-            break;
-        case 'Technical':
-            data = await MaintenanceApi.getTechnicalConsistency();
-            break;
-        default:
-            console.info('Unknown report type');
-            data = null;
-    }
-
-    return new Response(JSON.stringify({ data, reportType }), {
-        headers: { 'Content-Type': 'application/json' },
-    });
-};
-
 export default function ToolsPage() {
-    const fetcher = useFetcher<FetcherResponse>();
+    const fetcher = useFetcher<IFetcherResponseWithReport>();
+
     const isLoading = fetcher.state === 'submitting' || fetcher.state === 'loading';
 
     return (
@@ -95,10 +68,10 @@ export default function ToolsPage() {
 
             {isLoading ? (
                 <Loader size="3xlarge" title="Venter..." variant="interaction" />
-            ) : fetcher.data?.data ? (
+            ) : fetcher.data ? (
                 <>
-                    <Heading size="large">{fetcher.data.reportType}</Heading>
-                    <JSONPretty id="json-pretty" data={fetcher.data.data} />
+                    {/*<Heading size="large">{fetcher.data.reportType}</Heading>*/}
+                    <JSONPretty id="json-pretty" data={fetcher.data} />
                 </>
             ) : (
                 <Heading size="large">Please choose a report to run</Heading>
@@ -106,3 +79,34 @@ export default function ToolsPage() {
         </VStack>
     );
 }
+
+export const action: ActionFunction = async ({ request }: { request: Request }) => {
+    const formData = await request.formData();
+    const reportType = formData.get('reportType');
+
+    let data;
+    switch (reportType) {
+        case 'Organizations':
+            data = await MaintenanceApi.getOrganisationConsistency();
+            break;
+        case 'Adapter':
+            data = await MaintenanceApi.getAdapterConsistency();
+            break;
+        case 'Client':
+            data = await MaintenanceApi.getClientConsistency();
+            break;
+        case 'Legal':
+            data = await MaintenanceApi.getLegalConsistency();
+            break;
+        case 'Technical':
+            data = await MaintenanceApi.getTechnicalConsistency();
+            break;
+        default:
+            console.info('Unknown report type');
+            data = null;
+    }
+
+    return new Response(JSON.stringify({ data, reportType }), {
+        headers: { 'Content-Type': 'application/json' },
+    });
+};
