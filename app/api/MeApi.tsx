@@ -18,17 +18,17 @@ class MeApi {
 
         logger.debug('response from me:', response.data?.fullName);
 
-        // Check if fullName is empty and handle accordingly
-        if (response.data && response.data.fullName === '') {
-            logger.info('Using a local testing default ME name');
-            return {
-                ...response,
-                data: {
-                    ...response.data,
-                    fullName: 'Local Test Name',
-                },
-            };
-        }
+        // // Check if fullName is empty and handle accordingly
+        // if (response.data && response.data.fullName === '') {
+        //     logger.info('Using a local testing default ME name');
+        //     return {
+        //         ...response,
+        //         data: {
+        //             ...response.data,
+        //             fullName: 'Local Test Name',
+        //         },
+        //     };
+        // }
 
         return response;
     }
