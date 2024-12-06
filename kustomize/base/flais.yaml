@@ -16,6 +16,9 @@ spec:
   imagePullPolicy: Always
   orgId: fintlabs.no
   image: ghcr.io/fintlabs/fint-admin-portal-frontend-v2:latest
+  env:
+    - name: API_URL
+      value: http://fint-admin-portal-backend:8080
   url:
     hostname: admin-beta.fintlabs.no
     basePath: /
