@@ -1,8 +1,13 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Alert, BodyShort, VStack } from '@navikt/ds-react';
-import { IAlertStackProps, IAlertType } from '~/types/alert';
+import { IAlertType } from '~/types/alert';
 
-const AlertManager: React.FC<IAlertStackProps> = ({ alerts, removeAlert }) => {
+export interface IAlertStackProps {
+    alerts: IAlertType[];
+    removeAlert: (id: number) => void;
+}
+
+function AlertManager({ alerts, removeAlert }: IAlertStackProps) {
     const [displayAlerts, setDisplayAlerts] = useState<IAlertType[]>([]);
 
     useEffect(() => {
@@ -47,18 +52,18 @@ const AlertManager: React.FC<IAlertStackProps> = ({ alerts, removeAlert }) => {
                     key={alert.id}
                     variant={alert.variant as 'error' | 'info' | 'warning' | 'success'}
                     closeButton
-                    size={'small'}
+                    size="small"
                     onClose={() => handleRemoveAlert(alert.id)}>
                     {alert.header && (
-                        <BodyShort size={'small'} style={{ fontWeight: 'bold' }}>
+                        <BodyShort size="small" style={{ fontWeight: 'bold' }}>
                             {alert.header}
                         </BodyShort>
                     )}
-                    <BodyShort size={'small'}>{alert.message}</BodyShort>
+                    <BodyShort size="small">{alert.message}</BodyShort>
                 </Alert>
             ))}
         </VStack>
     );
-};
+}
 
 export default AlertManager;

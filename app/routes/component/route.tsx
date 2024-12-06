@@ -148,6 +148,7 @@ export const action: ActionFunction = async ({ request }) => {
         openData: formData.get('openData') === 'true',
     };
 
+    //todo: fix logging levels so debug is more than info
     logger.debug(`Received action: ${actionType} in component route`);
 
     switch (actionType) {

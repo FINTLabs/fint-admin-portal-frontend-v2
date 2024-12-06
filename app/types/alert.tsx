@@ -4,8 +4,3 @@ export interface IAlertType {
     header?: string; // Optional header for the alert
     variant: string;
 }
-
-export interface IAlertStackProps {
-    alerts: IAlertType[];
-    removeAlert: (id: number) => void;
-}

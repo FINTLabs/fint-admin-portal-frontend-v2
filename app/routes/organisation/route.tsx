@@ -14,6 +14,7 @@ import logger from '~/components/logger';
 import useAlerts from '~/components/useAlerts';
 import AlertManager from '~/components/AlertManager';
 import { ApiResponse } from '~/api/ApiManager';
+import { IAlertType } from '~/types/alert';
 
 export const loader: LoaderFunction = async () => {
     let contacts: IContact[] = [];
