@@ -161,10 +161,10 @@ export const action: ActionFunction = async ({ request }) => {
             logger.info('Editing component', newComponent);
             return await ComponentsApi.updateComponent(newComponent);
 
-        case 'DELETE_COMPONENT':
-            newComponent.dn = formData.get('dn') as string;
-            logger.info('Deleting component', newComponent);
-            return await ComponentsApi.deleteComponent(newComponent);
+        // case 'DELETE_COMPONENT':
+        //     newComponent.dn = formData.get('dn') as string;
+        //     logger.info('Deleting component', newComponent);
+        //     return await ComponentsApi.deleteComponent(newComponent);
 
         default:
             logger.warn(`Unknown action type: ${actionType}`);

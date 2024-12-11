@@ -196,9 +196,9 @@ export const action: ActionFunction = async ({ request }) => {
         case 'UNSET_LEGAL':
             logger.info('Removing legal contact organisation', newOrg);
             return await OrganisationApi.updateLegalContact(newOrg.name, contact, 'REMOVE');
-        case 'DELETE_ORG':
-            logger.info('Delete organisation', newOrg);
-            return await OrganisationApi.deleteOrganisation(newOrg);
+        // case 'DELETE_ORG':
+        //     logger.info('Delete organisation', newOrg);
+        //     return await OrganisationApi.deleteOrganisation(newOrg);
         default:
             logger.warn(`Unknown action type: ${actionType}`);
             return new Response(

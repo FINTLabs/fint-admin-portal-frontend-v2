@@ -14,6 +14,7 @@ import ContactsTable from '~/routes/contact/ContactsTable';
 import AlertManager from '~/components/AlertManager';
 import useAlerts from '~/components/useAlerts';
 import { ApiResponse } from '~/api/ApiManager';
+import { IAlertType } from '~/types/alert';
 
 export const loader: LoaderFunction = async () => {
     let contacts: IContact[] = [];
@@ -175,10 +176,10 @@ export const action: ActionFunction = async ({ request }) => {
             logger.info('Editing contact', newContact);
             return await ContactsApi.updateContact(newContact);
 
-        case 'DELETE_CONTACT':
-            newContact.nin = formData.get('nin') as string;
-            logger.info('Removing contact', newContact);
-            return await ContactsApi.deleteContact(newContact);
+        // case 'DELETE_CONTACT':
+        //     newContact.nin = formData.get('nin') as string;
+        //     logger.info('Removing contact', newContact);
+        //     return await ContactsApi.deleteContact(newContact);
 
         default:
             logger.warn(`Unknown action type: ${actionType}`);
