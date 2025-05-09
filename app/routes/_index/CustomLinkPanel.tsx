@@ -6,7 +6,6 @@ interface CustomLinkPanelProps {
     title: string;
     IconComponent: React.ComponentType<React.SVGProps<SVGSVGElement>>;
     description?: string;
-    userHasRole: boolean;
 }
 
 const CustomLinkPanel: React.FC<CustomLinkPanelProps> = ({
@@ -14,27 +13,14 @@ const CustomLinkPanel: React.FC<CustomLinkPanelProps> = ({
     title,
     IconComponent,
     description,
-    userHasRole,
 }) => {
     return (
-        <LinkPanel
-            href={userHasRole ? href : undefined}
-            border
-            className={userHasRole ? 'my-custom-panel' : 'my-custom-panel-disabled'}>
-            <LinkPanel.Title
-                className={`panel-title ${!userHasRole ? 'panel-title-disabled' : ''}`}>
-                <IconComponent
-                    aria-hidden
-                    className={`panel-icon ${!userHasRole ? 'panel-icon-disabled' : ''}`}
-                />
+        <LinkPanel key={title} border className={'my-custom-panel'} href={href}>
+            <LinkPanel.Title className={`panel-title`}>
+                <IconComponent aria-hidden className={`panel-icon`} />
                 {title}
             </LinkPanel.Title>
-            {description && (
-                <BodyLong
-                    className={`panel-description ${!userHasRole ? 'panel-description-disabled' : ''}`}>
-                    {description}
-                </BodyLong>
-            )}
+            {description && <BodyLong className={`panel-description`}>{description}</BodyLong>}
         </LinkPanel>
     );
 };

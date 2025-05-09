@@ -1,9 +1,8 @@
-import { useFetcher } from '@remix-run/react';
+import { useFetcher, ActionFunction } from 'react-router';
 import { Button, Heading, HGrid, Loader, VStack } from '@navikt/ds-react';
 import { Buildings3Icon, ComponentIcon, PersonGroupIcon } from '@navikt/aksel-icons';
 import JSONPretty from 'react-json-pretty';
 import 'react-json-pretty/themes/acai.css';
-import { ActionFunction } from '@remix-run/node';
 import MaintenanceApi from '~/api/MaintenanceApi';
 
 interface FetcherData {
@@ -23,7 +22,7 @@ export default function ToolsPage() {
                     <Button
                         type="submit"
                         name="reportType"
-                        value="Organizations"
+                        value="Organisasjoner"
                         icon={<Buildings3Icon aria-hidden />}
                         size="small">
                         Organizations

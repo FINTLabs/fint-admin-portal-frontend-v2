@@ -1,36 +1,25 @@
-import { apiManager } from '~/api/ApiManager';
-import logger from '~/components/logger';
+import { NovariApiManager } from 'novari-frontend-components';
 
 const API_URL = process.env.API_URL || '';
 
-// Define an interface for the response data
-interface MeApiResponse {
+export interface IUser {
     fullName: string;
 }
 
 class MeApi {
     static async getDisplayName() {
-        const response = await apiManager<MeApiResponse>({
-            method: 'GET',
-            url: `${API_URL}/api/me`,
-            functionName: 'MeApi',
+        const apiManager = new NovariApiManager({
+            baseUrl: API_URL,
+            // defaultHeaders: { 'x-nin': '9999999999' },
         });
 
-        logger.debug('response from me:', response.data?.fullName);
-
-        // // Check if fullName is empty and handle accordingly
-        // if (response.data && response.data.fullName === '') {
-        //     logger.info('Using a local testing default ME name');
-        //     return {
-        //         ...response,
-        //         data: {
-        //             ...response.data,
-        //             fullName: 'Local Test Name',
-        //         },
-        //     };
-        // }
-
-        return response;
+        return await apiManager.call<IUser>({
+            method: 'GET',
+            endpoint: '/api/me',
+            functionName: 'getMeData',
+            customErrorMessage: 'Get me failed',
+            customSuccessMessage: 'Get me successful',
+        });
     }
 }
 

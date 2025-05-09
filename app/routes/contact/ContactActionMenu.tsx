@@ -54,6 +54,7 @@ export default function ContactActionMenu({ contact, onEdit, onDelete }: ActionM
                 <ActionMenu.Content>
                     <ActionMenu.Group label={`${contact.firstName} ${contact.lastName}`}>
                         <ActionMenu.Item
+                            data-cy={'contacts-action-menu'}
                             onSelect={() => onEdit(contact)}
                             icon={<PersonPencilIcon />}>
                             Redigere kontakt

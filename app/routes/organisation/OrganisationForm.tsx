@@ -60,12 +60,14 @@ export default function OrganisationForm({
                     value={inDisplayName}
                     onChange={(e) => setInDisplayName(e.target.value)}
                     error={errors.displayName}
+                    data-cy={'name-input'}
                 />
                 <TextField
                     label="Organisasjonsnummer"
                     value={inOrgNumber}
                     onChange={(e) => setInOrgNumber(e.target.value)}
                     error={errors.orgNumber}
+                    data-cy={'org-number-input'}
                 />
                 <TextField
                     label="Domenenavn (f.eks. rfk.no)"
@@ -73,11 +75,12 @@ export default function OrganisationForm({
                     onChange={(e) => setInDomainName(e.target.value)}
                     error={errors.name}
                     disabled={!!organization}
+                    data-cy={'display-name-input'}
                 />
             </Box>
             <HStack className="pl-10" gap="5">
-                <Button onClick={onSubmit}>
-                    {organization ? 'Update Organization' : 'Add Organization'}
+                <Button onClick={onSubmit} data-cy="submit-button">
+                    {organization ? 'Oppdater organisasjon' : 'Legg til organisasjon'}
                 </Button>
                 <Button type="button" variant="secondary" onClick={onCancel}>
                     Cancel

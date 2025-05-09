@@ -1,77 +1,52 @@
-import logger from '~/components/logger';
 import { IComponent } from '~/types/components';
-import { apiManager, ApiResponse, handleApiResponse } from '~/api/ApiManager';
+import { ApiResponse, NovariApiManager } from 'novari-frontend-components';
 
 const API_URL = process.env.API_URL || '';
+const apiManager = new NovariApiManager({
+    baseUrl: API_URL,
+});
 
 class ComponentsApi {
     static async getComponents(): Promise<ApiResponse<IComponent[]>> {
-        const apiResults = await apiManager<IComponent[]>({
+        return await apiManager.call<IComponent[]>({
             method: 'GET',
-            url: `${API_URL}/api/components`,
+            endpoint: '/api/components',
             functionName: 'getComponents',
+            customErrorMessage: 'Kunne ikke laste inn komponenter',
         });
-        return handleApiResponse(apiResults, 'Kunne ikke hente komponenter');
     }
 
     static async addComponent(component: IComponent): Promise<ApiResponse<IComponent[]>> {
-        logger.debug('Adding new component', component);
-
-        const apiResults = await apiManager<IComponent[]>({
+        return await apiManager.call<IComponent[]>({
             method: 'POST',
+            endpoint: '/api/components',
             body: JSON.stringify(component),
-            url: `${API_URL}/api/components`,
-            functionName: 'addComponent',
+            functionName: 'getComponents',
+            customErrorMessage: 'Kunne ikke legge til komponenten',
+            customSuccessMessage: 'Komponenten er lagt til',
         });
-
-        if (apiResults.status === 302) {
-            return {
-                success: false,
-                message: 'Komponenten finnes allerede',
-                variant: 'error',
-            };
-        }
-
-        return handleApiResponse(
-            apiResults,
-            'Kunne ikke legge til komponenten',
-            'Komponenten ble lagt til'
-        );
     }
 
     static async updateComponent(component: IComponent): Promise<ApiResponse<IComponent[]>> {
-        logger.debug('Editing component', component);
-
-        const apiResults = await apiManager<IComponent[]>({
+        return await apiManager.call<IComponent[]>({
             method: 'PUT',
+            endpoint: `/api/components/${component.name}`,
             body: JSON.stringify(component),
-            url: `${API_URL}/api/components/${component.name}`,
             functionName: 'updateComponent',
+            customErrorMessage: 'Kunne ikke oppdatere komponenten',
+            customSuccessMessage: 'Komponenten har blitt oppdatert',
         });
-
-        return handleApiResponse(
-            apiResults,
-            'Kunne ikke oppdatere komponenten',
-            'Komponenten har blitt oppdatert'
-        );
     }
 
     static async deleteComponent(component: IComponent): Promise<ApiResponse<IComponent[]>> {
-        logger.debug('Removing component', component);
-
-        const apiResults = await apiManager<IComponent[]>({
+        return await apiManager.call<IComponent[]>({
             method: 'DELETE',
+            endpoint: `/api/components/${component.name}`,
             body: JSON.stringify(component),
-            url: `${API_URL}/api/components/${component.name}`,
-            functionName: 'deleteComponent',
+            functionName: 'updateComponent',
+            customErrorMessage: 'Kunne ikke fjerne komponenten',
+            customSuccessMessage: 'Komponenten har blitt fjernet',
         });
-
-        return handleApiResponse(
-            apiResults,
-            'Kunne ikke fjerne komponenten',
-            'Komponenten har blitt fjernet',
-            'warning'
-        );
     }
 }
 

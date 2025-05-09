@@ -1,9 +1,8 @@
-import { useFetcher, useLoaderData } from '@remix-run/react';
-import { ActionFunction, LoaderFunction } from '@remix-run/node';
-import { Pagination, Search } from '@navikt/ds-react';
+import { ActionFunction, LoaderFunction, useFetcher, useLoaderData } from 'react-router';
+import { Box, Pagination, Search } from '@navikt/ds-react';
 import { IContact } from '~/types/contact';
 import ContactsApi from '~/api/ContactsApi';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import OrganisationsApi from '~/api/OrganisationApi';
 import { IOrganisation } from '~/types/organisation';
 import InternalPageHeader from '~/components/InternalPageHeader';
@@ -11,15 +10,12 @@ import { PersonGroupIcon } from '@navikt/aksel-icons';
 import logger from '~/components/logger';
 import ContactForm from '~/routes/contact/ContactForm';
 import ContactsTable from '~/routes/contact/ContactsTable';
-import AlertManager from '~/components/AlertManager';
-import useAlerts from '~/components/useAlerts';
-import { ApiResponse } from '~/api/ApiManager';
-import { IAlertType } from '~/types/alert';
+import { AlertType, ApiResponse, NovariAlertManager } from 'novari-frontend-components';
 
 export const loader: LoaderFunction = async () => {
     let contacts: IContact[] = [];
     let organisations: IOrganisation[] = [];
-    const alerts: IAlertType[] = [];
+    const alerts: AlertType[] = [];
 
     const contactsResult = await ContactsApi.getContacts();
     const organisationsResult = await OrganisationsApi.getOrganisations();
@@ -52,21 +48,28 @@ export const loader: LoaderFunction = async () => {
         headers: { 'Content-Type': 'application/json' },
     });
 };
+
 export default function ContactsPage() {
-    const {
-        contacts,
-        organisations,
-        alerts: initialAlerts,
-    } = useLoaderData<{
+    const { contacts, organisations, alerts } = useLoaderData<{
         contacts: IContact[];
         organisations: IOrganisation[];
-        alerts: IAlertType[];
+        alerts: AlertType[];
     }>();
+
     const fetcher = useFetcher();
     const actionData = fetcher.data as ApiResponse<IContact>;
+    const [alertState, setAlertState] = useState<AlertType[]>(alerts);
 
-    const { alerts, removeAlert } = useAlerts(actionData, fetcher.state);
-    const allAlerts = [...initialAlerts, ...alerts];
+    useEffect(() => {
+        if (actionData) {
+            const newAlert: AlertType = {
+                id: Date.now(),
+                variant: actionData.variant || 'success',
+                message: actionData.message || 'Handlingen fullført.',
+            };
+            setAlertState((prevAlerts) => [...prevAlerts, newAlert]);
+        }
+    }, [actionData]);
 
     const [editingContact, setEditingContact] = useState<IContact | null>(null);
     const [addingNew, setAddingNew] = useState<boolean>(false);
@@ -112,7 +115,9 @@ export default function ContactsPage() {
                     !addingNew && !editingContact ? () => setAddingNew(true) : undefined
                 }
             />
-            <AlertManager alerts={allAlerts} removeAlert={removeAlert} />
+
+            <NovariAlertManager alerts={alertState} />
+
             {addingNew || editingContact ? (
                 <ContactForm
                     contact={editingContact}
@@ -124,12 +129,16 @@ export default function ContactsPage() {
                 />
             ) : (
                 <>
-                    <Search
-                        label="Search contacts"
-                        variant="simple"
-                        value={searchQuery}
-                        onChange={(value: string) => setSearchQuery(value)}
-                    />
+                    <Box className={'pt-10 w-100 pb-10'}>
+                        <Search
+                            label="Search contacts"
+                            variant="simple"
+                            value={searchQuery}
+                            onChange={(value: string) => setSearchQuery(value)}
+                            size="small"
+                            data-cy={'contact-search-box'}
+                        />
+                    </Box>
 
                     <ContactsTable
                         contacts={paginatedContacts}

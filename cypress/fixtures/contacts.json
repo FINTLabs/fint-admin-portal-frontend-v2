@@ -1,0 +1,18 @@
+[
+  {
+    "dn": "12345678901",
+    "firstName": "John",
+    "lastName": "Doe",
+    "mail": "john.doe@example.com",
+    "mobile": "12345678",
+    "nin": "12345678901"
+  },
+  {
+    "dn": "10987654321",
+    "firstName": "Jane",
+    "lastName": "Smith",
+    "mail": "jane.smith@example.com",
+    "mobile": "87654321",
+    "nin": "10987654321"
+  }
+]

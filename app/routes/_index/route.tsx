@@ -1,39 +1,35 @@
-import { HStack } from '@navikt/ds-react';
+import { HGrid } from '@navikt/ds-react';
 import { Buildings3Icon, ComponentIcon, PersonGroupIcon, WrenchIcon } from '@navikt/aksel-icons';
 import CustomLinkPanel from '~/routes/_index/CustomLinkPanel';
 
 export default function Index() {
     return (
-        <HStack gap="3" justify="center" className={'pt-20'}>
+        <HGrid columns={2} gap="3" className={'pt-30'}>
             <CustomLinkPanel
-                key={'index'}
+                key={'contact'}
                 href={'/contact'}
                 title={'Kontakter'}
                 IconComponent={PersonGroupIcon}
-                userHasRole={true}
             />
 
             <CustomLinkPanel
-                key={'index'}
+                key={'organisation'}
                 href={'/organisation'}
                 title={'Organisasjoner'}
                 IconComponent={Buildings3Icon}
-                userHasRole={true}
             />
             <CustomLinkPanel
-                key={'index'}
+                key={'component'}
                 href={'/component'}
                 title={'Komponenter'}
                 IconComponent={ComponentIcon}
-                userHasRole={true}
             />
             <CustomLinkPanel
-                key={'index'}
+                key={'tools'}
                 href={'/tools'}
                 title={'Tools'}
                 IconComponent={WrenchIcon}
-                userHasRole={true}
             />
-        </HStack>
+        </HGrid>
     );
 }

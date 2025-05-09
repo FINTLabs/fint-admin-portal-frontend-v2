@@ -1,63 +1,50 @@
-import { apiManager, ApiResponse, handleApiResponse } from './ApiManager';
 import { IOrganisation } from '~/types/organisation';
-import logger from '~/components/logger';
+import { ApiResponse, NovariApiManager } from 'novari-frontend-components';
 
 const API_URL = process.env.API_URL || '';
-
+const apiManager = new NovariApiManager({
+    baseUrl: API_URL,
+});
 class OrganisationApi {
     static async getOrganisations(): Promise<ApiResponse<IOrganisation[]>> {
-        const apiResults = await apiManager<IOrganisation[]>({
+        return await apiManager.call<IOrganisation[]>({
             method: 'GET',
-            url: `${API_URL}/api/organisations`,
+            endpoint: '/api/organisations',
             functionName: 'getOrganisations',
+            customErrorMessage: 'Kunne ikke last inn organisasjoner',
         });
-        return handleApiResponse(apiResults, 'Kunne ikke hente organisasjoner');
     }
 
     static async addOrganisation(
         organisation: IOrganisation
     ): Promise<ApiResponse<IOrganisation[]>> {
-        logger.debug('Adding new organisation', organisation);
-
-        const apiResults = await apiManager<IOrganisation[]>({
+        const response = await apiManager.call<IOrganisation[]>({
             method: 'POST',
+            endpoint: '/api/organisations',
             body: JSON.stringify(organisation),
-            url: `${API_URL}/api/organisations`,
             functionName: 'addOrganisation',
+            customErrorMessage: 'Kunne ikke legge til organisasjonen',
+            customSuccessMessage: 'Organisasjonen er lagt til',
         });
 
-        if (apiResults.status === 302) {
-            return {
-                success: false,
-                message: 'Organisasjonen finnes allerede',
-                variant: 'error',
-            };
+        if (response.status === 302) {
+            response.message = 'Organisasjonen allerede funnet';
+            response.variant = 'warning';
         }
-
-        return handleApiResponse(
-            apiResults,
-            'Kunne ikke legge til organisasjonen',
-            'Organisasjonen ble lagt til'
-        );
+        return response;
     }
 
     static async updateOrganisation(
         organisation: IOrganisation
     ): Promise<ApiResponse<IOrganisation[]>> {
-        logger.debug('Editing organisation', organisation);
-
-        const apiResults = await apiManager<IOrganisation[]>({
+        return await apiManager.call<IOrganisation[]>({
             method: 'PUT',
-            body: JSON.stringify(organisation),
-            url: `${API_URL}/api/organisations/${organisation.name}`,
+            endpoint: `/api/organisations/${organisation.name}`,
             functionName: 'updateOrganisation',
+            body: JSON.stringify(organisation),
+            customErrorMessage: 'Kunne ikke oppdatere organisasjonen',
+            customSuccessMessage: 'Organisasjonen er oppdatert',
         });
-
-        return handleApiResponse(
-            apiResults,
-            'Kunne ikke oppdatere organisasjonen',
-            'Organisasjonen er oppdatert'
-        );
     }
 
     static async updateLegalContact(
@@ -66,52 +53,37 @@ class OrganisationApi {
         action: 'SET' | 'REMOVE'
     ): Promise<ApiResponse<IOrganisation[]>> {
         const method = action === 'SET' ? 'PUT' : 'DELETE';
-        const actionText = action === 'SET' ? 'Setting' : 'Removing';
-        const actionTextPast = action === 'SET' ? 'oppdatert' : 'fjernet';
 
-        logger.debug(
-            `${actionText} legal contact for organisation: ${organisationName} to: ${contactNin}`
-        );
-
-        const apiResults = await apiManager<IOrganisation[]>({
-            method,
-            url: `${API_URL}/api/organisations/${organisationName}/contacts/legal/${contactNin}`,
+        const response = await apiManager.call<IOrganisation[]>({
+            method: method,
+            endpoint: `/api/organisations/${organisationName}/contacts/legal/${contactNin}`,
             functionName: 'updateLegalContact',
+            customErrorMessage: `Kunne ikke ${action === 'SET' ? 'oppdatere' : 'fjerne'} Juridisk kontakt`,
+            customSuccessMessage: `Juridisk kontakt er ${action === 'SET' ? 'oppdatere' : 'fjerne'}`,
         });
 
-        if (apiResults.status === 204) {
-            return {
-                success: true,
-                message: `Juridisk kontakt er ${actionTextPast}`,
-                variant: 'success',
-            };
+        if (response.status === 204) {
+            response.message = `Juridisk kontakt er ${action === 'SET' ? 'oppdatere' : 'fjerne'}`;
+            response.variant = 'warning';
         }
-
-        return handleApiResponse(
-            apiResults,
-            `Kunne ikke ${action === 'SET' ? 'oppdatere' : 'fjerne'} Juridisk kontakt`,
-            `Juridisk kontakt er ${actionTextPast}`
-        );
+        return response;
     }
 
     static async deleteOrganisation(
         organisation: IOrganisation
     ): Promise<ApiResponse<IOrganisation[]>> {
-        logger.debug('Removing organisation', organisation);
-
-        const apiResults = await apiManager<IOrganisation[]>({
+        const response = await apiManager.call<IOrganisation[]>({
             method: 'DELETE',
+            endpoint: '/api/contacts',
+            functionName: 'deleteContact',
             body: JSON.stringify(organisation),
-            url: `${API_URL}/api/organisations/${organisation.name}`,
-            functionName: 'deleteOrganisation',
+            customErrorMessage: 'Kunne ikke fjerne organisasjonen',
+            customSuccessMessage: 'Organisasjonen er fjernet',
         });
-
-        return handleApiResponse(
-            apiResults,
-            'Kunne ikke fjerne organisasjonen',
-            'Organisasjonen er fjernet',
-            'warning'
-        );
+        if (response.status === 200) {
+            response.variant = 'warning';
+        }
+        return response;
     }
 }
 

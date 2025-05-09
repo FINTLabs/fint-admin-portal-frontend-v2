@@ -87,6 +87,7 @@ export default function ComponentForm({
                     <TextField label="Navn" value={inName} disabled={true} />
                 ) : (
                     <TextField
+                        data-cy="name-input"
                         label="Navn"
                         value={inName}
                         onChange={(e) => setInName(e.target.value)}
@@ -99,17 +100,22 @@ export default function ComponentForm({
                     value={inBasePath}
                     onChange={(e) => setInBasePath(e.target.value)}
                     error={errors.basePath}
+                    data-cy="basePath-input"
                 />
                 <TextField
                     label="Beskrivelse"
                     value={inDescription}
                     onChange={(e) => setInDescription(e.target.value)}
                     error={errors.description}
+                    data-cy="description-input"
                 />
                 <HStack gap={'10'} className={'pt-5'}>
                     <VStack>
                         <Label> Miljøer</Label>
-                        <Checkbox onChange={(e) => setInBeta(e.target.checked)} checked={inBeta}>
+                        <Checkbox
+                            onChange={(e) => setInBeta(e.target.checked)}
+                            checked={inBeta}
+                            data-cy="inBeta-checkbox">
                             Beta
                         </Checkbox>
                         <Checkbox
@@ -137,14 +143,15 @@ export default function ComponentForm({
                         </Checkbox>
                         <Checkbox
                             checked={inCommon}
-                            onChange={(e) => setInCommon(e.target.checked)}>
+                            onChange={(e) => setInCommon(e.target.checked)}
+                            data-cy="common-checkbox">
                             Common
                         </Checkbox>
                     </VStack>
                 </HStack>
             </Box>
             <HStack className="pl-10" gap="5">
-                <Button onClick={onSubmit}>
+                <Button onClick={onSubmit} data-cy="submit-button">
                     {component ? 'Update Component' : 'Add Component'}
                 </Button>
                 <Button type="button" variant="secondary" onClick={onCancel}>

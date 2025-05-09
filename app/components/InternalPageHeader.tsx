@@ -37,7 +37,8 @@ function InternalPageHeader({
                         <Button
                             size="small"
                             icon={<PlusIcon aria-hidden />}
-                            onClick={onActionButtonClick}>
+                            onClick={onActionButtonClick}
+                            data-cy="add-button">
                             Legg til
                         </Button>
                     )}

@@ -56,7 +56,7 @@ export default function OrganisationActionMenu({
                         size="small"
                     />
                 </ActionMenu.Trigger>
-                <ActionMenu.Content>
+                <ActionMenu.Content data-cy="organisation-action-menu">
                     <ActionMenu.Group label={`${organisation.name}`}>
                         <ActionMenu.Item
                             onSelect={() => onEdit(organisation)}

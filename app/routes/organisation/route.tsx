@@ -1,25 +1,21 @@
-import { useFetcher, useLoaderData } from '@remix-run/react';
-import { ActionFunction, LoaderFunction } from '@remix-run/node';
-import { Pagination, Search } from '@navikt/ds-react';
+import { ActionFunction, LoaderFunction, useFetcher, useLoaderData } from 'react-router';
+import { Box, Pagination, Search } from '@navikt/ds-react';
 import { IOrganisation } from '~/types/organisation';
 import OrganisationApi from '~/api/OrganisationApi';
 import ContactsApi from '~/api/ContactsApi';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { IContact } from '~/types/contact';
 import InternalPageHeader from '~/components/InternalPageHeader';
 import { Buildings3Icon } from '@navikt/aksel-icons';
 import OrganisationTable from '~/routes/organisation/OrganisationTable';
 import OrganisationForm from '~/routes/organisation/OrganisationForm';
 import logger from '~/components/logger';
-import useAlerts from '~/components/useAlerts';
-import AlertManager from '~/components/AlertManager';
-import { ApiResponse } from '~/api/ApiManager';
-import { IAlertType } from '~/types/alert';
+import { AlertType, ApiResponse, NovariAlertManager } from 'novari-frontend-components';
 
 export const loader: LoaderFunction = async () => {
     let contacts: IContact[] = [];
     let organizations: IOrganisation[] = [];
-    const alerts: IAlertType[] = [];
+    const alerts: AlertType[] = [];
 
     const contactsResult = await ContactsApi.getContacts();
     const organizationsResult = await OrganisationApi.getOrganisations();
@@ -54,14 +50,10 @@ export const loader: LoaderFunction = async () => {
 };
 
 export default function OrganizationsPage() {
-    const {
-        contacts,
-        organizations,
-        alerts: initialAlerts,
-    } = useLoaderData<{
+    const { contacts, organizations, alerts } = useLoaderData<{
         contacts: IContact[];
         organizations: IOrganisation[];
-        alerts: IAlertType[];
+        alerts: AlertType[];
     }>();
     const breadcrumbs = [{ name: 'Organisasjoner', link: '/organisation' }];
 
@@ -71,16 +63,35 @@ export default function OrganizationsPage() {
     const fetcher = useFetcher();
     const actionData = fetcher.data as ApiResponse<IOrganisation>;
 
-    const { alerts, removeAlert } = useAlerts(actionData, fetcher.state);
-    const allAlerts = [...initialAlerts, ...alerts];
+    const [alertState, setAlertState] = useState<AlertType[]>(alerts);
+
+    useEffect(() => {
+        if (actionData) {
+            const newAlert: AlertType = {
+                id: Date.now(),
+                variant: actionData.variant || 'success',
+                message: actionData.message || 'Handlingen fullført.',
+            };
+            setAlertState((prevAlerts) => [...prevAlerts, newAlert]);
+        }
+    }, [actionData]);
 
     const [searchQuery, setSearchQuery] = useState('');
-    const filteredOrgs = organizations.filter(
-        (org) =>
-            org.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            org.orgNumber.includes(searchQuery) ||
-            org.displayName.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    const [filteredOrgs, setFilteredOrgs] = useState<IOrganisation[]>(organizations);
+
+    useEffect(() => {
+        const applyFilter = () => {
+            const filtered = organizations.filter(
+                (org) =>
+                    org.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                    org.orgNumber.includes(searchQuery) ||
+                    org.displayName.toLowerCase().includes(searchQuery.toLowerCase())
+            );
+            setFilteredOrgs(filtered);
+        };
+
+        applyFilter();
+    }, [searchQuery, organizations]);
 
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 15;
@@ -128,7 +139,9 @@ export default function OrganizationsPage() {
                     !addingNew && !editingOrg ? () => setAddingNew(true) : undefined
                 }
             />
-            <AlertManager alerts={allAlerts} removeAlert={removeAlert} />
+
+            <NovariAlertManager alerts={alertState} />
+
             {addingNew || editingOrg ? (
                 <OrganisationForm
                     organization={editingOrg}
@@ -140,12 +153,16 @@ export default function OrganizationsPage() {
                 />
             ) : (
                 <>
-                    <Search
-                        label="Search organizations"
-                        variant="simple"
-                        value={searchQuery}
-                        onChange={(value: string) => setSearchQuery(value)}
-                    />
+                    <Box className={'pt-10 w-100 pb-10'}>
+                        <Search
+                            size="small"
+                            label="Search organizations"
+                            variant="simple"
+                            value={searchQuery}
+                            onChange={(value: string) => setSearchQuery(value)}
+                            data-cy={'organisation-search-box'}
+                        />
+                    </Box>
                     <OrganisationTable
                         contacts={contacts}
                         organisations={paginatedOrgs}
@@ -157,6 +174,7 @@ export default function OrganizationsPage() {
 
                     {filteredOrgs.length > 15 && (
                         <Pagination
+                            data-cy={'org-pagination'}
                             page={currentPage}
                             onPageChange={(page) => setCurrentPage(page)}
                             count={Math.ceil(filteredOrgs.length / itemsPerPage)}

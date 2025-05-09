@@ -57,6 +57,7 @@ export default function OrganisationTable({
                 <Table.Body>
                     {organisations.map((org) => (
                         <Table.ExpandableRow
+                            data-cy="organisation-row"
                             key={org.dn}
                             content={
                                 <OrganisationExpandableRow organisation={org} contacts={contacts} />

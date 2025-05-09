@@ -1,7 +1,6 @@
-import { ActionFunction, LoaderFunction } from '@remix-run/node';
-import { useFetcher, useLoaderData } from '@remix-run/react';
-import { Pagination, Search } from '@navikt/ds-react';
-import { useState } from 'react';
+import { ActionFunction, LoaderFunction, useFetcher, useLoaderData } from 'react-router';
+import { Box, Pagination, Search } from '@navikt/ds-react';
+import { useEffect, useState } from 'react';
 import ComponentsApi from '~/api/ComponentsApi';
 import InternalPageHeader from '~/components/InternalPageHeader';
 import { ComponentIcon } from '@navikt/aksel-icons';
@@ -9,14 +8,11 @@ import ComponentTable from '~/routes/component/ComponentTable';
 import ComponentForm from '~/routes/component/ComponentForm';
 import logger from '~/components/logger';
 import { IComponent } from '~/types/components';
-import useAlerts from '~/components/useAlerts';
-import AlertManager from '~/components/AlertManager';
-import { ApiResponse } from '~/api/ApiManager';
-import { IAlertType } from '~/types/alert';
+import { AlertType, ApiResponse, NovariAlertManager } from 'novari-frontend-components';
 
 export const loader: LoaderFunction = async () => {
     let components: IComponent[] = [];
-    const alerts: IAlertType[] = [];
+    const alerts: AlertType[] = [];
 
     const componentsResult = await ComponentsApi.getComponents();
 
@@ -40,12 +36,25 @@ export const loader: LoaderFunction = async () => {
 };
 
 export default function ComponentsPage() {
-    const { components, alerts: initialAlerts } = useLoaderData<{
+    const { components, alerts } = useLoaderData<{
         components: IComponent[];
-        alerts: IAlertType[];
+        alerts: AlertType[];
     }>();
     const fetcher = useFetcher();
     const actionData = fetcher.data as ApiResponse<IComponent>;
+
+    const [alertState, setAlertState] = useState<AlertType[]>(alerts);
+
+    useEffect(() => {
+        if (actionData) {
+            const newAlert: AlertType = {
+                id: Date.now(),
+                variant: actionData.variant || 'success',
+                message: actionData.message || 'Handlingen fullført.',
+            };
+            setAlertState((prevAlerts) => [...prevAlerts, newAlert]);
+        }
+    }, [actionData]);
 
     const [searchQuery, setSearchQuery] = useState('');
     const filteredComponents = components.filter(
@@ -53,9 +62,6 @@ export default function ComponentsPage() {
             component.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
             component.description.toLowerCase().includes(searchQuery.toLowerCase())
     );
-
-    const { alerts, removeAlert } = useAlerts(actionData, fetcher.state);
-    const allAlerts = [...initialAlerts, ...alerts];
 
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 15;
@@ -92,7 +98,7 @@ export default function ComponentsPage() {
                 onActionButtonClick={!addingNew && !editing ? () => setAddingNew(true) : undefined}
             />
 
-            <AlertManager alerts={allAlerts} removeAlert={removeAlert} />
+            <NovariAlertManager alerts={alertState} />
 
             {addingNew || editing ? (
                 <ComponentForm
@@ -105,12 +111,16 @@ export default function ComponentsPage() {
                 />
             ) : (
                 <>
-                    <Search
-                        label="Search components"
-                        variant="simple"
-                        value={searchQuery}
-                        onChange={(value: string) => setSearchQuery(value)}
-                    />
+                    <Box className={'pt-10 w-100 pb-10'}>
+                        <Search
+                            data-cy="component-search-box"
+                            label="Search components"
+                            variant="simple"
+                            value={searchQuery}
+                            onChange={(value: string) => setSearchQuery(value)}
+                            size="small"
+                        />
+                    </Box>
 
                     <ComponentTable
                         components={paginatedComponents}

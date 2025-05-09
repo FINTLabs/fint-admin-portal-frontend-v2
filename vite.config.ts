@@ -1,26 +1,10 @@
-import { vitePlugin as remix } from '@remix-run/dev';
 import { defineConfig } from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
-
-declare module '@remix-run/node' {
-    interface Future {
-        v3_singleFetch: false;
-    }
-}
+import { reactRouter } from '@react-router/dev/vite';
+import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
-    plugins: [
-        remix({
-            future: {
-                v3_fetcherPersist: true,
-                v3_relativeSplatPath: true,
-                v3_throwAbortReason: true,
-                v3_singleFetch: true,
-                v3_lazyRouteDiscovery: true,
-            },
-        }),
-        tsconfigPaths(),
-    ],
+    plugins: [tailwindcss(), reactRouter(), tsconfigPaths()],
     server: {
         port: 3000,
         hmr: {
@@ -29,4 +13,5 @@ export default defineConfig({
             port: 3000,
         },
     },
+    publicDir: 'public', // Ensure this is set correctly
 });

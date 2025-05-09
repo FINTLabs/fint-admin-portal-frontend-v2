@@ -1,0 +1,26 @@
+[
+  {
+    "dn": "12345678901",
+    "name": "Component 1",
+    "basePath": "/api/component1",
+    "description": "Test component 1",
+    "inPlayWithFint": true,
+    "inBeta": true,
+    "inProduction": false,
+    "common": true,
+    "core": false,
+    "openData": false
+  },
+  {
+    "dn": "10987654321",
+    "name": "Component 2",
+    "basePath": "/api/component2",
+    "description": "Test component 2",
+    "inPlayWithFint": false,
+    "inBeta": true,
+    "inProduction": true,
+    "common": false,
+    "core": true,
+    "openData": false
+  }
+]

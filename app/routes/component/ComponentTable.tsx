@@ -25,6 +25,7 @@ export default function ComponentTable({ components, onEdit, onDelete }: Contact
             <Table.Body>
                 {components.map((component) => (
                     <Table.ExpandableRow
+                        data-cy="component-row"
                         key={component.dn}
                         content={<ComponentExpandableRow component={component} />}>
                         <Table.DataCell>{component.name}</Table.DataCell>

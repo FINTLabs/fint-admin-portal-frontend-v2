@@ -36,6 +36,7 @@ export default function ContactsTable({
             <Table.Body>
                 {contacts.map((contact) => (
                     <Table.ExpandableRow
+                        data-cy="contact-row"
                         key={contact.dn}
                         content={
                             <>

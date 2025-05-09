@@ -77,6 +77,7 @@ export default function ContactForm({ contact, onCancel, handleFormSubmit }: Add
                         type={'number'}
                         onChange={(e) => setInNin(e.target.value)}
                         error={errors.nin}
+                        data-cy={'nin-input'}
                     />
                 )}
                 <TextField
@@ -85,6 +86,7 @@ export default function ContactForm({ contact, onCancel, handleFormSubmit }: Add
                     type={'text'}
                     onChange={(e) => setInFirstName(e.target.value)}
                     error={errors.firstName}
+                    data-cy={'first-name-input'}
                 />
                 <TextField
                     label="Etternavn"
@@ -92,6 +94,7 @@ export default function ContactForm({ contact, onCancel, handleFormSubmit }: Add
                     type={'text'}
                     onChange={(e) => setInLastName(e.target.value)}
                     error={errors.lastName}
+                    data-cy={'last-name-input'}
                 />
                 <TextField
                     label="Email"
@@ -99,6 +102,7 @@ export default function ContactForm({ contact, onCancel, handleFormSubmit }: Add
                     type={'email'}
                     onChange={(e) => setInEmail(e.target.value)}
                     error={errors.email}
+                    data-cy={'email-input'}
                 />
                 <TextField
                     label="Mobile"
@@ -106,13 +110,18 @@ export default function ContactForm({ contact, onCancel, handleFormSubmit }: Add
                     type={'tel'}
                     onChange={(e) => setInMobile(e.target.value)}
                     error={errors.mobile}
+                    data-cy={'mobile-input'}
                 />
             </Box>
             <HStack className={'pl-10'} gap={'5'}>
-                <Button onClick={onSubmit}>
+                <Button onClick={onSubmit} data-cy={'submit-button'}>
                     {contact ? 'Oppdater kontakt' : 'Legg til kontakt'}
                 </Button>
-                <Button type="button" variant="secondary" onClick={onCancel}>
+                <Button
+                    type="button"
+                    variant="secondary"
+                    onClick={onCancel}
+                    data-cy={'cancel-button'}>
                     Cancel
                 </Button>
             </HStack>

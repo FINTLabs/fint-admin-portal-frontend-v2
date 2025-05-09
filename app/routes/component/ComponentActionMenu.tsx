@@ -42,7 +42,7 @@ export default function ComponentActionMenu({ component, onEdit, onDelete }: Act
                         size="small"
                     />
                 </ActionMenu.Trigger>
-                <ActionMenu.Content>
+                <ActionMenu.Content data-cy="component-action-menu">
                     <ActionMenu.Group label={`${component.name}`}>
                         <ActionMenu.Item
                             onSelect={() => onEdit(component)}

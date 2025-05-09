@@ -1,76 +1,61 @@
-import { apiManager, ApiResponse, handleApiResponse } from '~/api/ApiManager';
 import { IContact } from '~/types/contact';
-import logger from '~/components/logger';
-const API_URL = process.env.API_URL || '';
+import { ApiResponse, NovariApiManager } from 'novari-frontend-components';
 
+const API_URL = process.env.API_URL || '';
+const apiManager = new NovariApiManager({
+    baseUrl: API_URL,
+});
 class ContactsApi {
     static async getContacts(): Promise<ApiResponse<IContact[]>> {
-        const apiResults = await apiManager<IContact[]>({
+        return await apiManager.call<IContact[]>({
             method: 'GET',
-            url: `${API_URL}/api/contacts`,
+            endpoint: '/api/contacts',
             functionName: 'getContacts',
+            customErrorMessage: 'Kunne ikke last inn kontaktdata',
         });
-        return handleApiResponse(apiResults, 'Kunne ikke hente kontakter');
     }
 
     static async addContact(contact: IContact): Promise<ApiResponse<IContact[]>> {
-        logger.debug('Adding new contact', contact);
-
-        const apiResults = await apiManager<IContact[]>({
+        const response = await apiManager.call<IContact[]>({
             method: 'POST',
+            endpoint: '/api/contacts',
             body: JSON.stringify(contact),
-            url: `${API_URL}/api/contacts`,
             functionName: 'addContact',
+            customErrorMessage: 'Kunne ikke legge til kontakten',
+            customSuccessMessage: 'Kontakten ble lagt til',
         });
 
-        if (apiResults.status === 302) {
-            return {
-                success: false,
-                message: 'Kontakt allerede funnet',
-                variant: 'error',
-            };
+        if (response.status === 302) {
+            response.message = 'Kontakt allerede funnet';
+            response.variant = 'warning';
         }
-
-        return handleApiResponse(
-            apiResults,
-            'Kunne ikke legge til kontakt',
-            'Kontakten ble lagt til'
-        );
+        return response;
     }
 
     static async updateContact(contact: IContact): Promise<ApiResponse<IContact[]>> {
-        logger.debug('Editing contact', contact);
-
-        const apiResults = await apiManager<IContact[]>({
+        return await apiManager.call<IContact[]>({
             method: 'PUT',
-            body: JSON.stringify(contact),
-            url: `${API_URL}/api/contacts/${contact.nin}`,
+            endpoint: '/api/contacts',
             functionName: 'updateContact',
+            body: JSON.stringify(contact),
+            customErrorMessage: 'Kunne ikke oppdatere kontakten',
+            customSuccessMessage: 'Kontakten er oppdatert',
         });
-
-        return handleApiResponse(
-            apiResults,
-            'Kunne ikke oppdatere kontakten',
-            'Kontakten er oppdatert'
-        );
     }
 
     static async deleteContact(contact: IContact): Promise<ApiResponse<IContact[]>> {
-        logger.debug('Removing contact', contact);
-
-        const apiResults = await apiManager<IContact[]>({
+        const response = await apiManager.call<IContact[]>({
             method: 'DELETE',
-            body: JSON.stringify(contact),
-            url: `${API_URL}/api/contacts/${contact.nin}`,
+            endpoint: '/api/contacts',
             functionName: 'deleteContact',
+            body: JSON.stringify(contact),
+            customErrorMessage: 'Kunne ikke fjerne kontakten',
+            customSuccessMessage: 'Kontakten er fjernet',
         });
-
-        return handleApiResponse(
-            apiResults,
-            'Kunne ikke fjerne kontakten',
-            'Kontakten er fjernet',
-            'warning'
-        );
+        if (response.status === 200) {
+            response.variant = 'warning';
+        }
+        return response;
     }
 }
 

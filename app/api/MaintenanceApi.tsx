@@ -1,6 +1,9 @@
-import { apiManager, ApiResponse, handleApiResponse } from '~/api/ApiManager';
+import { ApiResponse, NovariApiManager } from 'novari-frontend-components';
 
 const API_URL = process.env.API_URL || '';
+const apiManager = new NovariApiManager({
+    baseUrl: API_URL,
+});
 
 type ConsistencyEndpoint =
     | 'components/adapters'
@@ -18,18 +21,12 @@ interface ConsistencyData {
 
 class MaintenanceApi {
     static async fetchConsistency<T>(endpoint: ConsistencyEndpoint): Promise<ApiResponse<T>> {
-        const url = `${API_URL}/api/maintenance/consistency/${endpoint}`;
-        const apiResults = await apiManager({
+        const url = `/api/maintenance/consistency/${endpoint}`;
+        return await apiManager.call<T>({
             method: 'GET',
-            url,
+            endpoint: url,
             functionName: `fetchConsistency(${endpoint})`,
         });
-
-        // Cast the return type of handleApiResponse to ApiResponse<T>
-        return handleApiResponse(
-            apiResults,
-            `Kunne ikke hente konsistens for ${endpoint}`
-        ) as ApiResponse<T>;
     }
 
     static async getOrganisationConsistency(): Promise<ApiResponse<ConsistencyData>> {
