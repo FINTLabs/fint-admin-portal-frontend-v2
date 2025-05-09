@@ -19,6 +19,8 @@ spec:
   env:
     - name: API_URL
       value: http://fint-admin-portal-backend:8080
+    - name: VITE_MOCK_CYPRESS
+      value: false
   url:
     hostname: admin-beta.fintlabs.no
     basePath: /
