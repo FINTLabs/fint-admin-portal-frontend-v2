@@ -80,27 +80,30 @@ describe('Page Load Tests', () => {
         // Start at home page
         cy.visit('http://localhost:3000');
 
-        cy.get('.navds-button').first().click({ force: true });
+        // cy.get('.navds-button').first().click({ force: true });
 
         // Navigate to organisation page using the navigation menu
-        cy.get('button').contains('Organisasjoner').click();
+        cy.get('[data-cy="Organisasjoner-link-panel"]').first().click({ force: true });
         cy.url().should('include', '/organisation');
         cy.contains('Test Organisation 1', { timeout: 10000 }).should('be.visible');
+        cy.visit('http://localhost:3000');
 
         // Navigate to component page
-        cy.get('button').contains('Komponenter').click({ force: true });
+        cy.get('[data-cy="Komponenter-link-panel"]').first().click({ force: true });
         cy.url().should('include', '/component');
         cy.contains('Component 1', { timeout: 10000 }).should('be.visible');
+        cy.visit('http://localhost:3000');
 
         // Navigate to contact page
-        cy.get('button').contains('Kontakter').click({ force: true });
+        cy.get('[data-cy="Kontakter-link-panel"]').first().click({ force: true });
         cy.url().should('include', '/contact');
         cy.contains('td', 'John', { timeout: 10000 }).should('be.visible');
+        cy.visit('http://localhost:3000');
 
         // Navigate to tools page
-        cy.get('button').contains('Tools').click({ force: true });
+        cy.get('[data-cy="Tools-link-panel"]').first().click({ force: true });
         cy.url().should('include', '/tools');
-        cy.wait(1000);
         cy.contains('Organizations', { timeout: 10000 }).should('be.visible');
+        cy.visit('http://localhost:3000');
     });
 });

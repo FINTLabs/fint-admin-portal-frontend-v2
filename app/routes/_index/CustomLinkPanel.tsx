@@ -15,7 +15,12 @@ const CustomLinkPanel: React.FC<CustomLinkPanelProps> = ({
     description,
 }) => {
     return (
-        <LinkPanel key={title} border className={'my-custom-panel'} href={href}>
+        <LinkPanel
+            key={title}
+            border
+            className={'my-custom-panel'}
+            href={href}
+            data-cy={`${title}-link-panel`}>
             <LinkPanel.Title className={`panel-title`}>
                 <IconComponent aria-hidden className={`panel-icon`} />
                 {title}
