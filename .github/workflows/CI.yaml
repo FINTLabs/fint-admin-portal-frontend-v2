@@ -24,25 +24,20 @@ jobs:
       - name: Build
         run: npm run build
 
-  cypress:
-    needs: build
-    runs-on: ubuntu-22.04
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Use Node.js 20
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
       - name: Run Cypress tests
         uses: cypress-io/github-action@v6
-        env:
-          VITE_MOCK_CYPRESS: true
         with:
+          # You can skip reinstall if you already did it in `build`
+          # install: false
+
           build: npm run build
           start: npm start
+
+          # ← wait for your server to respond here:
+          wait-on: 'http://localhost:3000'
+          # ← fail if it’s still not up after 60 seconds (adjust as needed):
+          wait-on-timeout: 60
+
           browser: chrome
 
       - name: Start deployment
