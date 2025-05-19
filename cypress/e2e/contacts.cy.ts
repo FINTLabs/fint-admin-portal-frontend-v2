@@ -50,6 +50,10 @@ describe('Contacts Page Tests', () => {
     //     cy.contains('jane.smith@example.com').should('not.be.visible');
     // });
 
+    it('should have an action menu', () => {
+        cy.get('[data-cy="contact-action-menu-button"]').should('exist');
+    });
+
     it('should add a new contact', () => {
         // Click the add button (assuming the action button in the header)
         cy.get('[data-cy="add-button"]').should('exist');
@@ -59,7 +63,7 @@ describe('Contacts Page Tests', () => {
         cy.wait(1000);
 
         // Check that the form appears
-        // cy.contains('Legg til ny kontakt').should('be.visible');
+        cy.contains('Legg til ny kontakt').should('be.visible');
 
         // Fill out the form
         cy.get('[data-cy="nin-input"]').type('12345678901');
@@ -74,10 +78,6 @@ describe('Contacts Page Tests', () => {
         // Check for success alert
         cy.contains('Kontakten ble lagt til').should('be.visible');
         cy.wait(1000);
-    });
-
-    it('should have an action menu', () => {
-        cy.get('[data-cy="contact-action-menu-button"]').should('exist');
     });
 
     it('should filter contacts with search', () => {
