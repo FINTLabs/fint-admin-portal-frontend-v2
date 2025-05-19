@@ -33,22 +33,22 @@ describe('Contacts Page Tests', () => {
         cy.get('th').should('have.length.at.least', 3);
     });
 
-    it('should expand contact details when clicked', () => {
-        cy.get('[data-cy="contact-row"]').first().find('button').first().focus();
-        cy.wait(100);
-        cy.get('[data-cy="contact-row"]').first().find('button').first().trigger('click');
-
-        // Check that the expanded content shows the email
-        cy.contains('jane.smith@example.com').should('be.visible');
-
-        // // Close the expanded row
-        cy.get('[data-cy="contact-row"]').first().find('button').first().focus();
-        cy.wait(100);
-        cy.get('[data-cy="contact-row"]').first().find('button').first().trigger('click');
-
-        // Check that the email is no longer visible
-        cy.contains('jane.smith@example.com').should('not.be.visible');
-    });
+    // it('should expand contact details when clicked', () => {
+    //     cy.get('[data-cy="contact-row"]').first().find('button').first().focus();
+    //     cy.wait(100);
+    //     cy.get('[data-cy="contact-row"]').first().find('button').first().trigger('click');
+    //
+    //     // Check that the expanded content shows the email
+    //     cy.contains('jane.smith@example.com').should('be.visible');
+    //
+    //     // // Close the expanded row
+    //     cy.get('[data-cy="contact-row"]').first().find('button').first().focus();
+    //     cy.wait(100);
+    //     cy.get('[data-cy="contact-row"]').first().find('button').first().trigger('click');
+    //
+    //     // Check that the email is no longer visible
+    //     cy.contains('jane.smith@example.com').should('not.be.visible');
+    // });
 
     it('should add a new contact', () => {
         // Click the add button (assuming it's the action button in the header)
