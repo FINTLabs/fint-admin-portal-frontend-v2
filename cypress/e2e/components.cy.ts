@@ -72,6 +72,7 @@ describe('Components Page Tests', () => {
         cy.get('[data-cy="component-search-box"]').focus();
         cy.get('[data-cy="component-search-box"]').clear();
         cy.get('[data-cy="component-search-box"]').type('Component 1', { delay: 100 });
+        cy.wait(100);
 
         // Check that only 1 row is visible
         cy.get('[data-cy="component-row"]').should('have.length', 1);
@@ -79,7 +80,7 @@ describe('Components Page Tests', () => {
         // Clear the search
         cy.get('[data-cy="component-search-box"]').focus();
         cy.get('[data-cy="component-search-box"]').clear();
-        cy.wait(1000);
+        cy.wait(100);
 
         // Check that all are visible again
         cy.get('[data-cy="component-row"]').should('have.length.greaterThan', 1);

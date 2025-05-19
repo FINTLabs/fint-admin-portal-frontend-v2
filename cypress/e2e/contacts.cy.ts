@@ -56,6 +56,7 @@ describe('Contacts Page Tests', () => {
         cy.get('[data-cy="add-button"]').focus();
         cy.wait(100);
         cy.get('[data-cy="add-button"]').invoke('click');
+        cy.wait(100);
 
         // Check that the form appears
         cy.contains('Legg til ny kontakt').should('be.visible');
