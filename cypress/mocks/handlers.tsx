@@ -8,6 +8,7 @@ async function loadJson(path: string, fallback: any) {
         const module = await import(/* @vite-ignore */ path);
         return module.default;
     } catch (e) {
+        console.log('MSW MOCKING ERROR:', e);
         return fallback;
     }
 }

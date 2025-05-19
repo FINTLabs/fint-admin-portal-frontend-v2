@@ -28,6 +28,7 @@ jobs:
         uses: cypress-io/github-action@v6
         env:
          VITE_MOCK_CYPRESS : "true"
+         API_URL: "http://localhost:8080"
         with:
           start: npm run dev
           wait-on: 'http://localhost:3000'
