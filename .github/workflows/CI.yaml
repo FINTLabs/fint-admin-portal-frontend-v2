@@ -26,8 +26,9 @@ jobs:
 
       - name: Run Cypress tests
         uses: cypress-io/github-action@v6
+        env:
+         VITE_MOCK_CYPRESS : "true"
         with:
-          env: VITE_MOCK_CYPRESS=true
           start: npm run dev
           wait-on: 'http://localhost:3000'
           wait-on-timeout: 60
