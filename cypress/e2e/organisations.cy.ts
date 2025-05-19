@@ -52,7 +52,7 @@ describe('Organisations Page Tests', () => {
 
     it('should have a actions menu', () => {
         // Click the edit button for John Doe
-        cy.get('[data-cy="organisation-row"]').first().find('button').last().focus();
+        cy.get('[data-cy="organisation-action-menu-button"]').first().click();
         cy.wait(100);
         cy.get('[data-cy="organisation-row"]').first().find('button').last().trigger('click');
 

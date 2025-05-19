@@ -51,7 +51,7 @@ describe('Components Page Tests', () => {
 
     it('should have a actions menu', () => {
         // Click the actions button for Component 1
-        cy.get('[data-cy="component-row"]').first().find('button').last().focus();
+        cy.get('[data-cy="component-action-menu-button"]').first().click({ force: true });
         cy.wait(100);
         cy.get('[data-cy="component-row"]').first().find('button').last().trigger('click');
 

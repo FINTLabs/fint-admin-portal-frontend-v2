@@ -40,11 +40,13 @@ export default function ComponentActionMenu({ component, onEdit, onDelete }: Act
                         variant="tertiary-neutral"
                         icon={<MenuElipsisVerticalIcon title="Saksmeny" />}
                         size="small"
+                        data-cy="component-action-menu-button"
                     />
                 </ActionMenu.Trigger>
-                <ActionMenu.Content data-cy="component-action-menu">
+                <ActionMenu.Content>
                     <ActionMenu.Group label={`${component.name}`}>
                         <ActionMenu.Item
+                            data-cy="component-action-menu"
                             onSelect={() => onEdit(component)}
                             icon={<NotePencilIcon />}>
                             Redigere komponent

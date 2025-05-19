@@ -49,6 +49,7 @@ export default function ContactActionMenu({ contact, onEdit, onDelete }: ActionM
                         variant="tertiary-neutral"
                         icon={<MenuElipsisVerticalIcon title="Saksmeny" />}
                         size="small"
+                        data-cy="contact-action-menu-button"
                     />
                 </ActionMenu.Trigger>
                 <ActionMenu.Content>

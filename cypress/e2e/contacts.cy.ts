@@ -51,7 +51,7 @@ describe('Contacts Page Tests', () => {
     // });
 
     it('should add a new contact', () => {
-        // Click the add button (assuming it's the action button in the header)
+        // Click the add button (assuming the action button in the header)
         cy.get('[data-cy="add-button"]').should('exist');
         cy.get('[data-cy="add-button"]').focus();
         cy.wait(100);
@@ -75,12 +75,10 @@ describe('Contacts Page Tests', () => {
         cy.wait(1000);
     });
 
-    it('should edit an existing contact', () => {
+    it('should have a actions menu', () => {
         // Click the edit button for John Doe
-        cy.get('[data-cy="contact-row"]').first().find('button').last().focus();
+        cy.get('[data-cy="contact-action-menu-button"]').first().click();
         cy.wait(100);
-        cy.get('[data-cy="contact-row"]').first().find('button').last().trigger('click');
-
         cy.get('[data-cy="contacts-action-menu"]').should('be.visible');
     });
 

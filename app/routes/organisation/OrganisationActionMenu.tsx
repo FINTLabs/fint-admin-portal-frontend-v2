@@ -54,11 +54,13 @@ export default function OrganisationActionMenu({
                         variant="tertiary-neutral"
                         icon={<MenuElipsisVerticalIcon title="Saksmeny" />}
                         size="small"
+                        data-cy="organisation-action-menu-button"
                     />
                 </ActionMenu.Trigger>
-                <ActionMenu.Content data-cy="organisation-action-menu">
+                <ActionMenu.Content>
                     <ActionMenu.Group label={`${organisation.name}`}>
                         <ActionMenu.Item
+                            data-cy="organisation-action-menu"
                             onSelect={() => onEdit(organisation)}
                             icon={<NotePencilIcon />}>
                             Redigere organisasjon
