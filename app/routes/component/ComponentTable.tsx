@@ -14,12 +14,12 @@ export default function ComponentTable({ components, onEdit, onDelete }: Contact
         <Table size="small">
             <Table.Header>
                 <Table.Row>
-                    <Table.HeaderCell />
+                    <Table.DataCell scope="col" />
                     <Table.HeaderCell>Navn</Table.HeaderCell>
                     <Table.HeaderCell>Beskrivelse</Table.HeaderCell>
                     <Table.HeaderCell>Miljøer</Table.HeaderCell>
                     <Table.HeaderCell>Typer</Table.HeaderCell>
-                    <Table.HeaderCell />
+                    <Table.DataCell scope="col" />
                 </Table.Row>
             </Table.Header>
             <Table.Body>

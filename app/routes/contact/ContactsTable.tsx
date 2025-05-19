@@ -26,11 +26,11 @@ export default function ContactsTable({
         <Table size="small" zebraStripes={true}>
             <Table.Header>
                 <Table.Row>
-                    <Table.HeaderCell />
+                    <Table.DataCell scope="col" />
                     <Table.HeaderCell scope="col">Fornavn</Table.HeaderCell>
                     <Table.HeaderCell scope="col">Etternavn</Table.HeaderCell>
                     <Table.HeaderCell scope="col">Organisasjon</Table.HeaderCell>
-                    <Table.HeaderCell />
+                    <Table.DataCell scope="col" />
                 </Table.Row>
             </Table.Header>
             <Table.Body>

@@ -24,6 +24,22 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Cypress run
+        cypress-run:
+          needs: install
+          runs-on: ubuntu-22.04
+          steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+            - name: Cypress run
+              uses: cypress-io/github-action@v6
+              env:
+                VITE_MOCK_CYPRESS: true
+              with:
+                build: npm run build
+                start: npm start
+                browser: chrome
+
       - name: Start deployment
         if: github.ref == 'refs/heads/main'
         uses: peter-evans/repository-dispatch@v2.1.1

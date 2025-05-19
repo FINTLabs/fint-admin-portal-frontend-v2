@@ -47,7 +47,7 @@ export default function OrganisationTable({
             <Table size="small" zebraStripes={true}>
                 <Table.Header>
                     <Table.Row>
-                        <Table.HeaderCell />
+                        <Table.DataCell scope="col" />
                         <Table.HeaderCell scope="col">Navn</Table.HeaderCell>
                         <Table.HeaderCell scope="col">Visningsnavn</Table.HeaderCell>
                         <Table.HeaderCell scope="col">Primær Asset ID</Table.HeaderCell>
