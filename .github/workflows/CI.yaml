@@ -29,10 +29,8 @@ jobs:
         with:
           env: VITE_MOCK_CYPRESS=true
           start: npm run dev
-
           wait-on: 'http://localhost:3000'
           wait-on-timeout: 60
-
           browser: chrome
 
       - name: Start deployment
