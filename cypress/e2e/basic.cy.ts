@@ -100,6 +100,7 @@ describe('Page Load Tests', () => {
         // Navigate to tools page
         cy.get('button').contains('Tools').click({ force: true });
         cy.url().should('include', '/tools');
+        cy.wait(1000);
         cy.contains('Organizations', { timeout: 10000 }).should('be.visible');
     });
 });
