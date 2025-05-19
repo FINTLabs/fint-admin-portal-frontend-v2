@@ -35,6 +35,7 @@ describe('Components Page Tests', () => {
         cy.get('[data-cy="component-row"]').first().find('button').first().focus();
         cy.wait(100);
         cy.get('[data-cy="component-row"]').first().find('button').first().trigger('click');
+        cy.wait(100);
 
         // Check that the expanded content shows the description
         cy.contains('Endepunkter').should('be.visible');
