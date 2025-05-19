@@ -22,15 +22,16 @@ import MeApi from '~/api/MeApi';
 // Initialize MSW based on environment
 let server: any;
 
-console.log('CHECKING FOR MOCK ENVIRONMENT', import.meta.env.VITE_MOCK_CYPRESS);
 // For client-side mocking in development
 if (import.meta.env.DEV && import.meta.env.VITE_MOCK_CYPRESS === 'true') {
     console.log('RUNNING WITH MOCK ENVIRONMENT');
     if (typeof window !== 'undefined') {
+        console.log('RUNNING WITH MOCK ENVIRONMENT IN BROWSER');
         // Browser environment
         const { worker } = await import('../cypress/mocks/browsers');
         await worker.start();
     } else {
+        console.log('RUNNING WITH MOCK ENVIRONMENT IN NODE');
         // Node.js environment (server-side)
         const { server: nodeServer } = await import('../cypress/mocks/node');
         server = nodeServer;
