@@ -15,6 +15,7 @@ async function loadJson(path: string, fallback: any) {
 export const handlers = [
     // User endpoint
     http.get('*/api/me', async () => {
+        console.log('MSW MOCKING ME ENDPOINT');
         return HttpResponse.json(await loadJson('../fixtures/me.json', null));
     }),
 

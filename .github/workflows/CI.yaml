@@ -30,7 +30,6 @@ jobs:
           VITE_MOCK_CYPRESS: true
           API_URL: http://fint-admin-portal-backend:8080
         with:
-          build: npm run build
           start: npm start
 
           wait-on: 'http://localhost:3000'
