@@ -28,6 +28,7 @@ jobs:
         uses: cypress-io/github-action@v6
         env:
           VITE_MOCK_CYPRESS: true
+          API_URL: http://fint-admin-portal-backend:8080
         with:
           build: npm run build
           start: npm start
