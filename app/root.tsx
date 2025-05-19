@@ -24,6 +24,7 @@ let server: any;
 
 // For client-side mocking in development
 if (import.meta.env.DEV && import.meta.env.VITE_MOCK_CYPRESS === 'true') {
+    console.log('RUNNING WITH MOCK ENVIRONMENT');
     if (typeof window !== 'undefined') {
         // Browser environment
         const { worker } = await import('../cypress/mocks/browsers');
