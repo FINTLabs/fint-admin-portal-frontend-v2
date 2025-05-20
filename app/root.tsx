@@ -22,7 +22,7 @@ import MeApi from '~/api/MeApi';
 // Initialize MSW based on environment
 let server: any;
 
-// For client-side mocking in development
+// For client-side mocking for tests
 if (import.meta.env.DEV && import.meta.env.VITE_MOCK_CYPRESS === 'true') {
     console.log('RUNNING WITH MOCK ENVIRONMENT');
     if (typeof window !== 'undefined') {

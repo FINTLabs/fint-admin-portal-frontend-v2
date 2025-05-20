@@ -10,6 +10,7 @@ class MeApi {
     static async getDisplayName() {
         const apiManager = new NovariApiManager({
             baseUrl: API_URL,
+            // logLevel: 'debug',
             // defaultHeaders: { 'x-nin': '9999999999' },
         });
 

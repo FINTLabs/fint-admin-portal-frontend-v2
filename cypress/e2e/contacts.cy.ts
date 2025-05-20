@@ -54,6 +54,26 @@ describe('Contacts Page Tests', () => {
         cy.get('[data-cy="contact-action-menu-button"]').should('exist');
     });
 
+    it('should filter contacts with search', () => {
+        // Type in the search box
+        cy.get('[data-cy="contact-search-box"]').should('exist');
+        cy.get('[data-cy="contact-search-box"]').focus();
+        cy.get('[data-cy="contact-search-box"]').clear();
+        cy.get('[data-cy="contact-search-box"]').type('John', { delay: 100 });
+
+        // Check that only John Doe is visible
+        cy.wait(1000);
+        cy.get('[data-cy="contact-row"]').should('have.length', 1);
+
+        // Clear the search
+        cy.get('[data-cy="contact-search-box"]').focus();
+        cy.get('[data-cy="contact-search-box"]').clear();
+        cy.wait(1000);
+
+        // Check that all contacts are visible again
+        cy.get('[data-cy="contact-row"]').should('have.length', 2);
+    });
+
     it('should add a new contact', () => {
         // Click the add button (assuming the action button in the header)
         cy.get('[data-cy="add-button"]').should('exist');
@@ -78,24 +98,5 @@ describe('Contacts Page Tests', () => {
         // Check for success alert
         cy.contains('Kontakten ble lagt til').should('be.visible');
         cy.wait(1000);
-    });
-
-    it('should filter contacts with search', () => {
-        // Type in the search box
-        cy.get('[data-cy="contact-search-box"]').should('exist');
-        cy.get('[data-cy="contact-search-box"]').focus();
-        cy.get('[data-cy="contact-search-box"]').clear();
-        cy.get('[data-cy="contact-search-box"]').type('John', { delay: 100 });
-
-        // Check that only John Doe is visible
-        cy.get('[data-cy="contact-row"]').should('have.length', 1);
-
-        // Clear the search
-        cy.get('[data-cy="contact-search-box"]').focus();
-        cy.get('[data-cy="contact-search-box"]').clear();
-        cy.wait(1000);
-
-        // Check that all contacts are visible again
-        cy.get('[data-cy="contact-row"]').should('have.length', 2);
     });
 });
