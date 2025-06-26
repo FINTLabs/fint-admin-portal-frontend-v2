@@ -49,6 +49,8 @@ export default function ComponentForm({
 
     const onSubmit = () => {
         const newErrors: Errors = {};
+        const basePathPattern = /^\/[^/]+\/[^/]+$/;
+
         if (!inName) {
             newErrors.name = 'Navn er påkrevd';
         }
@@ -57,7 +59,10 @@ export default function ComponentForm({
         }
         if (!inBasePath) {
             newErrors.basePath = 'Basepath er påkrevd';
+        } else if (!basePathPattern.test(inBasePath)) {
+            newErrors.basePath = 'Basepath må være på format /xyz/abc';
         }
+
         setErrors(newErrors);
 
         if (Object.keys(newErrors).length === 0) {

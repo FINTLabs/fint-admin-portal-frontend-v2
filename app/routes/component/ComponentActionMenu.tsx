@@ -32,7 +32,7 @@ export default function ComponentActionMenu({ component, onEdit, onDelete }: Act
                 isOpen={isModalOpen}
                 onConfirm={handleConfirm}
                 onCancel={handleCancel}
-                bodyText={`${component.name}`}
+                component={component}
             />
             <ActionMenu>
                 <ActionMenu.Trigger>
