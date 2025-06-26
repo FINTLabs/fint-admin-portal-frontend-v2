@@ -101,7 +101,7 @@ export default function App() {
                         ['Tools', '/tools'],
                     ]}
                     showLogoWithTitle={true}
-                    displayName={meData?.fullName || 'Local host?'}
+                    displayName={meData?.fullName || 'Logged In'}
                     onLogout={() =>
                         (window.location.href = 'https://idp.felleskomponent.no/nidp/app/logout')
                     }
