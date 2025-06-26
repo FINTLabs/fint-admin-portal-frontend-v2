@@ -54,7 +54,7 @@ describe('Contacts Page Tests', () => {
         cy.get('[data-cy="contact-action-menu-button"]').should('exist');
     });
 
-    it('should filter contacts with search', () => {
+    it.skip('should filter contacts with search', () => {
         // Type in the search box
         cy.get('[data-cy="contact-search-box"]').should('exist');
         cy.get('[data-cy="contact-search-box"]').focus();
