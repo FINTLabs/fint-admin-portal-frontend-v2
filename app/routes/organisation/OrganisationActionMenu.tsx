@@ -7,7 +7,7 @@ import {
     TrashIcon,
 } from '@navikt/aksel-icons';
 import { IOrganisation } from '~/types/organisation';
-import { ConfirmationModal } from '~/routes/component/ConfirmationModal';
+import { ConfirmationModal } from '~/routes/organisation/OrgConfirmModal';
 import { useState } from 'react';
 
 interface OrganisationActionMenu {
@@ -46,7 +46,7 @@ export default function OrganisationActionMenu({
                 isOpen={isModalOpen}
                 onConfirm={handleConfirm}
                 onCancel={handleCancel}
-                bodyText={`${organisation.displayName}`}
+                organisation={organisation}
             />
             <ActionMenu>
                 <ActionMenu.Trigger>

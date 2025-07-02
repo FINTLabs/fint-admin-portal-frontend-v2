@@ -6,7 +6,7 @@ import {
     PersonPencilIcon,
 } from '@navikt/aksel-icons';
 import { IContact } from '~/types/contact';
-import { ConfirmationModal } from '~/routes/component/ConfirmationModal';
+import { ContactConfirmModal } from '~/routes/contact/ContactConfirmModal';
 import { useState } from 'react';
 
 interface ActionMenuProps {
@@ -37,11 +37,11 @@ export default function ContactActionMenu({ contact, onEdit, onDelete }: ActionM
 
     return (
         <>
-            <ConfirmationModal
+            <ContactConfirmModal
                 isOpen={isModalOpen}
                 onConfirm={handleConfirm}
                 onCancel={handleCancel}
-                bodyText={`${contact.firstName} ${contact.lastName}`}
+                contact={contact}
             />
             <ActionMenu>
                 <ActionMenu.Trigger>
