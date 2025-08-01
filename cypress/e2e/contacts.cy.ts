@@ -54,11 +54,13 @@ describe('Contacts Page Tests', () => {
         cy.get('[data-cy="contact-action-menu-button"]').should('exist');
     });
 
-    it.skip('should filter contacts with search', () => {
+    it('should filter contacts with search', () => {
         // Type in the search box
         cy.get('[data-cy="contact-search-box"]').should('exist');
         cy.get('[data-cy="contact-search-box"]').focus();
+        cy.wait(1000);
         cy.get('[data-cy="contact-search-box"]').clear();
+        cy.wait(1000);
         cy.get('[data-cy="contact-search-box"]').type('John', { delay: 100 });
 
         // Check that only John Doe is visible
@@ -67,6 +69,7 @@ describe('Contacts Page Tests', () => {
 
         // Clear the search
         cy.get('[data-cy="contact-search-box"]').focus();
+        cy.wait(1000);
         cy.get('[data-cy="contact-search-box"]').clear();
         cy.wait(1000);
 
