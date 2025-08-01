@@ -74,7 +74,7 @@ describe('Contacts Page Tests', () => {
         cy.get('[data-cy="contact-row"]').should('have.length', 2);
     });
 
-    it.skip('should add a new contact', () => {
+    it('should add a new contact', () => {
         // Click the add button (assuming the action button in the header)
         cy.get('[data-cy="add-button"]').should('exist');
         cy.get('[data-cy="add-button"]').focus();
