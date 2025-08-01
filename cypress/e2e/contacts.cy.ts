@@ -77,8 +77,9 @@ describe('Contacts Page Tests', () => {
     it('should add a new contact', () => {
         // Click the add button (assuming the action button in the header)
         cy.get('[data-cy="add-button"]').should('exist');
+        cy.wait(1000);
         cy.get('[data-cy="add-button"]').focus();
-        cy.wait(100);
+        cy.wait(1000);
         cy.get('[data-cy="add-button"]').invoke('click');
         cy.wait(1000);
 
@@ -91,10 +92,10 @@ describe('Contacts Page Tests', () => {
         cy.get('[data-cy="last-name-input"]').type('Test');
         cy.get('[data-cy="email-input"]').type('test.user@example.com');
         cy.get('[data-cy="mobile-input"]').type('98765432');
-
+        cy.wait(1000);
         // Submit the form
         cy.get('[data-cy="submit-button"]').click();
-
+        cy.wait(1000);
         // Check for success alert
         cy.contains('Kontakten ble lagt til').should('be.visible');
         cy.wait(1000);
