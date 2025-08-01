@@ -55,15 +55,19 @@ describe('Organisations Page Tests', () => {
         cy.wait(100);
     });
 
-    it.skip('should filter with search', () => {
+    it('should filter with search', () => {
         // Type in the search box
         cy.get('[data-cy="organisation-search-box"]').should('exist');
         cy.get('[data-cy="organisation-search-box"]').focus();
+
         cy.get('[data-cy="organisation-search-box"]').clear();
+        cy.wait(1000);
         cy.get('[data-cy="organisation-search-box"]').type('Test Organisation 10', { delay: 100 });
+        cy.wait(1000);
 
         // Check that only 1 row is visible
         cy.get('[data-cy="organisation-row"]').should('have.length', 1);
+        cy.wait(1000);
 
         // Clear the search
         cy.get('[data-cy="organisation-search-box"]').focus();
@@ -72,6 +76,7 @@ describe('Organisations Page Tests', () => {
 
         // Check that all are visible again
         cy.get('[data-cy="organisation-row"]').should('have.length.greaterThan', 1);
+        cy.wait(1000);
     });
 
     it('should handle pagination ', () => {
