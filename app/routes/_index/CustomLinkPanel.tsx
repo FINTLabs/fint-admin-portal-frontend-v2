@@ -20,7 +20,9 @@ const CustomLinkPanel: React.FC<CustomLinkPanelProps> = ({ href, title, IconComp
                 </LinkCard.Icon>
             </Box>
             <LinkCard.Title>
-                <LinkCard.Anchor href={href}>{title}</LinkCard.Anchor>
+                <LinkCard.Anchor href={href} data-cy={`${title}-link-panel`}>
+                    {title}
+                </LinkCard.Anchor>
             </LinkCard.Title>
         </LinkCard>
         // <LinkPanel

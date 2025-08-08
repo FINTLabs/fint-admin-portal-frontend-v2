@@ -23,6 +23,37 @@ describe('Page Load Tests', () => {
         cy.get('footer').should('exist');
     });
 
+    it('should handle navigation between pages', () => {
+        // Start at home page
+        cy.visit('http://localhost:3000');
+
+        // cy.get('.navds-button').first().click({ force: true });
+
+        // Navigate to organisation page using the navigation menu
+        cy.get('[data-cy="Organisasjoner-link-panel"]').first().click({ force: true });
+        cy.url().should('include', '/organisation');
+        cy.contains('Test Organisation 1', { timeout: 10000 }).should('be.visible');
+        cy.visit('http://localhost:3000');
+
+        // Navigate to component page
+        cy.get('[data-cy="Komponenter-link-panel"]').first().click({ force: true });
+        cy.url().should('include', '/component');
+        cy.contains('Component 1', { timeout: 10000 }).should('be.visible');
+        cy.visit('http://localhost:3000');
+
+        // Navigate to contact page
+        cy.get('[data-cy="Kontakter-link-panel"]').first().click({ force: true });
+        cy.url().should('include', '/contact');
+        cy.contains('td', 'John', { timeout: 10000 }).should('be.visible');
+        cy.visit('http://localhost:3000');
+
+        // Navigate to tools page
+        cy.get('[data-cy="Tools-link-panel"]').first().click({ force: true });
+        cy.url().should('include', '/tools');
+        cy.contains('Organizations', { timeout: 10000 }).should('be.visible');
+        cy.visit('http://localhost:3000');
+    });
+
     it('should load the organisation page', () => {
         cy.visit('http://localhost:3000/organisation');
 
@@ -74,36 +105,5 @@ describe('Page Load Tests', () => {
 
         // Check for report buttons
         cy.get('button').should('have.length.at.least', 3);
-    });
-
-    it('should handle navigation between pages', () => {
-        // Start at home page
-        cy.visit('http://localhost:3000');
-
-        // cy.get('.navds-button').first().click({ force: true });
-
-        // Navigate to organisation page using the navigation menu
-        cy.get('[data-cy="Organisasjoner-link-panel"]').first().click({ force: true });
-        cy.url().should('include', '/organisation');
-        cy.contains('Test Organisation 1', { timeout: 10000 }).should('be.visible');
-        cy.visit('http://localhost:3000');
-
-        // Navigate to component page
-        cy.get('[data-cy="Komponenter-link-panel"]').first().click({ force: true });
-        cy.url().should('include', '/component');
-        cy.contains('Component 1', { timeout: 10000 }).should('be.visible');
-        cy.visit('http://localhost:3000');
-
-        // Navigate to contact page
-        cy.get('[data-cy="Kontakter-link-panel"]').first().click({ force: true });
-        cy.url().should('include', '/contact');
-        cy.contains('td', 'John', { timeout: 10000 }).should('be.visible');
-        cy.visit('http://localhost:3000');
-
-        // Navigate to tools page
-        cy.get('[data-cy="Tools-link-panel"]').first().click({ force: true });
-        cy.url().should('include', '/tools');
-        cy.contains('Organizations', { timeout: 10000 }).should('be.visible');
-        cy.visit('http://localhost:3000');
     });
 });
