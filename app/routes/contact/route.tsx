@@ -44,9 +44,7 @@ export const loader: LoaderFunction = async () => {
         contacts.sort((a, b) => a.firstName.localeCompare(b.firstName));
     }
 
-    return new Response(JSON.stringify({ contacts, organisations, alerts }), {
-        headers: { 'Content-Type': 'application/json' },
-    });
+    return Response.json({ contacts, organisations, alerts });
 };
 
 export default function ContactsPage() {
@@ -191,13 +189,10 @@ export const action: ActionFunction = async ({ request }) => {
         //     return await ContactsApi.deleteContact(newContact);
 
         default:
-            logger.warn(`Unknown action type: ${actionType}`);
-            return new Response(
-                JSON.stringify({
-                    message: `Ukjent handlingstype: '${actionType}'`,
-                    variant: 'error',
-                }),
-                { headers: { 'Content-Type': 'application/json' } }
-            );
+            return {
+                success: false,
+                message: `Ukjent handlingstype: '${actionType}'`,
+                variant: 'error',
+            };
     }
 };

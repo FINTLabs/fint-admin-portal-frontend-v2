@@ -115,7 +115,5 @@ export const action: ActionFunction = async ({ request }: { request: Request }) 
             data = null;
     }
 
-    return new Response(JSON.stringify({ data, reportType }), {
-        headers: { 'Content-Type': 'application/json' },
-    });
+    return Response.json({ data, reportType });
 };

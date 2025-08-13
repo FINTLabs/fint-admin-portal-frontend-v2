@@ -44,9 +44,7 @@ export const loader: LoaderFunction = async () => {
         organizations.sort((a, b) => a.name.localeCompare(b.name));
     }
 
-    return new Response(JSON.stringify({ contacts, organizations, alerts }), {
-        headers: { 'Content-Type': 'application/json' },
-    });
+    return Response.json({ contacts, organizations, alerts });
 };
 
 export default function OrganizationsPage() {
@@ -218,13 +216,10 @@ export const action: ActionFunction = async ({ request }) => {
         //     logger.info('Delete organisation', newOrg);
         //     return await OrganisationApi.deleteOrganisation(newOrg);
         default:
-            logger.warn(`Unknown action type: ${actionType}`);
-            return new Response(
-                JSON.stringify({
-                    message: `Ukjent handlingstype: '${actionType}'`,
-                    variant: 'error',
-                }),
-                { status: 400, headers: { 'Content-Type': 'application/json' } }
-            );
+            return {
+                success: false,
+                message: `Ukjent handlingstype: '${actionType}'`,
+                variant: 'error',
+            };
     }
 };

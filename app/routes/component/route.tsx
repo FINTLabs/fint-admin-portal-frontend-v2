@@ -30,9 +30,7 @@ export const loader: LoaderFunction = async () => {
         components.sort((a, b) => a.name.localeCompare(b.name));
     }
 
-    return new Response(JSON.stringify({ components, alerts }), {
-        headers: { 'Content-Type': 'application/json' },
-    });
+    return Response.json({ components, alerts });
 };
 
 export default function ComponentsPage() {
@@ -177,13 +175,10 @@ export const action: ActionFunction = async ({ request }) => {
             return await ComponentsApi.deleteComponent(newComponent);
 
         default:
-            logger.warn(`Unknown action type: ${actionType}`);
-            return new Response(
-                JSON.stringify({
-                    message: `Ukjent handlingstype: '${actionType}'`,
-                    variant: 'error',
-                }),
-                { headers: { 'Content-Type': 'application/json' } }
-            );
+            return {
+                success: false,
+                message: `Ukjent handlingstype: '${actionType}'`,
+                variant: 'error',
+            };
     }
 };

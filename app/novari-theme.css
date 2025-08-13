@@ -107,8 +107,8 @@
         background-color: #f8ebdb; /* Darker gray background on hover */
     }
 
-    .my-custom-panel:hover .panel-icon {
-        transform: scale(1.7); /* Enlarge the icon on hover */
+    .navds-link-card:hover .panel-icon {
+        transform: scale(1.3); /* Enlarge the icon on hover */
     }
 
     /* Disable hover effect on the title and icon when the panel is disabled */
