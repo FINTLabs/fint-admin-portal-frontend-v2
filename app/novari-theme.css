@@ -68,6 +68,16 @@
         color: #b0b0b0; /* Lighter gray to indicate disabled text */
     }
 
+    .panel-image{
+        color: #913965;
+        background-color: #FFFFFF;
+        width: 100%;
+        border-radius: 12px;
+
+    }
+    .navds-link-card:hover .panel-image {
+        transform: scale(1.05); /* Enlarge the icon on hover */
+    }
     /* Icon styles */
     .panel-icon {
         margin-right: 20px;

@@ -1,11 +1,11 @@
-import { HGrid } from '@navikt/ds-react';
+import { GuidePanel, HGrid } from '@navikt/ds-react';
 import { Buildings3Icon, ComponentIcon, PersonGroupIcon, WrenchIcon } from '@navikt/aksel-icons';
 import CustomLinkPanel from '~/routes/_index/CustomLinkPanel';
 
 export default function Index() {
     return (
         <>
-            <HGrid columns={2} gap="3" className={'pt-30'}>
+            <HGrid columns={2} gap="3" className={'p-30'}>
                 <CustomLinkPanel
                     key={'contact'}
                     href={'/contact'}
@@ -32,6 +32,9 @@ export default function Index() {
                     IconComponent={WrenchIcon}
                 />
             </HGrid>
+            <GuidePanel illustration={<img src="/images/sm_logo.png" alt="Novari logo" />}>
+                Work in progress: trying stuff, expect rough edges. (themes / layout)
+            </GuidePanel>
         </>
     );
 }
