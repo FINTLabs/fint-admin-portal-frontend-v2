@@ -8,8 +8,13 @@ import ComponentTable from '~/routes/component/ComponentTable';
 import ComponentForm from '~/routes/component/ComponentForm';
 import logger from '~/components/logger';
 import { IComponent } from '~/types/components';
-import { ApiResponse, NovariSnackbar, NovariSnackbarItem } from 'novari-frontend-components';
-import { useAlerts } from '~/hooks/useAlerts';
+import {
+    ApiResponse,
+    NovariSnackbar,
+    NovariSnackbarItem,
+    useAlerts,
+} from 'novari-frontend-components';
+// import { useAlerts } from '~/hooks/useAlerts';
 
 export const loader: LoaderFunction = async () => {
     let components: IComponent[] = [];

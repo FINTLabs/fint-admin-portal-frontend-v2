@@ -10,8 +10,12 @@ import { Buildings3Icon } from '@navikt/aksel-icons';
 import OrganisationTable from '~/routes/organisation/OrganisationTable';
 import OrganisationForm from '~/routes/organisation/OrganisationForm';
 import logger from '~/components/logger';
-import { ApiResponse, NovariSnackbar, NovariSnackbarItem } from 'novari-frontend-components';
-import { useAlerts } from '~/hooks/useAlerts';
+import {
+    ApiResponse,
+    NovariSnackbar,
+    NovariSnackbarItem,
+    useAlerts,
+} from 'novari-frontend-components';
 
 export const loader: LoaderFunction = async () => {
     let contacts: IContact[] = [];
