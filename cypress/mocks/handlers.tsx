@@ -40,16 +40,16 @@ export const handlers = [
     }),
 
     // Components endpoints
-    http.get('*/api/components', async () => {
-        return HttpResponse.json(await loadJson('../fixtures/components.json', null));
-    }),
-    // used to test an error from server
     // http.get('*/api/components', async () => {
-    //     return new HttpResponse(null, {
-    //         status: 500,
-    //         statusText: 'Server Error',
-    //     });
+    //     return HttpResponse.json(await loadJson('../fixtures/components.json', null));
     // }),
+    // used to test an error from server
+    http.get('*/api/components', async () => {
+        return new HttpResponse(null, {
+            status: 500,
+            statusText: 'Server Error',
+        });
+    }),
 
     http.post('*/api/components', async ({ request }) => {
         console.log('MSW MOCKING COMPONENTS POST:', request.url);

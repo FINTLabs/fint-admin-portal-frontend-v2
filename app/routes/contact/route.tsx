@@ -2,7 +2,7 @@ import { ActionFunction, LoaderFunction, useFetcher, useLoaderData } from 'react
 import { Box, Pagination, Search } from '@navikt/ds-react';
 import { IContact } from '~/types/contact';
 import ContactsApi from '~/api/ContactsApi';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import OrganisationsApi from '~/api/OrganisationApi';
 import { IOrganisation } from '~/types/organisation';
 import InternalPageHeader from '~/components/InternalPageHeader';
@@ -10,19 +10,20 @@ import { PersonGroupIcon } from '@navikt/aksel-icons';
 import logger from '~/components/logger';
 import ContactForm from '~/routes/contact/ContactForm';
 import ContactsTable from '~/routes/contact/ContactsTable';
-import { AlertType, ApiResponse, NovariAlertManager } from 'novari-frontend-components';
+import { ApiResponse, NovariSnackbar, NovariSnackbarItem } from 'novari-frontend-components';
+import { useAlerts } from '~/hooks/useAlerts';
 
 export const loader: LoaderFunction = async () => {
     let contacts: IContact[] = [];
     let organisations: IOrganisation[] = [];
-    const alerts: AlertType[] = [];
+    const alerts: NovariSnackbarItem[] = [];
 
     const contactsResult = await ContactsApi.getContacts();
     const organisationsResult = await OrganisationsApi.getOrganisations();
 
     if (!contactsResult.success) {
         alerts.push({
-            id: Date.now(),
+            id: 'contact-load-error',
             variant: contactsResult.variant,
             message: contactsResult.message,
         });
@@ -32,7 +33,7 @@ export const loader: LoaderFunction = async () => {
 
     if (!organisationsResult.success) {
         alerts.push({
-            id: Date.now() + 1,
+            id: 'org-load-error',
             variant: organisationsResult.variant,
             message: organisationsResult.message,
         });
@@ -51,23 +52,12 @@ export default function ContactsPage() {
     const { contacts, organisations, alerts } = useLoaderData<{
         contacts: IContact[];
         organisations: IOrganisation[];
-        alerts: AlertType[];
+        alerts: NovariSnackbarItem[];
     }>();
 
     const fetcher = useFetcher();
     const actionData = fetcher.data as ApiResponse<IContact>;
-    const [alertState, setAlertState] = useState<AlertType[]>(alerts);
-
-    useEffect(() => {
-        if (actionData) {
-            const newAlert: AlertType = {
-                id: Date.now(),
-                variant: actionData.variant || 'success',
-                message: actionData.message || 'Handlingen fullført.',
-            };
-            setAlertState((prevAlerts) => [...prevAlerts, newAlert]);
-        }
-    }, [actionData]);
+    const { alertState, handleCloseItem } = useAlerts<IContact>(alerts, actionData);
 
     const [editingContact, setEditingContact] = useState<IContact | null>(null);
     const [addingNew, setAddingNew] = useState<boolean>(false);
@@ -113,8 +103,11 @@ export default function ContactsPage() {
                     !addingNew && !editingContact ? () => setAddingNew(true) : undefined
                 }
             />
-
-            <NovariAlertManager alerts={alertState} />
+            <NovariSnackbar
+                items={alertState}
+                position={'top-right'}
+                onCloseItem={handleCloseItem}
+            />
 
             {addingNew || editingContact ? (
                 <ContactForm

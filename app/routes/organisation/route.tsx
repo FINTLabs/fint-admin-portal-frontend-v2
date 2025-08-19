@@ -10,19 +10,20 @@ import { Buildings3Icon } from '@navikt/aksel-icons';
 import OrganisationTable from '~/routes/organisation/OrganisationTable';
 import OrganisationForm from '~/routes/organisation/OrganisationForm';
 import logger from '~/components/logger';
-import { AlertType, ApiResponse, NovariAlertManager } from 'novari-frontend-components';
+import { ApiResponse, NovariSnackbar, NovariSnackbarItem } from 'novari-frontend-components';
+import { useAlerts } from '~/hooks/useAlerts';
 
 export const loader: LoaderFunction = async () => {
     let contacts: IContact[] = [];
     let organizations: IOrganisation[] = [];
-    const alerts: AlertType[] = [];
+    const alerts: NovariSnackbarItem[] = [];
 
     const contactsResult = await ContactsApi.getContacts();
     const organizationsResult = await OrganisationApi.getOrganisations();
 
     if (!contactsResult.success) {
         alerts.push({
-            id: Date.now(),
+            id: 'contact-load-error',
             variant: contactsResult.variant,
             message: contactsResult.message,
         });
@@ -32,7 +33,7 @@ export const loader: LoaderFunction = async () => {
 
     if (!organizationsResult.success) {
         alerts.push({
-            id: Date.now() + 1,
+            id: 'org-load-error',
             variant: organizationsResult.variant,
             message: organizationsResult.message,
         });
@@ -51,28 +52,14 @@ export default function OrganizationsPage() {
     const { contacts, organizations, alerts } = useLoaderData<{
         contacts: IContact[];
         organizations: IOrganisation[];
-        alerts: AlertType[];
+        alerts: NovariSnackbarItem[];
     }>();
     const breadcrumbs = [{ name: 'Organisasjoner', link: '/organisation' }];
-
     const [editingOrg, setEditingOrg] = useState<IOrganisation | null>(null);
     const [addingNew, setAddingNew] = useState<boolean>(false);
-
     const fetcher = useFetcher();
     const actionData = fetcher.data as ApiResponse<IOrganisation>;
-
-    const [alertState, setAlertState] = useState<AlertType[]>(alerts);
-
-    useEffect(() => {
-        if (actionData) {
-            const newAlert: AlertType = {
-                id: Date.now(),
-                variant: actionData.variant || 'success',
-                message: actionData.message || 'Handlingen fullført.',
-            };
-            setAlertState((prevAlerts) => [...prevAlerts, newAlert]);
-        }
-    }, [actionData]);
+    const { alertState, handleCloseItem } = useAlerts<IOrganisation>(alerts, actionData);
 
     const [searchQuery, setSearchQuery] = useState('');
     const [filteredOrgs, setFilteredOrgs] = useState<IOrganisation[]>(organizations);
@@ -138,7 +125,11 @@ export default function OrganizationsPage() {
                 }
             />
 
-            <NovariAlertManager alerts={alertState} />
+            <NovariSnackbar
+                items={alertState}
+                position={'top-right'}
+                onCloseItem={handleCloseItem}
+            />
 
             {addingNew || editingOrg ? (
                 <OrganisationForm

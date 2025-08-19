@@ -1,6 +1,6 @@
 import { ActionFunction, LoaderFunction, useFetcher, useLoaderData } from 'react-router';
 import { Box, Pagination, Search } from '@navikt/ds-react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import ComponentsApi from '~/api/ComponentsApi';
 import InternalPageHeader from '~/components/InternalPageHeader';
 import { ComponentIcon } from '@navikt/aksel-icons';
@@ -8,17 +8,18 @@ import ComponentTable from '~/routes/component/ComponentTable';
 import ComponentForm from '~/routes/component/ComponentForm';
 import logger from '~/components/logger';
 import { IComponent } from '~/types/components';
-import { AlertType, ApiResponse, NovariAlertManager } from 'novari-frontend-components';
+import { ApiResponse, NovariSnackbar, NovariSnackbarItem } from 'novari-frontend-components';
+import { useAlerts } from '~/hooks/useAlerts';
 
 export const loader: LoaderFunction = async () => {
     let components: IComponent[] = [];
-    const alerts: AlertType[] = [];
+    const alerts: NovariSnackbarItem[] = [];
 
     const componentsResult = await ComponentsApi.getComponents();
     console.log('components', componentsResult);
     if (!componentsResult.success) {
         alerts.push({
-            id: Date.now(),
+            id: 'components-load-error',
             variant: componentsResult.variant,
             message: componentsResult.message,
         });
@@ -36,23 +37,12 @@ export const loader: LoaderFunction = async () => {
 export default function ComponentsPage() {
     const { components, alerts } = useLoaderData<{
         components: IComponent[];
-        alerts: AlertType[];
+        alerts: NovariSnackbarItem[];
     }>();
+
     const fetcher = useFetcher();
     const actionData = fetcher.data as ApiResponse<IComponent>;
-
-    const [alertState, setAlertState] = useState<AlertType[]>(alerts);
-
-    useEffect(() => {
-        if (actionData) {
-            const newAlert: AlertType = {
-                id: Date.now(),
-                variant: actionData.variant || 'success',
-                message: actionData.message || 'Handlingen fullført.',
-            };
-            setAlertState((prevAlerts) => [...prevAlerts, newAlert]);
-        }
-    }, [actionData]);
+    const { alertState, handleCloseItem } = useAlerts<IComponent>(alerts, actionData);
 
     const [searchQuery, setSearchQuery] = useState('');
     const filteredComponents = components.filter(
@@ -96,7 +86,11 @@ export default function ComponentsPage() {
                 onActionButtonClick={!addingNew && !editing ? () => setAddingNew(true) : undefined}
             />
 
-            <NovariAlertManager alerts={alertState} />
+            <NovariSnackbar
+                items={alertState}
+                position={'top-right'}
+                onCloseItem={handleCloseItem}
+            />
 
             {addingNew || editing ? (
                 <ComponentForm
