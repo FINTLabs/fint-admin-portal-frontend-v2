@@ -47,7 +47,7 @@ export default function ComponentsPage() {
 
     const fetcher = useFetcher();
     const actionData = fetcher.data as ApiResponse<IComponent>;
-    const { alertState, handleCloseItem } = useAlerts<IComponent>(alerts, actionData);
+    const { alertState, handleCloseItem } = useAlerts(alerts, actionData);
 
     const [searchQuery, setSearchQuery] = useState('');
     const filteredComponents = components.filter(

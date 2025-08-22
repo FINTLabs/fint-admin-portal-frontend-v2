@@ -75,7 +75,7 @@ class OrganisationApi {
         const response = await apiManager.call<IOrganisation[]>({
             method: 'DELETE',
             endpoint: '/api/contacts',
-            functionName: 'deleteContact',
+            functionName: 'deleteOrganisation',
             body: JSON.stringify(organisation),
             customErrorMessage: 'Kunne ikke fjerne organisasjonen',
             customSuccessMessage: 'Organisasjonen er fjernet',
