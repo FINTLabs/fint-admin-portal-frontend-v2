@@ -11,4 +11,4 @@ patches:
         value: 'admin.fintlabs.no'
     target:
       kind: Application
-      name: fint-admin-portal-frontend
+      name: admin-portal
