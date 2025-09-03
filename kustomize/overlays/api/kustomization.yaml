@@ -8,7 +8,7 @@ patches:
   - patch: |-
       - op: replace
         path: "/spec/url/hostname"
-        value: 'admin-beta.fintlabs.no'
+        value: 'admin.fintlabs.no'
     target:
       kind: Application
       name: fint-admin-portal-frontend
