@@ -143,6 +143,7 @@ export default function OrganizationsPage() {
                         setEditingOrg(null);
                     }}
                     handleFormSubmit={handleFormSubmit}
+                    contacts={contacts}
                 />
             ) : (
                 <>
@@ -191,12 +192,17 @@ export const action: ActionFunction = async ({ request }) => {
         orgNumber: formData.get('orgNumber') as string,
         displayName: formData.get('displayName') as string,
     };
+    const legalContact = formData.get('legalContactNin') as string;
     logger.debug(`Received action: ${actionType} in organisation route`);
 
     switch (actionType) {
-        case 'ADD_NEW_ORG':
-            logger.info('Adding new organisation', newOrg);
-            return await OrganisationApi.addOrganisation(newOrg);
+        case 'ADD_NEW_ORG': {
+            const res = await OrganisationApi.addOrganisation(newOrg);
+            if (res.success && legalContact) {
+                return await OrganisationApi.updateLegalContact(newOrg.name, legalContact, 'SET');
+            }
+            return res;
+        }
         case 'EDIT_ORG':
             newOrg.dn = formData.get('dn') as string;
             logger.info('Editing organisation', newOrg);

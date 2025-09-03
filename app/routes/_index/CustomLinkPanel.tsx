@@ -9,7 +9,7 @@ interface CustomLinkPanelProps {
 
 const CustomLinkPanel: React.FC<CustomLinkPanelProps> = ({ href, title, IconComponent }) => {
     return (
-        <LinkCard style={{ backgroundColor: '#F9E1DD' }}>
+        <LinkCard>
             <Box asChild borderRadius="12" padding="space-2">
                 <LinkCard.Icon>
                     <IconComponent aria-hidden fontSize="4em" className="panel-image" />
