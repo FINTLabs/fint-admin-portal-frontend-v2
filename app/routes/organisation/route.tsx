@@ -203,10 +203,15 @@ export const action: ActionFunction = async ({ request }) => {
             }
             return res;
         }
-        case 'EDIT_ORG':
-            newOrg.dn = formData.get('dn') as string;
+        case 'EDIT_ORG': {
             logger.info('Editing organisation', newOrg);
-            return await OrganisationApi.updateOrganisation(newOrg);
+            newOrg.dn = formData.get('dn') as string;
+            const res = await OrganisationApi.updateOrganisation(newOrg);
+            if (res.success && legalContact) {
+                return await OrganisationApi.updateLegalContact(newOrg.name, legalContact, 'SET');
+            }
+            return res;
+        }
         case 'SET_LEGAL':
             logger.info('Setting legal contact organisation', newOrg);
             return await OrganisationApi.updateLegalContact(newOrg.name, contact, 'SET');

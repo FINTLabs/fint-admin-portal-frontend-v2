@@ -31,7 +31,11 @@ export function ConfirmationModal({
     }
 
     return (
-        <Modal ref={ref} header={{ heading: 'Bekreft sletting' }} closeOnBackdropClick>
+        <Modal
+            ref={ref}
+            header={{ heading: 'Bekreft sletting' }}
+            closeOnBackdropClick
+            data-cy="confirmation-modal">
             <Modal.Body>
                 <BodyLong className="mb-4">
                     Du er i ferd med å slette komponenten <strong>{component.name}</strong>.
@@ -44,6 +48,7 @@ export function ConfirmationModal({
                     <code>{requiredPath}</code>
                 </BodyLong>
                 <TextField
+                    data-cy="confirmation-input"
                     label="Bekreft basepath"
                     value={confirmationInput}
                     onChange={(e) => setConfirmationInput(e.target.value)}

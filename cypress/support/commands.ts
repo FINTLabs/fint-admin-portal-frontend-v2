@@ -8,30 +8,27 @@
 // commands please read more here:
 // https://on.cypress.io/custom-commands
 // ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add('dismiss', { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
-//
-// declare global {
-//   namespace Cypress {
-//     interface Chainable {
-//       login(email: string, password: string): Chainable<void>
-//       drag(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
-//       dismiss(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
-//       visit(originalFn: CommandOriginalFn, url: string, options: Partial<VisitOptions>): Chainable<Element>
-//     }
-//   }
-// }
+
+declare global {
+    namespace Cypress {
+        interface Chainable {
+            waitForAppReady(): Chainable<void>;
+        }
+    }
+}
+
+Cypress.Commands.add('waitForAppReady', () => {
+    cy.reload();
+
+    // Wait for Novari theme to be applied
+    cy.get('[data-theme="novari"]', { timeout: 10000 }).should('exist');
+    
+    // Wait for page structure to be ready
+    cy.get('main', { timeout: 10000 }).should('be.visible');
+    
+    // Wait for document to be fully loaded
+    cy.document().its('readyState').should('eq', 'complete');
+});
+
+// Make this file a module
+export {};

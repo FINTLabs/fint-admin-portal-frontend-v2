@@ -1,0 +1,24 @@
+{
+  "all": true,
+  "include": [
+    "app/**/*.{js,ts,jsx,tsx}"
+  ],
+  "exclude": [
+    "**/*.d.ts",
+    "**/*.config.{js,ts}",
+    "**/coverage/**",
+    "**/cypress/**",
+    "**/node_modules/**",
+    "**/build/**",
+    "**/.react-router/**"
+  ],
+  "reporter": [
+    "text",
+    "json-summary",
+    "lcov"
+  ],
+  "report-dir": "coverage",
+  "skip-full": false,
+  "check-coverage": false
+}
+
