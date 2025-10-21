@@ -10,7 +10,7 @@ import { IOrganisation } from '~/types/organisation';
 import { ConfirmationModal } from '~/routes/organisation/OrgConfirmModal';
 import { useState } from 'react';
 
-interface OrganisationActionMenu {
+interface OrganisationActionMenuProps {
     organisation: IOrganisation;
     onEdit: (org: IOrganisation) => void;
     onUnsetLegal: (org: IOrganisation) => void;
@@ -24,7 +24,7 @@ export default function OrganisationActionMenu({
     onUnsetLegal,
     onSelectLegal,
     onDelete,
-}: OrganisationActionMenu) {
+}: OrganisationActionMenuProps) {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
     const handleDeleteClick = () => {

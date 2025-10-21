@@ -1,6 +1,7 @@
 import {
     isRouteErrorResponse,
     Links,
+    type LinksFunction,
     Meta,
     type MetaFunction,
     Outlet,
@@ -10,16 +11,17 @@ import {
     useNavigate,
     useRouteError,
 } from 'react-router';
+import React from 'react';
 
-import './tailwind.css';
-import '@navikt/ds-css';
-import './novari-theme.css';
 import { Alert, Box, Page } from '@navikt/ds-react';
 import CustomError from '~/components/errors/CustomError';
 import { NovariFooter, NovariHeader } from 'novari-frontend-components';
 import MeApi from '~/api/MeApi';
-
+import themeHref from './novari-theme.css?url';
+import tailwindHref from './tailwind.css?url';
+import akselHref from '@navikt/ds-css?url';
 // Initialize MSW based on environment
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 let server: any;
 
 // For client-side mocking for tests
@@ -30,6 +32,8 @@ if (import.meta.env.DEV && import.meta.env.VITE_MOCK_CYPRESS === 'true') {
         // Browser environment
         const { worker } = await import('../cypress/mocks/browsers');
         await worker.start();
+        // tell Cypress that MSW is ready
+        (window as any).__mswReady = true;
     } else {
         console.log('RUNNING WITH MOCK ENVIRONMENT IN NODE');
         // Node.js environment (server-side)
@@ -38,6 +42,19 @@ if (import.meta.env.DEV && import.meta.env.VITE_MOCK_CYPRESS === 'true') {
         server.listen();
     }
 }
+
+export const links: LinksFunction = () => [
+    { rel: 'stylesheet', href: akselHref },
+    { rel: 'stylesheet', href: tailwindHref },
+    { rel: 'stylesheet', href: themeHref },
+];
+
+export const meta: MetaFunction = () => {
+    return [
+        { title: 'Novari admin-portal' },
+        { name: 'description', content: 'velkommen til adminportalen' },
+    ];
+};
 
 export const loader = async () => {
     const meResults = await MeApi.getDisplayName();
@@ -51,13 +68,6 @@ export const loader = async () => {
     } else {
         throw new Response('Failed to load Me data', { status: 500 });
     }
-};
-
-export const meta: MetaFunction = () => {
-    return [
-        { title: 'Novari admin-portal' },
-        { name: 'description', content: 'velkommen til adminportalen' },
-    ];
 };
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -110,7 +120,7 @@ export default function App() {
             </Box>
 
             <Box padding="8" paddingBlock="2" as="main">
-                <Page.Block gutters width="2xl">
+                <Page.Block gutters width="lg">
                     <Outlet />
                 </Page.Block>
             </Box>

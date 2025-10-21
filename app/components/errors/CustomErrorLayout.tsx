@@ -3,7 +3,7 @@ import { Box, Page } from '@navikt/ds-react';
 
 import '@navikt/ds-css';
 
-import Footer from '~/components/Footer';
+import { NovariFooter } from 'novari-frontend-components';
 import { Logo } from '~/components/Logo';
 
 export function CustomErrorLayout({ children }: { children: React.ReactNode }) {
@@ -12,7 +12,7 @@ export function CustomErrorLayout({ children }: { children: React.ReactNode }) {
             footer={
                 <Box padding="1" as="footer" className={'novari-footer'}>
                     <Page.Block gutters width="lg">
-                        <Footer />
+                        <NovariFooter links={[]} />
                     </Page.Block>
                 </Box>
             }>

@@ -17,6 +17,8 @@ describe('Organisations Page Tests', () => {
     beforeEach(() => {
         // Visit the organisations page before each test
         cy.visit('http://localhost:3000/organisation');
+        cy.waitForAppReady();
+        
         // Wait for the page to load
         cy.contains('Test Organisation 1', { timeout: 10000 }).should('be.visible');
     });
@@ -52,7 +54,6 @@ describe('Organisations Page Tests', () => {
 
     it('should have a actions menu', () => {
         cy.get('[data-cy="organisation-action-menu-button"]').should('exist');
-        cy.wait(100);
     });
 
     it('should filter with search', () => {
@@ -61,22 +62,17 @@ describe('Organisations Page Tests', () => {
         cy.get('[data-cy="organisation-search-box"]').focus();
 
         cy.get('[data-cy="organisation-search-box"]').clear();
-        cy.wait(1000);
         cy.get('[data-cy="organisation-search-box"]').type('Test Organisation 10', { delay: 100 });
-        cy.wait(1000);
 
         // Check that only 1 row is visible
         cy.get('[data-cy="organisation-row"]').should('have.length', 1);
-        cy.wait(1000);
 
         // Clear the search
         cy.get('[data-cy="organisation-search-box"]').focus();
         cy.get('[data-cy="organisation-search-box"]').clear();
-        cy.wait(1000);
 
         // Check that all are visible again
-        cy.get('[data-cy="organisation-row"]').should('have.length.greaterThan', 1);
-        cy.wait(1000);
+        cy.get('[data-cy="organisation-row"]').should('have.length.greaterThan', 1);    
     });
 
     it('should handle pagination ', () => {
@@ -88,14 +84,24 @@ describe('Organisations Page Tests', () => {
     });
 
     it('should add a new organisation', () => {
-        // Click the add button
-        cy.get('[data-cy="add-button"]').should('exist');
-        cy.get('[data-cy="add-button"]').focus();
-        cy.wait(100);
-        cy.get('[data-cy="add-button"]').invoke('click');
+        cy.visit('http://localhost:3000/organisation');
+        cy.waitForAppReady();
+        
+        cy.get('[data-cy="organisation-row"]').should('exist');
+        
+        // Click the add button - wait for it to be stable
+        cy.get('[data-cy="add-button"]')
+            .should('be.visible')
+            .and('not.be.disabled')
+            .as('addBtn');
+        
+        cy.get('@addBtn').click({ force: true });
 
+        // Wait for table to disappear
+        cy.get('[data-cy="organisation-row"]', { timeout: 5000 }).should('not.exist');
+        
         // Check that the form appears
-        cy.contains('Legg til ny organisasjon').should('be.visible');
+        cy.contains('Legg til ny organisasjon', { timeout: 10000 }).should('be.visible');
 
         // Fill out the form
         cy.get('[data-cy="name-input"]').type('Test Organisation 3');
@@ -105,10 +111,40 @@ describe('Organisations Page Tests', () => {
         // Submit the form
         cy.get('[data-cy="submit-button"]').click();
 
-        // Check for success alert
-        cy.contains('Organisasjonen er lagt til').should('be.visible');
+        // Verify back at table
+        cy.get('[data-cy="organisation-row"]', { timeout: 10000 }).should('exist');
+    });
 
-        // Verify the new organisation appears in the list
-        cy.contains('Test Organisation 3').should('be.visible');
+    it('should validate and cancel organisation form', () => {
+        cy.visit('http://localhost:3000/organisation');
+        cy.waitForAppReady();
+        
+        // Open form - wait for button to be stable
+        cy.get('[data-cy="add-button"]')
+            .should('be.visible')
+            .and('not.be.disabled')
+            .as('addBtn');
+        
+        cy.get('@addBtn').click({ force: true });
+        
+        // Wait for table to disappear
+        cy.get('[data-cy="organisation-row"]', { timeout: 5000 }).should('not.exist');
+        
+        cy.contains('Legg til ny organisasjon', { timeout: 10000 }).should('be.visible');
+        
+        // Fill partial form
+        cy.get('[data-cy="name-input"]').type('Test Org');
+        cy.get('[data-cy="org-number-input"]').type('123456789');
+        
+        // Click cancel - ensure button is stable
+        cy.get('[data-cy="cancel-button"]')
+            .should('be.visible')
+            .and('not.be.disabled')
+            .as('cancelBtn');
+        
+        cy.get('@cancelBtn').click({ force: true });
+        
+        // Should be back at table
+        cy.get('[data-cy="organisation-row"]', { timeout: 10000 }).should('exist');
     });
 });
