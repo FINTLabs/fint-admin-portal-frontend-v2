@@ -58,7 +58,7 @@ export const meta: MetaFunction = () => {
     ];
 };
 
-export const loader = async (request: Request) => {
+export const loader = async ({ request }: { request: Request }) => {
     const { pathname } = new URL(request.url);
 
     // Normalize  for Prometheus labels
