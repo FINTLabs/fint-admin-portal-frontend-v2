@@ -20,6 +20,8 @@ import MeApi from '~/api/MeApi';
 import themeHref from './novari-theme.css?url';
 import tailwindHref from './tailwind.css?url';
 import akselHref from '@navikt/ds-css?url';
+import { normalizePathname } from '~/utils/metricsPath';
+import { pageVisits } from '~/routes/metrics';
 // Initialize MSW based on environment
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let server: any;
@@ -56,7 +58,13 @@ export const meta: MetaFunction = () => {
     ];
 };
 
-export const loader = async () => {
+export const loader = async (request: Request) => {
+    const { pathname } = new URL(request.url);
+
+    // Normalize  for Prometheus labels
+    const normalized = normalizePathname(pathname);
+    pageVisits.inc({ path: normalized });
+
     const meResults = await MeApi.getDisplayName();
     if (meResults.success && meResults.data) {
         return new Response(

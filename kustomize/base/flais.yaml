@@ -26,3 +26,7 @@ spec:
     enabled: true
     middlewares:
       - fint-admin-portal-sso
+  prometheus:
+      enabled: true
+      port: "8000"
+      path: /metrics
