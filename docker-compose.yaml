@@ -1,0 +1,18 @@
+services:
+  caddy:
+    image: caddy:latest
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+
+  sso-middleware:
+    image: ghcr.io/fintlabs/flais-auth-forward-service:latest
+    environment:
+      fint.sso.claim-for-upn: email
+      fint.sso.issuer-uri: https://idp.test.felleskomponent.no/nidp/oauth/nam
+      logging.level.no.fintlabs: debug
+      spring.webflux.base-path: /
+      fint.sso.enforce-https: false
+    env_file:
+      - sso-middleware.env

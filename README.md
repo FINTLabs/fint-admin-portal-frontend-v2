@@ -7,6 +7,25 @@ Run the dev server:
 npm run dev
 ```
 
+### Dev with auth
+Create an env file `sso-middleware.env` with same content as `fint-admin-portal-sso` secret in alpha env.
+
+How to run:
+
+1) Start the app:
+   ```bash
+   npm run dev
+   ```
+
+2) Start auth proxy (Caddy + sso-middleware):
+   ```bash
+   docker compose up
+   ```
+
+3) Open:
+   http://localhost:8000
+
+
 ## Deployment
 
 First, build your app for production:
