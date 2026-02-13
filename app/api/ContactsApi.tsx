@@ -1,13 +1,11 @@
 import { IContact } from '~/types/contact';
 import { ApiResponse, NovariApiManager } from 'novari-frontend-components';
 
-const API_URL = process.env.API_URL || '';
-const apiManager = new NovariApiManager({
-    baseUrl: API_URL,
-});
 class ContactsApi {
-    static async getContacts(): Promise<ApiResponse<IContact[]>> {
-        return await apiManager.call<IContact[]>({
+    constructor(private apiManager: NovariApiManager) {}
+
+    async getContacts(): Promise<ApiResponse<IContact[]>> {
+        return await this.apiManager.call<IContact[]>({
             method: 'GET',
             endpoint: '/api/contacts',
             functionName: 'getContacts',
@@ -15,8 +13,8 @@ class ContactsApi {
         });
     }
 
-    static async addContact(contact: IContact): Promise<ApiResponse<IContact[]>> {
-        const response = await apiManager.call<IContact[]>({
+    async addContact(contact: IContact): Promise<ApiResponse<IContact[]>> {
+        const response = await this.apiManager.call<IContact[]>({
             method: 'POST',
             endpoint: '/api/contacts',
             body: JSON.stringify(contact),
@@ -32,8 +30,8 @@ class ContactsApi {
         return response;
     }
 
-    static async updateContact(contact: IContact): Promise<ApiResponse<IContact[]>> {
-        return await apiManager.call<IContact[]>({
+    async updateContact(contact: IContact): Promise<ApiResponse<IContact[]>> {
+        return await this.apiManager.call<IContact[]>({
             method: 'PUT',
             endpoint: '/api/contacts',
             functionName: 'updateContact',
@@ -43,8 +41,8 @@ class ContactsApi {
         });
     }
 
-    static async deleteContact(contact: IContact): Promise<ApiResponse<IContact[]>> {
-        const response = await apiManager.call<IContact[]>({
+    async deleteContact(contact: IContact): Promise<ApiResponse<IContact[]>> {
+        const response = await this.apiManager.call<IContact[]>({
             method: 'DELETE',
             endpoint: '/api/contacts',
             functionName: 'deleteContact',

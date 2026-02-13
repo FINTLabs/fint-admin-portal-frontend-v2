@@ -1,13 +1,11 @@
 import { IOrganisation } from '~/types/organisation';
 import { ApiResponse, NovariApiManager } from 'novari-frontend-components';
 
-const API_URL = process.env.API_URL || '';
-const apiManager = new NovariApiManager({
-    baseUrl: API_URL,
-});
 class OrganisationApi {
-    static async getOrganisations(): Promise<ApiResponse<IOrganisation[]>> {
-        return await apiManager.call<IOrganisation[]>({
+    constructor(private apiManager: NovariApiManager) {}
+
+    async getOrganisations(): Promise<ApiResponse<IOrganisation[]>> {
+        return await this.apiManager.call<IOrganisation[]>({
             method: 'GET',
             endpoint: '/api/organisations',
             functionName: 'getOrganisations',
@@ -15,10 +13,10 @@ class OrganisationApi {
         });
     }
 
-    static async addOrganisation(
+    async addOrganisation(
         organisation: IOrganisation
     ): Promise<ApiResponse<IOrganisation[]>> {
-        const response = await apiManager.call<IOrganisation[]>({
+        const response = await this.apiManager.call<IOrganisation[]>({
             method: 'POST',
             endpoint: '/api/organisations',
             body: JSON.stringify(organisation),
@@ -34,10 +32,10 @@ class OrganisationApi {
         return response;
     }
 
-    static async updateOrganisation(
+    async updateOrganisation(
         organisation: IOrganisation
     ): Promise<ApiResponse<IOrganisation[]>> {
-        return await apiManager.call<IOrganisation[]>({
+        return await this.apiManager.call<IOrganisation[]>({
             method: 'PUT',
             endpoint: `/api/organisations/${organisation.name}`,
             functionName: 'updateOrganisation',
@@ -47,14 +45,14 @@ class OrganisationApi {
         });
     }
 
-    static async updateLegalContact(
+    async updateLegalContact(
         organisationName: string,
         contactNin: string,
         action: 'SET' | 'REMOVE'
     ): Promise<ApiResponse<IOrganisation[]>> {
         const method = action === 'SET' ? 'PUT' : 'DELETE';
 
-        const response = await apiManager.call<IOrganisation[]>({
+        const response = await this.apiManager.call<IOrganisation[]>({
             method: method,
             endpoint: `/api/organisations/${organisationName}/contacts/legal/${contactNin}`,
             functionName: 'updateLegalContact',
@@ -69,10 +67,10 @@ class OrganisationApi {
         return response;
     }
 
-    static async deleteOrganisation(
+    async deleteOrganisation(
         organisation: IOrganisation
     ): Promise<ApiResponse<IOrganisation[]>> {
-        const response = await apiManager.call<IOrganisation[]>({
+        const response = await this.apiManager.call<IOrganisation[]>({
             method: 'DELETE',
             endpoint: '/api/organisations',
             functionName: 'deleteOrganisation',

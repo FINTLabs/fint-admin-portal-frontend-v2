@@ -1,7 +1,7 @@
 import {
     isRouteErrorResponse,
     Links,
-    type LinksFunction,
+    type LinksFunction, LoaderFunction,
     Meta,
     type MetaFunction,
     Outlet,
@@ -15,8 +15,8 @@ import React from 'react';
 
 import { Alert, Box, Page } from '@navikt/ds-react';
 import CustomError from '~/components/errors/CustomError';
-import { NovariFooter, NovariHeader } from 'novari-frontend-components';
-import MeApi from '~/api/MeApi';
+import { NovariFooter, NovariHeader, NovariSnackbarItem } from 'novari-frontend-components';
+import { getApiClient } from '~/api/client';
 import themeHref from './novari-theme.css?url';
 import tailwindHref from './tailwind.css?url';
 import akselHref from '@navikt/ds-css?url';
@@ -65,7 +65,7 @@ export const loader = async ({ request }: { request: Request }) => {
     const normalized = normalizePathname(pathname);
     pageVisits.inc({ path: normalized });
 
-    const meResults = await MeApi.getDisplayName();
+    const meResults = await getApiClient(request).me.getDisplayName();
     if (meResults.success && meResults.data) {
         return new Response(
             JSON.stringify({ success: meResults.success, meData: meResults.data }),

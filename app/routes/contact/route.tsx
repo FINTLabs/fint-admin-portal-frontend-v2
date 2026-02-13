@@ -16,14 +16,16 @@ import {
     NovariSnackbarItem,
     useAlerts,
 } from 'novari-frontend-components';
+import { getApiClient } from '~/api/client';
 
-export const loader: LoaderFunction = async () => {
+export const loader: LoaderFunction = async ({ request }: { request: Request }) => {
     let contacts: IContact[] = [];
     let organisations: IOrganisation[] = [];
     const alerts: NovariSnackbarItem[] = [];
+    const api = getApiClient(request);
 
-    const contactsResult = await ContactsApi.getContacts();
-    const organisationsResult = await OrganisationsApi.getOrganisations();
+    const contactsResult = await api.contacts.getContacts();
+    const organisationsResult = await api.organisation.getOrganisations();
 
     if (!contactsResult.success) {
         alerts.push({
@@ -159,6 +161,7 @@ export default function ContactsPage() {
 
 export const action: ActionFunction = async ({ request }) => {
     const formData = await request.formData();
+    const api = getApiClient(request);
     const actionType = formData.get('actionType') as string;
     const newContact: IContact = {
         firstName: formData.get('firstName') as string,
@@ -172,13 +175,13 @@ export const action: ActionFunction = async ({ request }) => {
         case 'ADD_NEW_CONTACT':
             logger.info('Adding new contact', newContact);
             newContact.nin = formData.get('nin') as string;
-            return await ContactsApi.addContact(newContact);
+            return await api.contacts.addContact(newContact);
 
         case 'EDIT_CONTACT':
             newContact.nin = formData.get('nin') as string;
             newContact.dn = formData.get('dn') as string;
             logger.info('Editing contact', newContact);
-            return await ContactsApi.updateContact(newContact);
+            return await api.contacts.updateContact(newContact);
 
         // case 'DELETE_CONTACT':
         //     newContact.nin = formData.get('nin') as string;
