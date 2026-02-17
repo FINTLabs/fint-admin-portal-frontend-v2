@@ -3,7 +3,7 @@ import { Button, Heading, HGrid, Loader, VStack } from '@navikt/ds-react';
 import { Buildings3Icon, ComponentIcon, PersonGroupIcon, WrenchIcon } from '@navikt/aksel-icons';
 import JSONPretty from 'react-json-pretty';
 import 'react-json-pretty/themes/acai.css';
-import MaintenanceApi from '~/api/MaintenanceApi';
+import { getApiClient } from '~/api/client';
 import InternalPageHeader from '~/components/InternalPageHeader';
 
 interface FetcherData {
@@ -92,23 +92,24 @@ export default function ToolsPage() {
 export const action: ActionFunction = async ({ request }: { request: Request }) => {
     const formData = await request.formData();
     const reportType = formData.get('reportType');
+    const api = getApiClient(request);
 
     let data;
     switch (reportType) {
         case 'Organizations':
-            data = await MaintenanceApi.getOrganisationConsistency();
+            data = await api.maintenance.getOrganisationConsistency();
             break;
         case 'Adapter':
-            data = await MaintenanceApi.getAdapterConsistency();
+            data = await api.maintenance.getAdapterConsistency();
             break;
         case 'Client':
-            data = await MaintenanceApi.getClientConsistency();
+            data = await api.maintenance.getClientConsistency();
             break;
         case 'Legal':
-            data = await MaintenanceApi.getLegalConsistency();
+            data = await api.maintenance.getLegalConsistency();
             break;
         case 'Technical':
-            data = await MaintenanceApi.getTechnicalConsistency();
+            data = await api.maintenance.getTechnicalConsistency();
             break;
         default:
             console.info('Unknown report type');

@@ -16,14 +16,16 @@ import {
     NovariSnackbarItem,
     useAlerts,
 } from 'novari-frontend-components';
+import { getApiClient } from '~/api/client';
 
-export const loader: LoaderFunction = async () => {
+export const loader: LoaderFunction = async ({ request }: { request: Request }) => {
     let contacts: IContact[] = [];
     let organizations: IOrganisation[] = [];
     const alerts: NovariSnackbarItem[] = [];
+    const api = getApiClient(request)
 
-    const contactsResult = await ContactsApi.getContacts();
-    const organizationsResult = await OrganisationApi.getOrganisations();
+    const contactsResult = await api.contacts.getContacts();
+    const organizationsResult = await api.organisation.getOrganisations();
 
     if (!contactsResult.success) {
         alerts.push({
@@ -186,6 +188,7 @@ export const action: ActionFunction = async ({ request }) => {
     const formData = await request.formData();
     const actionType = formData.get('actionType') as string;
     const contact = formData.get('contactNin') as string;
+    const api = getApiClient(request);
 
     const newOrg: IOrganisation = {
         name: formData.get('name') as string,
@@ -197,27 +200,27 @@ export const action: ActionFunction = async ({ request }) => {
 
     switch (actionType) {
         case 'ADD_NEW_ORG': {
-            const res = await OrganisationApi.addOrganisation(newOrg);
+            const res = await api.organisation.addOrganisation(newOrg);
             if (res.success && legalContact) {
-                return await OrganisationApi.updateLegalContact(newOrg.name, legalContact, 'SET');
+                return await api.organisation.updateLegalContact(newOrg.name, legalContact, 'SET');
             }
             return res;
         }
         case 'EDIT_ORG': {
             logger.info('Editing organisation', newOrg);
             newOrg.dn = formData.get('dn') as string;
-            const res = await OrganisationApi.updateOrganisation(newOrg);
+            const res = await api.organisation.updateOrganisation(newOrg);
             if (res.success && legalContact) {
-                return await OrganisationApi.updateLegalContact(newOrg.name, legalContact, 'SET');
+                return await api.organisation.updateLegalContact(newOrg.name, legalContact, 'SET');
             }
             return res;
         }
         case 'SET_LEGAL':
             logger.info('Setting legal contact organisation', newOrg);
-            return await OrganisationApi.updateLegalContact(newOrg.name, contact, 'SET');
+            return await api.organisation.updateLegalContact(newOrg.name, contact, 'SET');
         case 'UNSET_LEGAL':
             logger.info('Removing legal contact organisation', newOrg);
-            return await OrganisationApi.updateLegalContact(newOrg.name, contact, 'REMOVE');
+            return await api.organisation.updateLegalContact(newOrg.name, contact, 'REMOVE');
         // case 'DELETE_ORG':
         //     logger.info('Delete organisation', newOrg);
         //     return await OrganisationApi.deleteOrganisation(newOrg);

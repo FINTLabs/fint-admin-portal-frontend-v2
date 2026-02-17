@@ -23,6 +23,7 @@ export default function ComponentForm({
     const [inBasePath, setInBasePath] = useState<string>('');
     const [inDescription, setInDescription] = useState<string>('');
 
+    const [inAlpha, setInAlpha] = useState<boolean>(false);
     const [inBeta, setInBeta] = useState<boolean>(false);
     const [inProduction, setInProduction] = useState<boolean>(false);
     const [inPlayWithFint, setInPlayWithFint] = useState<boolean>(false);
@@ -38,6 +39,7 @@ export default function ComponentForm({
             setInName(component.name);
             setInBasePath(component.basePath);
             setInDescription(component.description);
+            setInAlpha(component.inAlpha);
             setInBeta(component.inBeta);
             setInProduction(component.inProduction);
             setInPlayWithFint(component.inPlayWithFint);
@@ -70,6 +72,7 @@ export default function ComponentForm({
             formData.append('name', inName);
             formData.append('description', inDescription);
             formData.append('basePath', inBasePath);
+            formData.append('inAlpha', inAlpha.toString());
             formData.append('inBeta', inBeta.toString());
             formData.append('inProduction', inProduction.toString());
             formData.append('inPlayWithFint', inPlayWithFint.toString());
@@ -122,6 +125,11 @@ export default function ComponentForm({
                             checked={inBeta}
                             data-cy="inBeta-checkbox">
                             Beta
+                        </Checkbox>
+                        <Checkbox
+                            checked={inAlpha}
+                            onChange={(e) => setInAlpha(e.target.checked)}>
+                            Alpha
                         </Checkbox>
                         <Checkbox
                             checked={inProduction}

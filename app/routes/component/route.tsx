@@ -1,7 +1,7 @@
 import { ActionFunction, LoaderFunction, useFetcher, useLoaderData } from 'react-router';
 import { Box, Pagination, Search } from '@navikt/ds-react';
 import { useState } from 'react';
-import ComponentsApi from '~/api/ComponentsApi';
+import { getApiClient } from '~/api/client';
 import InternalPageHeader from '~/components/InternalPageHeader';
 import { ComponentIcon } from '@navikt/aksel-icons';
 import ComponentTable from '~/routes/component/ComponentTable';
@@ -16,11 +16,11 @@ import {
 } from 'novari-frontend-components';
 // import { useAlerts } from '~/hooks/useAlerts';
 
-export const loader: LoaderFunction = async () => {
+export const loader: LoaderFunction = async ({ request }: { request: Request }) => {
     let components: IComponent[] = [];
     const alerts: NovariSnackbarItem[] = [];
 
-    const componentsResult = await ComponentsApi.getComponents();
+    const componentsResult = await getApiClient(request).components.getComponents();
     console.log('components', componentsResult);
     if (!componentsResult.success) {
         alerts.push({
@@ -142,12 +142,14 @@ export default function ComponentsPage() {
 export const action: ActionFunction = async ({ request }) => {
     const formData = await request.formData();
     const actionType = formData.get('actionType') as string;
+    const api = getApiClient(request);
 
     const newComponent: IComponent = {
         name: formData.get('name') as string,
         basePath: formData.get('basePath') as string,
         description: formData.get('description') as string,
         inPlayWithFint: formData.get('inPlayWithFint') === 'true',
+        inAlpha: formData.get('inAlpha') === 'true',
         inBeta: formData.get('inBeta') === 'true',
         inProduction: formData.get('inProduction') === 'true',
         common: formData.get('common') === 'true',
@@ -161,17 +163,17 @@ export const action: ActionFunction = async ({ request }) => {
     switch (actionType) {
         case 'ADD_NEW_COMPONENT':
             logger.info('Adding new component', newComponent);
-            return await ComponentsApi.addComponent(newComponent);
+            return await api.components.addComponent(newComponent);
 
         case 'EDIT_COMPONENT':
             newComponent.dn = formData.get('dn') as string;
             logger.info('Editing component', newComponent);
-            return await ComponentsApi.updateComponent(newComponent);
+            return await api.components.updateComponent(newComponent);
 
         case 'DELETE_COMPONENT':
             newComponent.dn = formData.get('dn') as string;
             logger.info('Deleting component', newComponent);
-            return await ComponentsApi.deleteComponent(newComponent);
+            return await api.components.deleteComponent(newComponent);
 
         default:
             return {

@@ -1,20 +1,14 @@
 import { NovariApiManager } from 'novari-frontend-components';
 
-const API_URL = process.env.API_URL || '';
-
 export interface IUser {
-    fullName: string;
+    email: string;
 }
 
 class MeApi {
-    static async getDisplayName() {
-        const apiManager = new NovariApiManager({
-            baseUrl: API_URL,
-            // logLevel: 'debug',
-            // defaultHeaders: { 'x-nin': '9999999999' },
-        });
+    constructor(private apiManager: NovariApiManager) {}
 
-        return await apiManager.call<IUser>({
+    async getDisplayName() {
+        return await this.apiManager.call<IUser>({
             method: 'GET',
             endpoint: '/api/me',
             functionName: 'getMeData',

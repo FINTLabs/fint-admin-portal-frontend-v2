@@ -31,6 +31,11 @@ export default function ComponentTable({ components, onEdit, onDelete }: Contact
                         <Table.DataCell>{component.name}</Table.DataCell>
                         <Table.DataCell>{component.description}</Table.DataCell>
                         <Table.DataCell>
+                            {component.inAlpha && (
+                                <Tag variant="warning" size={'xsmall'}>
+                                    Alpha
+                                </Tag>
+                            )}
                             {component.inBeta && (
                                 <Tag variant="warning" size={'xsmall'}>
                                     Beta

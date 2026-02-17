@@ -24,6 +24,12 @@ export default function ComponentExpandableRow({ component }: ExpandableContentP
                         </Table.DataCell>
                     </Table.Row>
                     <Table.Row>
+                        <Table.HeaderCell scope="row">Alpha</Table.HeaderCell>
+                        <Table.DataCell textSize={'small'}>
+                            https://alpha.felleskomponent.no{component.basePath}
+                        </Table.DataCell>
+                    </Table.Row>
+                    <Table.Row>
                         <Table.HeaderCell scope="row">Play-with-FINT</Table.HeaderCell>
                         <Table.DataCell textSize={'small'}>
                             https://play-with-fint.felleskomponent.no
@@ -45,6 +51,12 @@ export default function ComponentExpandableRow({ component }: ExpandableContentP
                         <Table.HeaderCell scope="row">Beta</Table.HeaderCell>
                         <Table.DataCell textSize={'small'}>
                             https://beta.felleskomponent.no{component.basePath}/swagger-ui.html
+                        </Table.DataCell>
+                    </Table.Row>
+                    <Table.Row>
+                        <Table.HeaderCell scope="row">Alpha</Table.HeaderCell>
+                        <Table.DataCell textSize={'small'}>
+                            https://alpha.felleskomponent.no{component.basePath}/swagger-ui.html
                         </Table.DataCell>
                     </Table.Row>
                     <Table.Row>

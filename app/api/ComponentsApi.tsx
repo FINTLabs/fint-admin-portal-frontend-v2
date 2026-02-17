@@ -1,14 +1,11 @@
 import { IComponent } from '~/types/components';
 import { ApiResponse, NovariApiManager } from 'novari-frontend-components';
 
-const API_URL = process.env.API_URL || '';
-const apiManager = new NovariApiManager({
-    baseUrl: API_URL,
-});
-
 class ComponentsApi {
-    static async getComponents(): Promise<ApiResponse<IComponent[]>> {
-        return await apiManager.call<IComponent[]>({
+    constructor(private apiManager: NovariApiManager) {}
+
+    async getComponents(): Promise<ApiResponse<IComponent[]>> {
+        return await this.apiManager.call<IComponent[]>({
             method: 'GET',
             endpoint: '/api/components',
             functionName: 'getComponents',
@@ -16,8 +13,8 @@ class ComponentsApi {
         });
     }
 
-    static async addComponent(component: IComponent): Promise<ApiResponse<IComponent[]>> {
-        return await apiManager.call<IComponent[]>({
+    async addComponent(component: IComponent): Promise<ApiResponse<IComponent[]>> {
+        return await this.apiManager.call<IComponent[]>({
             method: 'POST',
             endpoint: '/api/components',
             body: JSON.stringify(component),
@@ -27,8 +24,8 @@ class ComponentsApi {
         });
     }
 
-    static async updateComponent(component: IComponent): Promise<ApiResponse<IComponent[]>> {
-        return await apiManager.call<IComponent[]>({
+    async updateComponent(component: IComponent): Promise<ApiResponse<IComponent[]>> {
+        return await this.apiManager.call<IComponent[]>({
             method: 'PUT',
             endpoint: `/api/components/${component.name}`,
             body: JSON.stringify(component),
@@ -38,8 +35,8 @@ class ComponentsApi {
         });
     }
 
-    static async deleteComponent(component: IComponent): Promise<ApiResponse<IComponent[]>> {
-        return await apiManager.call<IComponent[]>({
+    async deleteComponent(component: IComponent): Promise<ApiResponse<IComponent[]>> {
+        return await this.apiManager.call<IComponent[]>({
             method: 'DELETE',
             endpoint: `/api/components/${component.name}`,
             body: JSON.stringify(component),
