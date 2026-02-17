@@ -67,6 +67,7 @@ export const loader = async ({ request }: { request: Request }) => {
 
     const meResults = await getApiClient(request).me.getDisplayName();
     if (meResults.success && meResults.data) {
+        console.log(meResults)
         return new Response(
             JSON.stringify({ success: meResults.success, meData: meResults.data }),
             {
@@ -119,7 +120,7 @@ export default function App() {
                         ['Tools', '/tools'],
                     ]}
                     showLogoWithTitle={true}
-                    displayName={meData?.fullName || 'Logged In'}
+                    displayName={meData?.email || 'Logged In'}
                     onLogout={() =>
                         (window.location.href = 'https://idp.felleskomponent.no/nidp/app/logout')
                     }

@@ -1,7 +1,7 @@
 import { NovariApiManager } from 'novari-frontend-components';
 
 export interface IUser {
-    fullName: string;
+    email: string;
 }
 
 class MeApi {

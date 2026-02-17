@@ -5,6 +5,7 @@ export interface IComponent {
     organisations?: string[];
     clients?: string[];
     adapters?: string[];
+    inAlpha: boolean;
     inBeta: boolean;
     inProduction: boolean;
     inPlayWithFint: boolean;

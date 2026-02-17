@@ -149,6 +149,7 @@ export const action: ActionFunction = async ({ request }) => {
         basePath: formData.get('basePath') as string,
         description: formData.get('description') as string,
         inPlayWithFint: formData.get('inPlayWithFint') === 'true',
+        inAlpha: formData.get('inAlpha') === 'true',
         inBeta: formData.get('inBeta') === 'true',
         inProduction: formData.get('inProduction') === 'true',
         common: formData.get('common') === 'true',

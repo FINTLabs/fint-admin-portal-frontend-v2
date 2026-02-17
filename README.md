@@ -9,7 +9,7 @@ npm run dev
 
 ### Developing locally with SSO
 This will make sure the app is using the auth FLAISSso middleware from alpha environment.
-Using this method, the FLAISSso middleware will append a JWT token when doing requests server-side requests.
+Using this method, the FLAISSso middleware will append a JWT token when doing server-side requests.
 
 
 Create an env file `sso-middleware.env` with same content as `fint-admin-portal-sso` secret in alpha env.
@@ -32,8 +32,9 @@ How to run:
 3) Open:
    http://localhost:8000
 
+Port 8000 points to Caddy, which will work as a proxy and forward requests to the app.
 
-## How it works
+## How authentication works for the frontend
 This shows the request flow of how authentication works.
 ```mermaid
 sequenceDiagram
