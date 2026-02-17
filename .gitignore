@@ -8,3 +8,10 @@ node_modules
 
 
 sso-middleware.env
+
+.DS_Store
+
+# Cypress
+coverage/
+cypress/screenshots
+.nyc_output
