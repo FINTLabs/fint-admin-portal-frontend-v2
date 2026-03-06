@@ -1,4 +1,3 @@
-// app/routes/api.events.ts
 import type { ActionFunctionArgs } from 'react-router';
 
 const ANALYTICS_INTERNAL_URL = process.env.ANALYTICS_URL ?? 'http://fint-analytics-frontend:3000';
