@@ -1,6 +1,6 @@
-import * as React from "react";
-import { useLocation } from "react-router";
-import AnalyticsApi from "~/api/AnalyticsApi";
+import * as React from 'react';
+import { useLocation } from 'react-router';
+import AnalyticsApi from '~/api/AnalyticsApi';
 
 export function useTrackAnalyticsPageViews(tenant?: string) {
     const location = useLocation();
@@ -13,8 +13,7 @@ export function useTrackAnalyticsPageViews(tenant?: string) {
         lastSent.current = key;
 
         void AnalyticsApi.trackEvent({
-            app: "fint-betaling-frontend",
-            type: "page_view",
+            type: 'page_view',
             path: location.pathname,
             ...(tenant && { tenant }),
         });

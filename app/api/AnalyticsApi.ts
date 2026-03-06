@@ -3,10 +3,10 @@ import { NovariApiManager } from 'novari-frontend-components';
 const apiManager = new NovariApiManager({
     baseUrl: '',
 });
+let APP_NAME = 'fint-admin-portal-frontend';
 
 class AnalyticsApi {
     static async trackEvent(params: {
-        app: string;
         type: 'page_view' | 'button_click' | 'search' | 'error';
         path?: string;
         element?: string;
@@ -14,7 +14,7 @@ class AnalyticsApi {
         meta?: any;
     }) {
         const body = {
-            app: params.app,
+            app: APP_NAME,
             type: params.type,
             path: params.path ?? null,
             element: params.element ?? null,
@@ -24,7 +24,7 @@ class AnalyticsApi {
 
         const res = await apiManager.call({
             method: 'POST',
-            endpoint: `/api/events`,
+            endpoint: '/api/events',
             functionName: 'trackEvent',
             body,
             additionalHeaders: {
@@ -47,7 +47,6 @@ class AnalyticsApi {
 
     static async trackSearch(path: string, meta: Record<string, unknown>, tenant?: string) {
         return this.trackEvent({
-            app: 'fint-admin-portal-frontend',
             type: 'search',
             path,
             tenant: tenant || '',
@@ -57,7 +56,6 @@ class AnalyticsApi {
 
     static async trackError(params: { path: string; message: string; statusCode?: number }) {
         return this.trackEvent({
-            app: 'fint-admin-portal-frontend',
             type: 'error',
             path: params.path,
             meta: {
