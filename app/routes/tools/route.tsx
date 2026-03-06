@@ -5,6 +5,7 @@ import JSONPretty from 'react-json-pretty';
 import 'react-json-pretty/themes/acai.css';
 import MaintenanceApi from '~/api/MaintenanceApi';
 import InternalPageHeader from '~/components/InternalPageHeader';
+import AnalyticsApi from '~/api/AnalyticsApi';
 
 interface FetcherData {
     reportType: string;
@@ -16,6 +17,14 @@ export default function ToolsPage() {
 
     const isLoading = fetcher.state === 'submitting' || fetcher.state === 'loading';
     const breadcrumbs = [{ name: 'Tools', link: '/tools' }];
+
+    const trackButtonClick = (reportType: string) => {
+        void AnalyticsApi.trackEvent({
+            type: 'button_click',
+            path: '/tools',
+            element: 'button-report-' + reportType,
+        });
+    };
 
     return (
         <>
@@ -36,7 +45,8 @@ export default function ToolsPage() {
                             name="reportType"
                             value="Organisasjoner"
                             icon={<Buildings3Icon aria-hidden />}
-                            size="small">
+                            size="small"
+                            onClick={() => trackButtonClick('organisations')}>
                             Organizations
                         </Button>
                         <Button
@@ -44,7 +54,8 @@ export default function ToolsPage() {
                             name="reportType"
                             value="Adapter"
                             icon={<ComponentIcon aria-hidden />}
-                            size="small">
+                            size="small"
+                            onClick={() => trackButtonClick('adapter')}>
                             Adapter
                         </Button>
                         <Button
@@ -52,7 +63,8 @@ export default function ToolsPage() {
                             name="reportType"
                             value="Client"
                             icon={<PersonGroupIcon aria-hidden />}
-                            size="small">
+                            size="small"
+                            onClick={() => trackButtonClick('client')}>
                             Client
                         </Button>
                         <Button
@@ -60,7 +72,8 @@ export default function ToolsPage() {
                             name="reportType"
                             value="Legal"
                             icon={<PersonGroupIcon aria-hidden />}
-                            size="small">
+                            size="small"
+                            onClick={() => trackButtonClick('legal')}>
                             Legal
                         </Button>
                         <Button
@@ -68,7 +81,8 @@ export default function ToolsPage() {
                             name="reportType"
                             value="Technical"
                             icon={<PersonGroupIcon aria-hidden />}
-                            size="small">
+                            size="small"
+                            onClick={() => trackButtonClick('technical')}>
                             Technical
                         </Button>
                     </HGrid>

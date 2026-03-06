@@ -36,15 +36,13 @@ class AnalyticsApi {
         return res;
     }
 
-    // static async trackButtonClick(element: string, path: string, tenant?: string) {
-    //     return this.trackEvent({
-    //         app: 'fint-admin-portal-frontend',
-    //         type: 'button_click',
-    //         path,
-    //         element,
-    //         tenant: tenant || '',
-    //     });
-    // }
+    static async trackButtonClick(element: string, path: string) {
+        return this.trackEvent({
+            type: 'button_click',
+            path,
+            element,
+        });
+    }
 
     static async trackSearch(path: string, meta: Record<string, unknown>) {
         return this.trackEvent({

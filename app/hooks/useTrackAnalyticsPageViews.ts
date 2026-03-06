@@ -15,14 +15,13 @@ export function useTrackAnalyticsPageViews(tenant?: string) {
         void AnalyticsApi.trackEvent({
             type: 'page_view',
             path: location.pathname,
-            ...(tenant && { tenant }),
         });
 
         if (location.search) {
             const params = new URLSearchParams(location.search);
             const meta = Object.fromEntries(params.entries());
 
-            void AnalyticsApi.trackSearch(location.pathname, meta, tenant);
+            void AnalyticsApi.trackSearch(location.pathname, meta);
         }
     }, [location.pathname, location.search, tenant]);
 }
