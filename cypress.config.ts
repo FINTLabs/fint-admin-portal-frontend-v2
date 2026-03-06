@@ -1,11 +1,11 @@
 import { defineConfig } from 'cypress';
-import codeCoverageTask from '@cypress/code-coverage/task';
+// import codeCoverageTask from '@cypress/code-coverage/task';
 
 export default defineConfig({
     e2e: {
         setupNodeEvents(on, config) {
             // register the task to save coverage to .nyc_output
-            codeCoverageTask(on, config);
+            // codeCoverageTask(on, config);
 
             // do NOT call any "coverageReport" or open-report logic here
             return config;
