@@ -11,7 +11,7 @@ import {
     useNavigate,
     useRouteError,
 } from 'react-router';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { Alert, Box, Page } from '@navikt/ds-react';
 import CustomError from '~/components/errors/CustomError';
@@ -19,9 +19,11 @@ import { NovariFooter, NovariHeader } from 'novari-frontend-components';
 import MeApi from '~/api/MeApi';
 import themeHref from './novari-theme.css?url';
 import akselHref from '@navikt/ds-css?url';
+import { footerMenu, novariMenu } from '~/components/MenuConfig';
+import { useTrackAnalyticsPageViews } from '~/hooks/useTrackAnalyticsPageViews';
 import { normalizePathname } from '~/utils/metricsPath';
 import { pageVisits } from '~/routes/metrics';
-import { footerMenu, novariMenu } from '~/components/MenuConfig';
+import AnalyticsApi from '~/api/AnalyticsApi';
 
 // For client-side mocking for tests
 let server: any;
@@ -58,6 +60,7 @@ export const meta: MetaFunction = () => {
 export const loader = async ({ request }: { request: Request }) => {
     const { pathname } = new URL(request.url);
 
+    //TODO: remove metrics
     // Normalize  for Prometheus labels
     const normalized = normalizePathname(pathname);
     pageVisits.inc({ path: normalized });
@@ -81,6 +84,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
                 <Meta />
                 <Links />
+                <title>FINT Admin Portal</title>
             </head>
             <body data-theme="novari">
                 {children}
@@ -94,6 +98,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 export default function App() {
     const { meData } = useLoaderData();
     const navigate = useNavigate();
+    useTrackAnalyticsPageViews(meData?.fullName || 'unknown');
 
     return (
         <Page
@@ -128,7 +133,15 @@ export default function App() {
 export function ErrorBoundary() {
     const error = useRouteError();
     const navigate = useNavigate();
+    useEffect(() => {
+        void AnalyticsApi.trackError({
+            path: location.pathname,
+            message: isRouteErrorResponse(error) ? error.statusText : 'Unknown error',
+            statusCode: 500,
+        });
+    }, []);
     console.log('ERROR', error);
+
     if (isRouteErrorResponse(error)) {
         return (
             <Page
@@ -139,6 +152,7 @@ export function ErrorBoundary() {
                 }>
                 <Box as="header" className={'novari-header'}>
                     <NovariHeader
+                        appName={'FINT Admin Portal'}
                         isLoggedIn={false}
                         menu={[]}
                         showLogoWithTitle={true}
@@ -157,7 +171,11 @@ export function ErrorBoundary() {
                     <CustomError
                         statusCode={error.status}
                         errorData={error.data}
-                        statusTitle={error.statusText}
+                        statusTitle={
+                            error.statusText.toString().length > 0
+                                ? error.statusText.toString()
+                                : 'Beklager, noe gikk galt.'
+                        }
                     />
                 </Page.Block>
                 {/*</Box>*/}
@@ -173,6 +191,7 @@ export function ErrorBoundary() {
                 }>
                 <Box as="header" className={'novari-header'}>
                     <NovariHeader
+                        appName={'FINT Admin Portal'}
                         isLoggedIn={false}
                         menu={[]}
                         showLogoWithTitle={true}

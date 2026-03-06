@@ -1,5 +1,5 @@
 import React from 'react';
-import { BodyShort, Box, Button, Heading, HGrid, Link, List, VStack } from '@navikt/ds-react';
+import { BodyShort, Box, Button, Heading, Link, List, VStack } from '@navikt/ds-react';
 
 interface CustomErrorPageProps {
     statusCode?: number;
@@ -13,71 +13,71 @@ const CustomErrorPage: React.FC<CustomErrorPageProps> = ({
     errorData = 'unknown',
 }) => {
     return (
-        <Box padding={'space-6'}>
-            <HGrid columns="minmax(auto,600px)" data-aksel-template={`${statusCode}-v2`}>
-                <VStack gap="space-6">
-                    <VStack gap="space-16" align="start">
-                        <div>
-                            <BodyShort textColor="subtle" size="small">
-                                Statuskode {statusCode}
-                            </BodyShort>
-                            <Heading level="1" size="large" spacing>
-                                {statusTitle}
-                            </Heading>
-                            <BodyShort spacing>
-                                En teknisk feil på våre servere gjør at siden er utilgjengelig.
-                                Dette skyldes ikke noe du gjorde.
-                            </BodyShort>
-                            <BodyShort>Du kan prøve å</BodyShort>
-                            <List>
-                                <List.Item>
-                                    vente noen minutter og{' '}
-                                    <Link href="#" onClick={() => location.reload()}>
-                                        laste siden på nytt
-                                    </Link>
-                                </List.Item>
-                                <List.Item>
-                                    <Link href="#" onClick={() => history.back()}>
-                                        gå tilbake til forrige side
-                                    </Link>
-                                </List.Item>
-                            </List>
-                            <BodyShort>
-                                Hvis problemet vedvarer, kan du{' '}
-                                <Link href="https://support.novari.no/" target="_blank">
-                                    kontakte oss (åpnes i ny fane)
-                                </Link>
-                                .
-                            </BodyShort>
-                        </div>
-
-                        <BodyShort size="small" textColor="subtle">
-                            Feil-data: {statusCode} - {errorData}
+        <Box padding={'space-6'} marginBlock={'space-32'}>
+            {/*<HGrid columns="minmax(auto,600px)" data-aksel-template={`${statusCode}-v2`}>*/}
+            <VStack gap="space-12">
+                <VStack gap="space-24" align="start">
+                    <div>
+                        <BodyShort textColor="subtle" size="small">
+                            Statuskode {statusCode}
                         </BodyShort>
+                        <Heading level="1" size="large" spacing>
+                            {statusTitle}
+                        </Heading>
+                        <BodyShort spacing>
+                            En teknisk feil på våre servere gjør at siden er utilgjengelig. Dette
+                            skyldes ikke noe du gjorde.
+                        </BodyShort>
+                        <BodyShort>Du kan prøve å</BodyShort>
+                        <List>
+                            <List.Item>
+                                vente noen minutter og{' '}
+                                <Link href="#" onClick={() => location.reload()}>
+                                    laste siden på nytt
+                                </Link>
+                            </List.Item>
+                            <List.Item>
+                                <Link href="#" onClick={() => history.back()}>
+                                    gå tilbake til forrige side
+                                </Link>
+                            </List.Item>
+                        </List>
 
-                        <Link href="/" className="navds-link">
-                            <Button>Gå til Kundeportalen Dashboard</Button>
-                        </Link>
-                    </VStack>
-
-                    {/* DO WE WANT ENGLISH?? */}
-                    {/*<div>*/}
-                    {/*    <Heading level="1" size="large" spacing>*/}
-                    {/*        Something went wrong*/}
-                    {/*    </Heading>*/}
-                    {/*    <BodyShort spacing>*/}
-                    {/*        This was caused by a technical fault on our servers. Please refresh this*/}
-                    {/*        page or try again in a few minutes.*/}
-                    {/*    </BodyShort>*/}
-                    {/*    <BodyShort>*/}
-                    {/*        <Link target="_blank" href="https://support.novari.no/">*/}
-                    {/*            Contact us (opens in new tab)*/}
-                    {/*        </Link>{' '}*/}
-                    {/*        if the problem persists.*/}
-                    {/*    </BodyShort>*/}
-                    {/*</div>*/}
+                        <BodyShort>
+                            Hvis problemet vedvarer, kan du{' '}
+                            <Link href="https://support.novari.no/" target="_blank">
+                                kontakte oss (åpnes i ny fane)
+                            </Link>
+                            .
+                        </BodyShort>
+                    </div>
                 </VStack>
-            </HGrid>
+                <BodyShort size="small" textColor="subtle">
+                    Feil-data: {statusCode} - {errorData}
+                </BodyShort>
+
+                <Link href="/" className="navds-link">
+                    <Button>Gå til Kundeportalen Dashboard</Button>
+                </Link>
+
+                {/* DO WE WANT ENGLISH?? */}
+                {/*<div>*/}
+                {/*    <Heading level="1" size="large" spacing>*/}
+                {/*        Something went wrong*/}
+                {/*    </Heading>*/}
+                {/*    <BodyShort spacing>*/}
+                {/*        This was caused by a technical fault on our servers. Please refresh this*/}
+                {/*        page or try again in a few minutes.*/}
+                {/*    </BodyShort>*/}
+                {/*    <BodyShort>*/}
+                {/*        <Link target="_blank" href="https://support.novari.no/">*/}
+                {/*            Contact us (opens in new tab)*/}
+                {/*        </Link>{' '}*/}
+                {/*        if the problem persists.*/}
+                {/*    </BodyShort>*/}
+                {/*</div>*/}
+            </VStack>
+            {/*</HGrid>*/}
         </Box>
     );
 };
