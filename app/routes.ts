@@ -7,5 +7,6 @@ import { flatRoutes } from '@react-router/fs-routes';
 
 export default [
     route('/', './routes/_index/route.tsx'),
+    route('_analytics/events', 'routes/api.events.tsx'),
     ...(await flatRoutes()),
 ] satisfies RouteConfig;
