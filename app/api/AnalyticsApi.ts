@@ -4,13 +4,14 @@ const apiManager = new NovariApiManager({
     baseUrl: '',
 });
 let APP_NAME = 'admin-portal';
+let TENANT = 'novari.no';
 
 class AnalyticsApi {
     static async trackEvent(params: {
         type: 'page_view' | 'button_click' | 'search' | 'error';
         path?: string;
         element?: string;
-        tenant?: string;
+        // tenant?: string;
         meta?: any;
     }) {
         const body = {
@@ -18,7 +19,7 @@ class AnalyticsApi {
             type: params.type,
             path: params.path ?? null,
             element: params.element ?? null,
-            tenant: params.tenant ?? null,
+            tenant: TENANT,
             meta: params.meta ?? null,
         };
 
@@ -45,11 +46,10 @@ class AnalyticsApi {
     //     });
     // }
 
-    static async trackSearch(path: string, meta: Record<string, unknown>, tenant?: string) {
+    static async trackSearch(path: string, meta: Record<string, unknown>) {
         return this.trackEvent({
             type: 'search',
             path,
-            tenant: tenant || '',
             meta,
         });
     }
