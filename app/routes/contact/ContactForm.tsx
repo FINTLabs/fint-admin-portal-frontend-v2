@@ -69,7 +69,13 @@ export default function ContactForm({ contact, onCancel, handleFormSubmit }: Add
 
     return (
         <>
-            <Box className={'p-10'}>
+            <Box
+                borderRadius={'12'}
+                borderWidth={'1'}
+                borderColor="neutral-subtle"
+                padding={'space-24'}
+                width={'100%'}
+                marginBlock={'space-8'}>
                 {!contact && (
                     <TextField
                         label="Fødselsnummer"
@@ -113,7 +119,7 @@ export default function ContactForm({ contact, onCancel, handleFormSubmit }: Add
                     data-cy={'mobile-input'}
                 />
             </Box>
-            <HStack className={'pl-10'} gap={'5'}>
+            <HStack gap={'space-6'} justify="end">
                 <Button onClick={onSubmit} data-cy={'submit-button'}>
                     {contact ? 'Oppdater kontakt' : 'Legg til kontakt'}
                 </Button>

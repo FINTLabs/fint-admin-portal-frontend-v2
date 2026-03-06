@@ -1,5 +1,5 @@
 import { ActionFunction, LoaderFunction, useFetcher, useLoaderData } from 'react-router';
-import { Box, Pagination, Search } from '@navikt/ds-react';
+import { Box, HStack, Pagination, Search } from '@navikt/ds-react';
 import { IOrganisation } from '~/types/organisation';
 import OrganisationApi from '~/api/OrganisationApi';
 import ContactsApi from '~/api/ContactsApi';
@@ -63,7 +63,7 @@ export default function OrganizationsPage() {
     const [addingNew, setAddingNew] = useState<boolean>(false);
     const fetcher = useFetcher();
     const actionData = fetcher.data as ApiResponse<IOrganisation>;
-    const { alertState, handleCloseItem } = useAlerts<IOrganisation>(alerts, actionData);
+    const { alertState } = useAlerts<IOrganisation>(alerts, actionData);
 
     const [searchQuery, setSearchQuery] = useState('');
     const [filteredOrgs, setFilteredOrgs] = useState<IOrganisation[]>(organizations);
@@ -132,7 +132,7 @@ export default function OrganizationsPage() {
             <NovariSnackbar
                 items={alertState}
                 position={'top-right'}
-                onCloseItem={handleCloseItem}
+                // onCloseItem={handleCloseItem}
             />
 
             {addingNew || editingOrg ? (
@@ -146,25 +146,31 @@ export default function OrganizationsPage() {
                     contacts={contacts}
                 />
             ) : (
-                <>
-                    <Box className={'pt-10 w-100 pb-10'}>
-                        <Search
-                            size="small"
-                            label="Search organizations"
-                            variant="simple"
-                            value={searchQuery}
-                            onChange={(value: string) => setSearchQuery(value)}
-                            data-cy={'organisation-search-box'}
+                <HStack gap={'space-6'}>
+                    <Search
+                        size="small"
+                        label="Search organizations"
+                        variant="simple"
+                        value={searchQuery}
+                        onChange={(value: string) => setSearchQuery(value)}
+                        data-cy={'organisation-search-box'}
+                    />
+                    <Box
+                        borderRadius={'12'}
+                        borderWidth={'1'}
+                        borderColor="neutral-subtle"
+                        padding={'space-6'}
+                        width={'100%'}
+                        marginBlock={'space-6'}>
+                        <OrganisationTable
+                            contacts={contacts}
+                            organisations={paginatedOrgs}
+                            onEdit={setEditingOrg}
+                            onSetLegal={handleSetLegal}
+                            onUnsetLegal={handleRemoveLegal}
+                            onDelete={handleDelete}
                         />
                     </Box>
-                    <OrganisationTable
-                        contacts={contacts}
-                        organisations={paginatedOrgs}
-                        onEdit={setEditingOrg}
-                        onSetLegal={handleSetLegal}
-                        onUnsetLegal={handleRemoveLegal}
-                        onDelete={handleDelete}
-                    />
 
                     {filteredOrgs.length > 15 && (
                         <Pagination
@@ -176,7 +182,7 @@ export default function OrganizationsPage() {
                             className={'pt-10'}
                         />
                     )}
-                </>
+                </HStack>
             )}
         </div>
     );

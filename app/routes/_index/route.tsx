@@ -5,7 +5,7 @@ import CustomLinkPanel from '~/routes/_index/CustomLinkPanel';
 export default function Index() {
     return (
         <>
-            <HGrid columns={2} gap="3" className={'p-30'}>
+            <HGrid columns={2} gap="space-8" marginBlock="space-64">
                 <CustomLinkPanel
                     key={'contact'}
                     href={'/contact'}

@@ -1,5 +1,5 @@
 import { ActionFunction, LoaderFunction, useFetcher, useLoaderData } from 'react-router';
-import { Box, Pagination, Search } from '@navikt/ds-react';
+import { Box, HStack, Pagination, Search } from '@navikt/ds-react';
 import { useState } from 'react';
 import ComponentsApi from '~/api/ComponentsApi';
 import InternalPageHeader from '~/components/InternalPageHeader';
@@ -47,7 +47,7 @@ export default function ComponentsPage() {
 
     const fetcher = useFetcher();
     const actionData = fetcher.data as ApiResponse<IComponent>;
-    const { alertState, handleCloseItem } = useAlerts(alerts, actionData);
+    const { alertState } = useAlerts(alerts, actionData);
 
     const [searchQuery, setSearchQuery] = useState('');
     const filteredComponents = components.filter(
@@ -94,7 +94,7 @@ export default function ComponentsPage() {
             <NovariSnackbar
                 items={alertState}
                 position={'top-right'}
-                onCloseItem={handleCloseItem}
+                // onCloseItem={handleCloseItem}
             />
 
             {addingNew || editing ? (
@@ -107,23 +107,28 @@ export default function ComponentsPage() {
                     handleFormSubmit={handleFormSubmit}
                 />
             ) : (
-                <>
-                    <Box className={'pt-10 w-100 pb-10'}>
-                        <Search
-                            data-cy="component-search-box"
-                            label="Search components"
-                            variant="simple"
-                            value={searchQuery}
-                            onChange={(value: string) => setSearchQuery(value)}
-                            size="small"
+                <HStack gap={'space-6'} marginBlock={'space-6'}>
+                    <Search
+                        data-cy="component-search-box"
+                        label="Search components"
+                        variant="simple"
+                        value={searchQuery}
+                        onChange={(value: string) => setSearchQuery(value)}
+                        size="small"
+                    />
+                    <Box
+                        borderRadius={'12'}
+                        borderWidth={'1'}
+                        borderColor="neutral-subtle"
+                        padding={'space-6'}
+                        width={'100%'}
+                        marginBlock={'space-6'}>
+                        <ComponentTable
+                            components={paginatedComponents}
+                            onEdit={setEditing}
+                            onDelete={handleDelete}
                         />
                     </Box>
-
-                    <ComponentTable
-                        components={paginatedComponents}
-                        onEdit={setEditing}
-                        onDelete={handleDelete}
-                    />
                     {filteredComponents.length > 15 && (
                         <Pagination
                             page={currentPage}
@@ -133,7 +138,7 @@ export default function ComponentsPage() {
                             className={'p-3'}
                         />
                     )}
-                </>
+                </HStack>
             )}
         </div>
     );

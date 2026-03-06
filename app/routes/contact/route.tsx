@@ -1,5 +1,5 @@
 import { ActionFunction, LoaderFunction, useFetcher, useLoaderData } from 'react-router';
-import { Box, Pagination, Search } from '@navikt/ds-react';
+import { Box, HStack, Pagination, Search } from '@navikt/ds-react';
 import { IContact } from '~/types/contact';
 import ContactsApi from '~/api/ContactsApi';
 import { useState } from 'react';
@@ -61,7 +61,7 @@ export default function ContactsPage() {
 
     const fetcher = useFetcher();
     const actionData = fetcher.data as ApiResponse<IContact>;
-    const { alertState, handleCloseItem } = useAlerts<IContact>(alerts, actionData);
+    const { alertState } = useAlerts<IContact>(alerts, actionData);
 
     const [editingContact, setEditingContact] = useState<IContact | null>(null);
     const [addingNew, setAddingNew] = useState<boolean>(false);
@@ -110,7 +110,7 @@ export default function ContactsPage() {
             <NovariSnackbar
                 items={alertState}
                 position={'top-right'}
-                onCloseItem={handleCloseItem}
+                // onCloseItem={handleCloseItem}
             />
 
             {addingNew || editingContact ? (
@@ -123,24 +123,29 @@ export default function ContactsPage() {
                     handleFormSubmit={handleFormSubmit}
                 />
             ) : (
-                <>
-                    <Box className={'pt-10 w-100 pb-10'}>
-                        <Search
-                            label="Search contacts"
-                            variant="simple"
-                            value={searchQuery}
-                            onChange={(value: string) => setSearchQuery(value)}
-                            size="small"
-                            data-cy={'contact-search-box'}
+                <HStack gap={'space-6'}>
+                    <Search
+                        label="Search contacts"
+                        variant="simple"
+                        value={searchQuery}
+                        onChange={(value: string) => setSearchQuery(value)}
+                        size="small"
+                        data-cy={'contact-search-box'}
+                    />
+                    <Box
+                        borderRadius={'12'}
+                        borderWidth={'1'}
+                        borderColor="neutral-subtle"
+                        padding={'space-6'}
+                        width={'100%'}
+                        marginBlock={'space-6'}>
+                        <ContactsTable
+                            contacts={paginatedContacts}
+                            organisations={organisations}
+                            onEdit={(contact: IContact) => setEditingContact(contact)}
+                            onDelete={(contact: IContact) => handleDelete(contact)}
                         />
                     </Box>
-
-                    <ContactsTable
-                        contacts={paginatedContacts}
-                        organisations={organisations}
-                        onEdit={(contact: IContact) => setEditingContact(contact)}
-                        onDelete={(contact: IContact) => handleDelete(contact)}
-                    />
 
                     {filteredContacts.length > 15 && (
                         <Pagination
@@ -151,7 +156,7 @@ export default function ContactsPage() {
                             className={'pt-10'}
                         />
                     )}
-                </>
+                </HStack>
             )}
         </div>
     );
