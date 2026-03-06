@@ -1,8 +1,7 @@
 import { NovariApiManager } from 'novari-frontend-components';
 
-const API_URL = 'http://localhost:3000';
 const apiManager = new NovariApiManager({
-    baseUrl: API_URL,
+    baseUrl: '',
 });
 
 class AnalyticsApi {
