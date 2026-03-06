@@ -3,7 +3,7 @@ import { NovariApiManager } from 'novari-frontend-components';
 const apiManager = new NovariApiManager({
     baseUrl: '',
 });
-let APP_NAME = 'fint-admin-portal-frontend';
+let APP_NAME = 'admin-portal';
 
 class AnalyticsApi {
     static async trackEvent(params: {
