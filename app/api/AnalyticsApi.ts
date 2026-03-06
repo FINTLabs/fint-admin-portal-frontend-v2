@@ -32,7 +32,7 @@ class AnalyticsApi {
                 'x-analytics-token': 'change-me',
             },
         });
-        console.log('trackEvent', res);
+        // console.log('trackEvent', res);
         return res;
     }
 

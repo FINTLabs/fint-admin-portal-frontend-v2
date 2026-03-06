@@ -1,4 +1,4 @@
-import { Table, Tag } from '@navikt/ds-react';
+import { HStack, Table, Tag } from '@navikt/ds-react';
 import ComponentExpandableRow from './ComponentExpandableRow';
 import { IComponent } from '~/types/components';
 import ComponentActionMenu from '~/routes/component/ComponentActionMenu';
@@ -31,38 +31,42 @@ export default function ComponentTable({ components, onEdit, onDelete }: Contact
                         <Table.DataCell>{component.name}</Table.DataCell>
                         <Table.DataCell>{component.description}</Table.DataCell>
                         <Table.DataCell>
-                            {component.inBeta && (
-                                <Tag variant="warning" size={'xsmall'}>
-                                    Beta
-                                </Tag>
-                            )}
-                            {component.inProduction && (
-                                <Tag variant="success" size={'xsmall'}>
-                                    API
-                                </Tag>
-                            )}
-                            {component.inPlayWithFint && (
-                                <Tag variant="info" size={'xsmall'}>
-                                    PWF
-                                </Tag>
-                            )}
+                            <HStack gap={'space-4'}>
+                                {component.inBeta && (
+                                    <Tag variant="warning" size={'xsmall'}>
+                                        Beta
+                                    </Tag>
+                                )}
+                                {component.inProduction && (
+                                    <Tag variant="success" size={'xsmall'}>
+                                        API
+                                    </Tag>
+                                )}
+                                {component.inPlayWithFint && (
+                                    <Tag variant="info" size={'xsmall'}>
+                                        PWF
+                                    </Tag>
+                                )}
+                            </HStack>
                         </Table.DataCell>
                         <Table.DataCell>
-                            {component.core && (
-                                <Tag variant="neutral" size={'xsmall'}>
-                                    Core
-                                </Tag>
-                            )}
-                            {component.openData && (
-                                <Tag variant="info" size={'xsmall'}>
-                                    Open Data
-                                </Tag>
-                            )}
-                            {component.common && (
-                                <Tag variant="neutral" size={'xsmall'}>
-                                    Common
-                                </Tag>
-                            )}
+                            <HStack gap={'space-4'}>
+                                {component.core && (
+                                    <Tag variant="neutral" size={'xsmall'}>
+                                        Core
+                                    </Tag>
+                                )}
+                                {component.openData && (
+                                    <Tag variant="info" size={'xsmall'}>
+                                        Open Data
+                                    </Tag>
+                                )}
+                                {component.common && (
+                                    <Tag variant="neutral" size={'xsmall'}>
+                                        Common
+                                    </Tag>
+                                )}
+                            </HStack>
                         </Table.DataCell>
                         <Table.DataCell>
                             <ComponentActionMenu

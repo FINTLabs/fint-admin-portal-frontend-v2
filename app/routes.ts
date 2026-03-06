@@ -7,5 +7,5 @@ export default [
     route('/component', './routes/component/route.tsx'),
     route('/tools', './routes/tools/route.tsx'),
     route('/_analytics/events', './routes/api.events.tsx'),
-    route('/metrics', './routes/metrics/route.tsx'),
+    route('/metrics', './routes/metrics.tsx'),
 ] satisfies RouteConfig;
