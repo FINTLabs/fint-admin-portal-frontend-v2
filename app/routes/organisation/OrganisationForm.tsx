@@ -1,4 +1,4 @@
-import { Box, Button, HStack, TextField, VStack } from '@navikt/ds-react';
+import { Box, Button, HStack, Label, TextField, VStack } from '@navikt/ds-react';
 import { useEffect, useState } from 'react';
 import { IOrganisation } from '~/types/organisation';
 import { IContact } from '~/types/contact';
@@ -84,8 +84,14 @@ export default function OrganisationForm({
 
     return (
         <>
-            <Box className="p-10">
-                <VStack gap="4">
+            <Box
+                borderRadius={'12'}
+                borderWidth={'1'}
+                borderColor="neutral-subtle"
+                padding={'space-24'}
+                width={'100%'}
+                marginBlock={'space-6'}>
+                <VStack gap="space-4">
                     <TextField
                         label="Vist navn"
                         value={inDisplayName}
@@ -110,18 +116,16 @@ export default function OrganisationForm({
                     />
 
                     {/* Legal Contact Section */}
-                    <VStack gap="2" align="start">
-                        <div className="flex items-center gap-2">
-                            <span className="text-sm font-medium">Juridisk kontakt:</span>
-                            {selectedLegalContact ? (
-                                <span className="text-sm text-gray-600">
-                                    {selectedLegalContact.firstName} {selectedLegalContact.lastName}
-                                </span>
-                            ) : (
-                                <span className="text-sm text-gray-400">Ingen valgt</span>
-                            )}
-                        </div>
-                        <HStack gap="2">
+                    <VStack gap="space-2" align="start">
+                        <Label>Juridisk kontakt</Label>
+                        {selectedLegalContact ? (
+                            <span className="text-sm text-gray-600">
+                                {selectedLegalContact.firstName} {selectedLegalContact.lastName}
+                            </span>
+                        ) : (
+                            <span className="text-sm text-gray-400">Ingen valgt</span>
+                        )}
+                        <HStack gap="space-4" marginBlock={'space-16'}>
                             <Button
                                 size="small"
                                 variant="secondary"
@@ -144,7 +148,7 @@ export default function OrganisationForm({
                 </VStack>
             </Box>
 
-            <HStack className="pl-10" gap="5">
+            <HStack gap="space-6" justify="end" marginBlock={'space-24'}>
                 <Button onClick={onSubmit} data-cy="submit-button">
                     {organization ? 'Oppdater organisasjon' : 'Legg til organisasjon'}
                 </Button>

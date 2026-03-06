@@ -1,6 +1,7 @@
 import { Link, useLocation } from 'react-router';
 import { ChevronRightIcon, HouseIcon } from '@navikt/aksel-icons';
 import { IBreadcrumb } from '~/types/breadcrumb';
+import { BodyShort, HStack } from '@navikt/ds-react';
 
 interface BreadcrumbsProps {
     breadcrumbs: IBreadcrumb[];
@@ -12,27 +13,26 @@ export default function Breadcrumbs({ breadcrumbs }: BreadcrumbsProps) {
     const location = useLocation();
     const currentPath = location.pathname;
 
-    const crumbs = breadcrumbs.map(({ name, link }) => (
-        <div key={link} className="flex items-center">
-            <ChevronRightIcon title="Spacer" className="mx-1" />
-
-            {link === '' || link === currentPath ? (
-                <>{name}</>
-            ) : (
-                <Link to={link} style={linkStyle}>
-                    {name}
-                </Link>
-            )}
-        </div>
-    ));
-
     return (
-        <div className="flex items-center align-center p-3">
-            <Link to={homeLink} style={linkStyle} className="!flex !items-start">
-                <HouseIcon title="dashboard" className="mt-[1.5px] " />
-                <span className="">{'Dashboard'}</span>
+        <HStack gap="space-2" align="center" marginBlock="space-16">
+            <Link to={homeLink} style={linkStyle}>
+                <HouseIcon title="Dashboard" fontSize="1.2rem" />
+                <BodyShort size="small">Dashboard</BodyShort>
             </Link>
-            {crumbs}
-        </div>
+
+            {breadcrumbs.map(({ name, link }) => (
+                <HStack key={link} gap="space-1" align="center">
+                    <ChevronRightIcon title="Spacer" />
+
+                    {link === '' || link === currentPath ? (
+                        <BodyShort size="small">{name}</BodyShort>
+                    ) : (
+                        <Link to={link} style={linkStyle}>
+                            <BodyShort size="small">{name}</BodyShort>
+                        </Link>
+                    )}
+                </HStack>
+            ))}
+        </HStack>
     );
 }

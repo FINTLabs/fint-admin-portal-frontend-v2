@@ -87,7 +87,13 @@ export default function ComponentForm({
 
     return (
         <>
-            <Box className="p-10">
+            <Box
+                borderRadius={'12'}
+                borderWidth={'1'}
+                borderColor="neutral-subtle"
+                padding={'space-24'}
+                width={'100%'}
+                marginBlock={'space-8'}>
                 {component ? (
                     <TextField label="Navn" value={inName} disabled={true} />
                 ) : (
@@ -114,7 +120,7 @@ export default function ComponentForm({
                     error={errors.description}
                     data-cy="description-input"
                 />
-                <HStack gap={'10'} className={'pt-5'}>
+                <HStack gap={'space-16'} marginBlock={'space-16'}>
                     <VStack>
                         <Label> Miljøer</Label>
                         <Checkbox
@@ -155,7 +161,7 @@ export default function ComponentForm({
                     </VStack>
                 </HStack>
             </Box>
-            <HStack className="pl-10" gap="5">
+            <HStack gap={'space-6'} justify="end" marginBlock={'space-24'}>
                 <Button onClick={onSubmit} data-cy="submit-button">
                     {component ? 'Update Component' : 'Add Component'}
                 </Button>

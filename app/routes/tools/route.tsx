@@ -1,5 +1,5 @@
 import { useFetcher, ActionFunction } from 'react-router';
-import { Button, Heading, HGrid, Loader, VStack } from '@navikt/ds-react';
+import { Box, Button, Heading, HGrid, Loader, VStack } from '@navikt/ds-react';
 import { Buildings3Icon, ComponentIcon, PersonGroupIcon, WrenchIcon } from '@navikt/aksel-icons';
 import JSONPretty from 'react-json-pretty';
 import 'react-json-pretty/themes/acai.css';
@@ -28,9 +28,9 @@ export default function ToolsPage() {
                 // }
             />
 
-            <VStack gap="4">
+            <VStack gap="space-4">
                 <fetcher.Form method="post">
-                    <HGrid gap="6" columns={5}>
+                    <HGrid gap="space-6" columns={5}>
                         <Button
                             type="submit"
                             name="reportType"
@@ -73,17 +73,39 @@ export default function ToolsPage() {
                         </Button>
                     </HGrid>
                 </fetcher.Form>
-
-                {isLoading ? (
-                    <Loader size="3xlarge" title="Venter..." variant="interaction" />
-                ) : fetcher.data ? (
-                    <>
-                        {/*<Heading size="large">{fetcher.data.reportType}</Heading>*/}
-                        <JSONPretty id="json-pretty" data={fetcher.data} />
-                    </>
-                ) : (
-                    <Heading size="large">Please choose a report to run</Heading>
-                )}
+                <>
+                    {isLoading ? (
+                        <Loader size="3xlarge" title="Venter..." variant="interaction" />
+                    ) : fetcher.data ? (
+                        <Box
+                            borderRadius={'12'}
+                            borderWidth={'1'}
+                            borderColor="neutral-subtle"
+                            // padding={'space-4'}
+                            width={'100%'}
+                            marginBlock={'space-16'}
+                            style={{ background: '#000000' }}>
+                            {/*<Heading size="large">{fetcher.data.reportType}</Heading>*/}
+                            <JSONPretty
+                                id="json-pretty"
+                                data={fetcher.data}
+                                className="json-pretty"
+                            />
+                        </Box>
+                    ) : (
+                        <Box
+                            borderRadius={'12'}
+                            borderWidth={'1'}
+                            borderColor="neutral-subtle"
+                            padding={'space-4'}
+                            width={'100%'}
+                            marginBlock={'space-16'}>
+                            <Heading size="large" align="center">
+                                Please choose a report to run
+                            </Heading>
+                        </Box>
+                    )}
+                </>
             </VStack>
         </>
     );
