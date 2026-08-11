@@ -15,6 +15,12 @@ async function loadJson(path: string, fallback: any) {
 }
 
 export const handlers = [
+    // Analytics endpoint
+    http.post('*/api/events', async () => {
+        console.log('MSW MOCKING EVENTS ENDPOINT');
+        return HttpResponse.json('from handler in MSW', { status: 200 });
+    }),
+
     // User endpoint
     http.get('*/api/me', async () => {
         console.log('MSW MOCKING ME ENDPOINT');

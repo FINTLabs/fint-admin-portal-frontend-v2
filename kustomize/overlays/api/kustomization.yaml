@@ -11,4 +11,12 @@ patches:
         value: 'admin.fintlabs.no'
     target:
       kind: Application
-      name: admin-portal
+      name: fint-admin-portal-frontend
+
+  - patch: |-
+      - op: replace
+        path: "/spec/hostname"
+        value: 'admin.fintlabs.no'
+    target:
+      kind: FLAISSso
+      name: fint-admin-portal-sso

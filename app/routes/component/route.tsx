@@ -10,8 +10,8 @@ import logger from '~/components/logger';
 import { IComponent } from '~/types/components';
 import {
     ApiResponse,
-    NovariSnackbar,
     NovariSnackbarItem,
+    NovariToaster,
     useAlerts,
 } from 'novari-frontend-components';
 // import { useAlerts } from '~/hooks/useAlerts';
@@ -21,7 +21,7 @@ export const loader: LoaderFunction = async () => {
     const alerts: NovariSnackbarItem[] = [];
 
     const componentsResult = await ComponentsApi.getComponents();
-    console.log('components', componentsResult);
+
     if (!componentsResult.success) {
         alerts.push({
             id: 'components-load-error',
@@ -91,11 +91,12 @@ export default function ComponentsPage() {
                 onActionButtonClick={!addingNew && !editing ? () => setAddingNew(true) : undefined}
             />
 
-            <NovariSnackbar
-                items={alertState}
-                position={'top-right'}
-                // onCloseItem={handleCloseItem}
-            />
+            {/*<NovariSnackbar*/}
+            {/*    items={alertState}*/}
+            {/*    position={'top-right'}*/}
+            {/*    // onCloseItem={handleCloseItem}*/}
+            {/*/>*/}
+            <NovariToaster items={alertState} position={'top-right'} />
 
             {addingNew || editing ? (
                 <ComponentForm

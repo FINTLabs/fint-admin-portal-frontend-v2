@@ -21,8 +21,6 @@ import themeHref from './novari-theme.css?url';
 import akselHref from '@navikt/ds-css?url';
 import { footerMenu, novariMenu } from '~/components/MenuConfig';
 import { useTrackAnalyticsPageViews } from '~/hooks/useTrackAnalyticsPageViews';
-import { normalizePathname } from '~/utils/metricsPath';
-import { pageVisits } from '~/routes/metrics';
 import AnalyticsApi from '~/api/AnalyticsApi';
 
 // For client-side mocking for tests
@@ -58,12 +56,7 @@ export const meta: MetaFunction = () => {
 };
 
 export const loader = async ({ request }: { request: Request }) => {
-    const { pathname } = new URL(request.url);
-
-    //TODO: remove metrics
-    // Normalize  for Prometheus labels
-    const normalized = normalizePathname(pathname);
-    pageVisits.inc({ path: normalized });
+    // const { pathname } = new URL(request.url);
 
     const meResults = await MeApi.getDisplayName();
     if (meResults.success && meResults.data) {
