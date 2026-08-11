@@ -56,7 +56,7 @@ export const meta: MetaFunction = () => {
     ];
 };
 
-export const loader = async ({ request }: { request: Request }) => {
+export const loader = async () => {
     // const { pathname } = new URL(request.url);
 
     const meResults = await MeApi.getDisplayName();

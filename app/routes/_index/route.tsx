@@ -16,7 +16,6 @@ export const loader: LoaderFunction = async () => {
     const contacts = contactsResult.data || [];
     const organisations = orgResult.data || [];
     const components = componentResult.data || [];
-    console.log(components);
     return Response.json({ contacts, organisations, components });
 };
 
