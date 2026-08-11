@@ -28,7 +28,7 @@ export const loader: LoaderFunction = async () => {
     if (!contactsResult.success) {
         alerts.push({
             id: 'contact-load-error',
-            variant: contactsResult.variant,
+            // variant: contactsResult.variant,
             message: contactsResult.message,
         });
     } else {
@@ -38,7 +38,7 @@ export const loader: LoaderFunction = async () => {
     if (!organisationsResult.success) {
         alerts.push({
             id: 'org-load-error',
-            variant: organisationsResult.variant,
+            // variant: organisationsResult.variant,
             message: organisationsResult.message,
         });
     } else {
@@ -61,7 +61,7 @@ export default function ContactsPage() {
 
     const fetcher = useFetcher();
     const actionData = fetcher.data as ApiResponse<IContact>;
-    const { alertState } = useAlerts<IContact>(alerts, actionData);
+    const { alertState } = useAlerts<IContact>(alerts, actionData, fetcher.state);
 
     const [editingContact, setEditingContact] = useState<IContact | null>(null);
     const [addingNew, setAddingNew] = useState<boolean>(false);
@@ -108,9 +108,15 @@ export default function ContactsPage() {
                 }
             />
             <NovariToaster
-                items={alertState}
+                items={alertState.map((item) => ({
+                    id: item.id,
+                    message: item.message,
+                    open: item.open,
+                    show: item.show,
+                    title: item.header,
+                    status: item.variant === 'info' ? 'info' : (item.variant ?? 'info'),
+                }))}
                 position={'top-right'}
-                // onCloseItem={handleCloseItem}
             />
 
             {addingNew || editingContact ? (

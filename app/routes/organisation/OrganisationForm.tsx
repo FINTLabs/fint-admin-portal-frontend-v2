@@ -152,7 +152,11 @@ export default function OrganisationForm({
                 <Button onClick={onSubmit} data-cy="submit-button">
                     {organization ? 'Oppdater organisasjon' : 'Legg til organisasjon'}
                 </Button>
-                <Button type="button" variant="secondary" onClick={onCancel}>
+                <Button
+                    type="button"
+                    variant="secondary"
+                    onClick={onCancel}
+                    data-cy="cancel-button">
                     Cancel
                 </Button>
             </HStack>

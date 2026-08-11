@@ -19,6 +19,7 @@ import { NovariFooter, NovariHeader } from 'novari-frontend-components';
 import MeApi from '~/api/MeApi';
 import themeHref from './novari-theme.css?url';
 import akselHref from '@navikt/ds-css?url';
+import 'novari-frontend-components/lib/index.css';
 import { footerMenu, novariMenu } from '~/components/MenuConfig';
 import { useTrackAnalyticsPageViews } from '~/hooks/useTrackAnalyticsPageViews';
 import AnalyticsApi from '~/api/AnalyticsApi';
@@ -114,11 +115,11 @@ export default function App() {
                     onLogin={() => navigate('/')}></NovariHeader>
             </Box>
 
-            {/*<Box padding="8" paddingBlock="2" as="main">*/}
-            <Page.Block width="xl">
-                <Outlet />
-            </Page.Block>
-            {/*</Box>*/}
+            <Box as="main">
+                <Page.Block width="xl">
+                    <Outlet />
+                </Page.Block>
+            </Box>
         </Page>
     );
 }
@@ -159,19 +160,19 @@ export function ErrorBoundary() {
                     />
                 </Box>
 
-                {/*<Box padding="space-8" paddingBlock="2" as="main">*/}
-                <Page.Block gutters width="lg">
-                    <CustomError
-                        statusCode={error.status}
-                        errorData={error.data}
-                        statusTitle={
-                            error.statusText.toString().length > 0
-                                ? error.statusText.toString()
-                                : 'Beklager, noe gikk galt.'
-                        }
-                    />
-                </Page.Block>
-                {/*</Box>*/}
+                <Box as="main">
+                    <Page.Block gutters width="lg">
+                        <CustomError
+                            statusCode={error.status}
+                            errorData={error.data}
+                            statusTitle={
+                                error.statusText.toString().length > 0
+                                    ? error.statusText.toString()
+                                    : 'Beklager, noe gikk galt.'
+                            }
+                        />
+                    </Page.Block>
+                </Box>
             </Page>
         );
     } else {
@@ -198,11 +199,11 @@ export function ErrorBoundary() {
                     />
                 </Box>
 
-                {/*<Box padding="8" paddingBlock="2" as="main">*/}
-                <Page.Block gutters width="lg">
-                    <Alert variant="error">Ukjent feil</Alert>
-                </Page.Block>
-                {/*</Box>*/}
+                <Box as="main">
+                    <Page.Block gutters width="lg">
+                        <Alert variant="error">Ukjent feil</Alert>
+                    </Page.Block>
+                </Box>
             </Page>
         );
     }

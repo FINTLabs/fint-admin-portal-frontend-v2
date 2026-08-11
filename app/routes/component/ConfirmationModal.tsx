@@ -63,6 +63,7 @@ export function ConfirmationModal({
                     variant="danger"
                     size="small"
                     disabled={!isValid}
+                    data-cy="confirmation-confirm-button"
                     onClick={() => {
                         ref.current?.close();
                         onConfirm();
@@ -74,6 +75,7 @@ export function ConfirmationModal({
                     size="small"
                     type="button"
                     variant="secondary"
+                    data-cy="confirmation-cancel-button"
                     onClick={() => {
                         ref.current?.close();
                         onCancel();

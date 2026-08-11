@@ -12,6 +12,12 @@ export const novariMenu = [
         displayBox: false,
     },
     {
+        action: '/contact',
+        label: 'Kontakt',
+        description: 'Oversikt contacts over alle',
+        displayBox: false,
+    },
+    {
         action: '/organisation',
         label: 'Organisasjoner',
         description: 'Vis og administrer organisasjoner',

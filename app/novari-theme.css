@@ -36,6 +36,13 @@
         color: var(--ax-surface-alt-3-moderate);
     }
 
+    /* Link cards use --ax-bg-default; keep them white against the cream page */
+    .novari-link-card,
+    .novari-stats-link-card {
+        --ax-bg-default: #ffffff;
+        background-color: #ffffff;
+    }
+
     .novari-footer {
         background: var(--ax-surface-alt-3-moderate);
         color: var(--ax-bg-default);
