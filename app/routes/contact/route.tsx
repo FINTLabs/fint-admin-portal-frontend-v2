@@ -12,8 +12,8 @@ import ContactForm from '~/routes/contact/ContactForm';
 import ContactsTable from '~/routes/contact/ContactsTable';
 import {
     ApiResponse,
-    NovariSnackbar,
     NovariSnackbarItem,
+    NovariToaster,
     useAlerts,
 } from 'novari-frontend-components';
 
@@ -107,7 +107,7 @@ export default function ContactsPage() {
                     !addingNew && !editingContact ? () => setAddingNew(true) : undefined
                 }
             />
-            <NovariSnackbar
+            <NovariToaster
                 items={alertState}
                 position={'top-right'}
                 // onCloseItem={handleCloseItem}

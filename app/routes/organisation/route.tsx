@@ -12,8 +12,8 @@ import OrganisationForm from '~/routes/organisation/OrganisationForm';
 import logger from '~/components/logger';
 import {
     ApiResponse,
-    NovariSnackbar,
     NovariSnackbarItem,
+    NovariToaster,
     useAlerts,
 } from 'novari-frontend-components';
 
@@ -129,7 +129,7 @@ export default function OrganizationsPage() {
                 }
             />
 
-            <NovariSnackbar
+            <NovariToaster
                 items={alertState}
                 position={'top-right'}
                 // onCloseItem={handleCloseItem}
