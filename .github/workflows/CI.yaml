@@ -24,16 +24,16 @@ jobs:
       - name: Build
         run: npm run build
 
-#      - name: Run Cypress tests
-#        uses: cypress-io/github-action@v6
-#        env:
-#         VITE_MOCK_CYPRESS : "true"
-#         API_URL: "http://localhost:8080"
-#        with:
-#          start: npm run dev
-#          wait-on: 'http://localhost:3000'
-#          wait-on-timeout: 60
-#          browser: chrome
+      - name: Run Cypress tests
+        uses: cypress-io/github-action@v6
+        env:
+         VITE_MOCK_CYPRESS : "true"
+         API_URL: "http://localhost:8080"
+        with:
+          start: npm run dev
+          wait-on: 'http://localhost:3000'
+          wait-on-timeout: 60
+          browser: chrome
 
       - name: Start deployment
         if: github.ref == 'refs/heads/main'
