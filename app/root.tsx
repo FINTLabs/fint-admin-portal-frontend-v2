@@ -24,23 +24,26 @@ import { footerMenu, novariMenu } from '~/components/MenuConfig';
 import { useTrackAnalyticsPageViews } from '~/hooks/useTrackAnalyticsPageViews';
 import AnalyticsApi from '~/api/AnalyticsApi';
 
-// For client-side mocking for tests
+// For mocking API calls during Cypress (Node) / optional browser worker
 let server: any;
 if (import.meta.env.DEV && import.meta.env.VITE_MOCK_CYPRESS === 'true') {
     console.log('RUNNING WITH MOCK ENVIRONMENT');
     if (typeof window !== 'undefined') {
         console.log('RUNNING WITH MOCK ENVIRONMENT IN BROWSER');
-        // Browser environment
-        const { worker } = await import('../cypress/mocks/browsers');
-        await worker.start();
-        // tell Cypress that MSW is ready
-        (window as any).__mswReady = true;
+        try {
+            const { worker } = await import('../cypress/mocks/browsers');
+            await worker.start({ onUnhandledRequest: 'bypass' });
+        } catch (e) {
+            // Service worker registration can fail under Cypress; Node MSW still covers loaders/actions
+            console.warn('Browser MSW worker failed to start:', e);
+        } finally {
+            (window as any).__mswReady = true;
+        }
     } else {
         console.log('RUNNING WITH MOCK ENVIRONMENT IN NODE');
-        // Node.js environment (server-side)
         const { server: nodeServer } = await import('../cypress/mocks/node');
         server = nodeServer;
-        server.listen();
+        server.listen({ onUnhandledRequest: 'bypass' });
     }
 }
 
@@ -69,6 +72,16 @@ export const loader = async () => {
     }
 };
 
+function HydrationMarker() {
+    useEffect(() => {
+        document.documentElement.setAttribute('data-app-ready', 'true');
+        return () => {
+            document.documentElement.removeAttribute('data-app-ready');
+        };
+    }, []);
+    return null;
+}
+
 export function Layout({ children }: { children: React.ReactNode }) {
     return (
         <html lang="en">
@@ -81,6 +94,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 <title>FINT Admin Portal</title>
             </head>
             <body data-theme="novari">
+                <HydrationMarker />
                 {children}
                 <ScrollRestoration />
                 <Scripts />
