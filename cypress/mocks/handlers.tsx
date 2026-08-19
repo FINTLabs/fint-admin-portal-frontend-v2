@@ -87,6 +87,17 @@ export const handlers = [
         });
     }),
 
+    http.put('*/api/contacts', async ({ request }) => {
+        console.log('MSW MOCKING CONTACTS PUT:', request.url);
+        const body = (await request.json()) as Record<string, unknown>;
+        return HttpResponse.json(body, { status: 200 });
+    }),
+
+    http.delete('*/api/contacts', async ({ request }) => {
+        console.log('MSW MOCKING CONTACTS DELETE:', request.url);
+        return HttpResponse.json({ status: 200 });
+    }),
+
     // Maintenance/consistency endpoints
     http.get('*/api/maintenance/consistency/:endpoint', async ({ params }) => {
         return HttpResponse.json(
