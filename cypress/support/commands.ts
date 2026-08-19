@@ -13,10 +13,8 @@ Cypress.Commands.add('waitForAppReady', () => {
     cy.get('[data-theme="novari"]', { timeout: 20_000 }).should('exist');
     cy.get('main', { timeout: 20_000 }).should('be.visible');
 
-    // Wait until the client app has hydrated / MSW is ready so clicks work
-    cy.window({ timeout: 20_000 }).its('__mswReady').should('eq', true);
-
-    // Prefer known interactive controls; fall back to any main link/button
+    // API mocking for loaders/actions is Node MSW in root.tsx — not window.__mswReady.
+    // Wait until a control is React-hydrated so clicks hit real handlers (not static SSR HTML).
     const controlSelector = [
         '[data-cy="add-button"]',
         '[data-cy="contact-action-menu-button"]',
