@@ -32,6 +32,16 @@ export default defineConfig({
             port: 3000,
         },
     },
+    optimizeDeps: {
+        include: [
+            '@navikt/aksel-icons',
+            '@navikt/ds-react',
+            'novari-frontend-components',
+            'winston',
+            'msw',
+            'msw/browser',
+        ],
+    },
     // Only enable sourcemaps for coverage runs — never in normal production builds
     build: { sourcemap: coverageOn },
 });
