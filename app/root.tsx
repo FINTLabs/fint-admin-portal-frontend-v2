@@ -72,6 +72,16 @@ export const loader = async () => {
     }
 };
 
+function HydrationMarker() {
+    useEffect(() => {
+        document.documentElement.setAttribute('data-app-ready', 'true');
+        return () => {
+            document.documentElement.removeAttribute('data-app-ready');
+        };
+    }, []);
+    return null;
+}
+
 export function Layout({ children }: { children: React.ReactNode }) {
     return (
         <html lang="en">
@@ -84,6 +94,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 <title>FINT Admin Portal</title>
             </head>
             <body data-theme="novari">
+                <HydrationMarker />
                 {children}
                 <ScrollRestoration />
                 <Scripts />

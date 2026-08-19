@@ -32,6 +32,11 @@ export default defineConfig({
             port: 3000,
         },
     },
+    // Pre-bundle MSW so the first Cypress visit does not trigger
+    // "[vite] optimized dependencies changed. reloading"
+    optimizeDeps: {
+        include: ['msw', 'msw/browser', 'msw/node'],
+    },
     // Only enable sourcemaps for coverage runs — never in normal production builds
     build: { sourcemap: coverageOn },
 });
