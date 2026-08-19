@@ -57,7 +57,7 @@ const CustomErrorPage: React.FC<CustomErrorPageProps> = ({
                 </BodyShort>
 
                 <Link href="/" className="navds-link">
-                    <Button>Gå til Kundeportalen Dashboard</Button>
+                    <Button>Gå til Admin Dashboard</Button>
                 </Link>
 
                 {/* DO WE WANT ENGLISH?? */}
